@@ -1,14 +1,14 @@
 from odtk.data.read import *
 from odtk.data.write import *
 from odtk.data.import_data import *
-import numpy as np
+from numpy import asarray, concatenate, nan, full
 from collections import Iterable
 
 
 class Dataset:
     def __init__(self):
         print("Class Dataset imported")
-        self.__data = np.array([])
+        self.__data = asarray([])
         # header: column, column: header
         self.__header = {}
         # room: [start_row, end_row], room_counter: room
@@ -77,7 +77,7 @@ class Dataset:
             features = list(range(len(list(data[0]))))
 
         try:
-            data = np.asarray(data, dtype=float)
+            data = asarray(data, dtype=float)
         except ValueError:
             raise ValueError("Data cannot convert to float or the shape of data is not a matrix")
 
@@ -109,13 +109,13 @@ class Dataset:
                 source_column = target_column
                 rest_column = list(range(self.__data.shape[1], data.shape[1]))
 
-            new_data = np.full([data.shape[0], self.__data.shape[1] + len(rest_column)], np.nan)
+            new_data = full([data.shape[0], self.__data.shape[1] + len(rest_column)], nan)
             new_data[:, target_column] = data[:, source_column]
             new_data[:, self.__data.shape[1]:] = data[:, rest_column]
 
-            self.__data = np.concatenate((self.__data,
-                                          np.full([self.__data.shape[0], len(rest_column)], np.nan)), axis=1)
-            self.__data = np.concatenate((self.__data, new_data), axis=0)
+            self.__data = concatenate((self.__data,
+                                       full([self.__data.shape[0], len(rest_column)], nan)), axis=1)
+            self.__data = concatenate((self.__data, new_data), axis=0)
 
             new_header = []
             i = 0
