@@ -1,4 +1,4 @@
-from numpy import asarray, concatenate, nan, full, unique
+from numpy import asarray, concatenate, nan, full, unique, delete, isnan
 from collections import Iterable
 
 
@@ -37,7 +37,7 @@ class Dataset:
 
     @property
     def room(self):
-        return [self.__room[i] for i in range(len(self.__room) // 2)]
+        return [self.__room[i] for i in range(len(self))]
 
     def set_header(self, header):
         if not isinstance(header, Iterable):
@@ -84,15 +84,18 @@ class Dataset:
     # if no header line, assume all data have same order as before.
     def add_room(self, data, occupancy=None, room_name=None, header=True):
         if header:
-            features = list(data[0])
-            data = data[1:]
+            if isinstance(header, bool):
+                features = list(data[0])
+                data = data[1:]
+            else:
+                features = header
         else:
             features = list(range(len(list(data[0]))))
 
         try:
             data = asarray(data, dtype=float)
             if occupancy is not None:
-                occupancy = asarray(occupancy, dtype=int)
+                occupancy = asarray(occupancy, dtype=float)
                 self.labelled = True
                 if unique(occupancy).shape[0] > 2:
                     self.binary = False
@@ -109,7 +112,7 @@ class Dataset:
         if room_name is None:
             room_name = len(self.__room)
 
-        self.__room[len(self.__room) // 2] = str(room_name)
+        self.__room[len(self)] = str(room_name)
         self.__room[str(room_name)] = (self.__data.shape[0], self.__data.shape[0] + data.shape[0])
 
         if not self.__data.shape[0]:
@@ -157,6 +160,34 @@ class Dataset:
                 occupancy.shape += (1,)
             self.__occupancy = concatenate((self.__occupancy, occupancy), axis=0)
 
+    def remove_room(self, room_name):
+        if room_name not in self.__room.keys():
+            raise KeyError("This dataset do not contain room %s".format(room_name))
+
+        a, b = self.__room[room_name]
+        self.__data = delete(self.__data, range(a, b), axis=0)
+        self.__occupancy = delete(self.__occupancy, range(a, b), axis=0)
+
+        unique_entry = unique(self.__occupancy)
+        if unique_entry.shape[0] <= 2:
+            self.binary = True
+            if unique_entry.shape[0] == 1 and isnan(unique_entry[0]):
+                self.labelled = False
+
+        remove_col = b - a
+        found = False
+        for i in range(len(self) - 1):
+            if self.__room[i] == room_name:
+                found = True
+
+            if found:
+                new_a, new_b = self.__room[self.__room[i + 1]]
+                self.__room[self.__room[i]] = (new_a - remove_col, new_b - remove_col)
+                self.__room[i] = self.__room[i + 1]
+
+        self.__room.pop(room_name)
+        self.__room.pop(len(self) - 1)
+
     def __iter__(self):
         self.iter_helper = 0
         return self
@@ -175,7 +206,26 @@ class Dataset:
         return self.__data[a:b, :], self.__occupancy[a:b, :]
 
     def __len__(self):
-        return len(self.__room)
+        return len(self.__room) // 2
+
+    def __add__(self, other):
+        if not isinstance(other, Dataset):
+            raise TypeError("Dataset need to add with Dataset")
+        rooms = other.room
+        header = other.header
+        for room in rooms:
+            data, occupancy = other[room]
+            self.add_room(data, occupancy=occupancy, room_name=room, header=header)
+        return self
+
+    def __sub__(self, other):
+        if not isinstance(other, Dataset):
+            raise TypeError("Dataset need to sub with Dataset")
+        rooms = other.room
+        for room in rooms:
+            if room in self.room:
+                self.remove_room(room)
+        return self
 
     def __str__(self):
         return str(self.__dict__)

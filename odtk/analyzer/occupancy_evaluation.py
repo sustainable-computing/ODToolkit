@@ -1,6 +1,7 @@
 from odtk.data.dataset import Dataset
 from numpy import unique
 
+
 def occupancy_evaluation(dataset, total=True):
     if not isinstance(dataset, Dataset):
         raise TypeError("Dataset has to be class odtk.data.dataset.Dataset")
@@ -31,10 +32,7 @@ def occupancy_evaluation(dataset, total=True):
         summarize = {}
         for values in result.values():
             for possible_occupancy in values.keys():
-                if possible_occupancy not in summarize.keys():
-                    summarize[possible_occupancy] = values[possible_occupancy][0]
-                else:
-                    summarize[possible_occupancy] += values[possible_occupancy][0]
+                summarize[possible_occupancy] = summarize.get(possible_occupancy, 0) + values[possible_occupancy][0]
 
         for possible_occupancy in summarize.keys():
             summarize[possible_occupancy] = (summarize[possible_occupancy], summarize[possible_occupancy] / all_entries)

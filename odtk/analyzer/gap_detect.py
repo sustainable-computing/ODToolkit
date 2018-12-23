@@ -11,14 +11,14 @@ def gap_detect(dataset, threshold, detail=False):
     result = {}
     rooms = dataset.room
     time_col = dataset.time_column
+    sensors = dataset.header
+    sensor_dict = dataset.header_info
 
     for room in rooms:
         data = dataset[room][0]
 
         if detail:
             result[room] = {}
-            sensors = dataset.header
-            sensor_dict = dataset.header_info
             for sensor in sensors:
                 if sensor == sensors[time_col]:
                     continue
@@ -28,7 +28,8 @@ def gap_detect(dataset, threshold, detail=False):
                 indices = where(valid_data[1:] - valid_data[:-1] >= threshold)[0]
                 for period in indices:
                     result[room][sensor].append((str(datetime.fromtimestamp(valid_data[period])),
-                                                 str(datetime.fromtimestamp(valid_data[period + 1]))))
+                                                 str(datetime.fromtimestamp(valid_data[period + 1])),
+                                                 valid_data[period + 1] - valid_data[period]))
 
         else:
             result[room] = []
@@ -36,6 +37,7 @@ def gap_detect(dataset, threshold, detail=False):
             indices = where(valid_data[1:] - valid_data[:-1] >= threshold)[0]
             for period in indices:
                 result[room].append((str(datetime.fromtimestamp(valid_data[period])),
-                                     str(datetime.fromtimestamp(valid_data[period + 1]))))
+                                     str(datetime.fromtimestamp(valid_data[period + 1])),
+                                     valid_data[period + 1] - valid_data[period]))
 
     return result
