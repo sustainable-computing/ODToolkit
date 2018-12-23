@@ -53,9 +53,9 @@ class Dataset:
 
     def change_header(self, old, new):
         if old not in self.__header.keys():
-            raise KeyError("The feature %s does not exist in the dataset!".format(old))
+            raise KeyError("The feature {} does not exist in the dataset!".format(old))
         if new in self.__header.keys():
-            raise KeyError("The feature %s already exist in the dataset!".format(new))
+            raise KeyError("The feature {} already exist in the dataset!".format(new))
         column = self.__header[old]
         self.__header[column] = new
         self.__header.pop(old)
@@ -71,7 +71,7 @@ class Dataset:
         for feature in features:
             if feature not in self.__header.keys():
                 if error:
-                    raise KeyError("The feature %s does not exist in the dataset!".format(feature))
+                    raise KeyError("The feature {} does not exist in the dataset!".format(feature))
             else:
                 column.remove(self.__header[feature])
 
@@ -162,7 +162,7 @@ class Dataset:
 
     def remove_room(self, room_name):
         if room_name not in self.__room.keys():
-            raise KeyError("This dataset do not contain room %s".format(room_name))
+            raise KeyError("This dataset do not contain room {}".format(room_name))
 
         a, b = self.__room[room_name]
         self.__data = delete(self.__data, range(a, b), axis=0)
