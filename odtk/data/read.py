@@ -1,4 +1,7 @@
-import numpy
+from pickle import load
+
 
 def read(file_name):
-    print("Test read function")
+    with open(file_name, 'rb') as file:
+        dataset = load(file)
+    return dataset
