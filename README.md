@@ -5,8 +5,8 @@ Occupancy Detection Toolkit
 odtk.data
 ---
 1. odtk.data.import_data(file_name, time_column=None, mode='csv', header=True)
-This will return class odtk.data.dataset.Dataset
-2. odtk.data.load_sample() # Not finish
+*// This will return class odtk.data.dataset.Dataset*
+2. **odtk.data.load_sample() # Not finish**
 3. odtk.data.read(file_name)
 4. odtk.data.write(dataset, file_name)
 
@@ -28,7 +28,7 @@ odtk.modifier
 5. odtk.modifier.clean(dataset, auto_fill=True)
 6. odtk.modifier.downsample(dataset, target_frequency, algorithm="mean")
 7. odtk.modifier.fill(dataset)
-8. odtk.modifier.regulate() # Not finish
+8. **odtk.modifier.regulate() # Not finish**
 9. odtk.modifier.upsample(dataset, target_frequency, algorithm="linear")
 
 ## odtk classes - odtk.data.dataset.Dataset
