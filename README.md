@@ -1,27 +1,39 @@
 # ODTK: Occupancy Detection Toolkit
+
 Occupancy Detection Toolkit
 
-// Return class odtk.data.dataset.Dataset
-odtk.data.import_data(file_name, time_column=None, mode='csv', header=True)
-odtk.data.load_sample() # Not finish
-odtk.data.read(file_name)
-odtk.data.write(dataset, file_name)
-odtk.analyzer.analyze(dataset, threshold, save_file, print_out=False)
-odtk.analyzer.dropout_rate(dataset, total=False)
-odtk.analyzer.frequency(dataset, total=True)
-odtk.analyzer.gap_detect(dataset, threshold, detail=False)
-odtk.analyzer.occupancy_evaluation(dataset, total=True)
-odtk.analyzer.uptime(dataset, frequency, gaps=None)
-odtk.modifier.auto_clean(dataset, target_frequency)
-odtk.modifier.change_to_one_hot(dataset)
-odtk.modifier.change_to_label(dataset)
-odtk.modifier.change_to_binary(dataset)
-odtk.modifier.clean(dataset, auto_fill=True)
-odtk.modifier.downsample(dataset, target_frequency, algorithm="mean")
-odtk.modifier.fill(dataset)
-odtk.modifier.regulate() # Not finish
-odtk.modifier.upsample(dataset, target_frequency, algorithm="linear")
+odtk.data
+---
+1. odtk.data.import_data(file_name, time_column=None, mode='csv', header=True)
+This will return class odtk.data.dataset.Dataset
+2. odtk.data.load_sample() # Not finish
+3. odtk.data.read(file_name)
+4. odtk.data.write(dataset, file_name)
 
+odtk.analyzer
+---
+1. odtk.analyzer.analyze(dataset, threshold, save_file, print_out=False)
+2. odtk.analyzer.dropout_rate(dataset, total=False)
+3. odtk.analyzer.frequency(dataset, total=True)
+4. odtk.analyzer.gap_detect(dataset, threshold, detail=False)
+5. odtk.analyzer.occupancy_evaluation(dataset, total=True)
+6. odtk.analyzer.uptime(dataset, frequency, gaps=None)
+
+odtk.modifier
+---
+1. odtk.modifier.auto_clean(dataset, target_frequency)
+2. odtk.modifier.change_to_one_hot(dataset)
+3. odtk.modifier.change_to_label(dataset)
+4. odtk.modifier.change_to_binary(dataset)
+5. odtk.modifier.clean(dataset, auto_fill=True)
+6. odtk.modifier.downsample(dataset, target_frequency, algorithm="mean")
+7. odtk.modifier.fill(dataset)
+8. odtk.modifier.regulate() # Not finish
+9. odtk.modifier.upsample(dataset, target_frequency, algorithm="linear")
+
+## odtk classes
+---
+```python
 odtk.data.dataset.Dataset:
     Protected instance:
         __data      -> numpy.ndarray
@@ -55,3 +67,4 @@ odtk.data.dataset.Dataset:
         __len__(self)
         __next__(self)
         __str__(self)
+```
