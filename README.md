@@ -2,6 +2,12 @@
 
 Occupancy Detection Toolkit
 
+Required package
+---
+pandas (python -m pip install pandas)
+numpy (python -m pip install numpy)
+Levenshtein (python -m pip install python-levenshtein)
+
 odtk.data
 ---
 1. odtk.data.import_data(file_name, time_column=None, mode='csv', header=True)
