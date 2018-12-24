@@ -14,4 +14,4 @@ def auto_clean(dataset, target_frequency):
     else:
         downsample(dataset, target_frequency)
 
-    # regulate(dataset)
+    regulate(dataset)

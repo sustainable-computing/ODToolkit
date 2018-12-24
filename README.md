@@ -28,7 +28,7 @@ odtk.modifier
 5. odtk.modifier.clean(dataset, auto_fill=True)
 6. odtk.modifier.downsample(dataset, target_frequency, algorithm="mean")
 7. odtk.modifier.fill(dataset)
-8. **odtk.modifier.regulate() # Not finish**
+8. odtk.modifier.regulate(dataset or list)
 9. odtk.modifier.upsample(dataset, target_frequency, algorithm="linear")
 
 ## odtk classes - odtk.data.dataset.Dataset
