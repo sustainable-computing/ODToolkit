@@ -39,6 +39,15 @@ class Dataset:
     def room(self):
         return [self.__room[i] for i in range(len(self))]
 
+    def change_values(self, data):
+        self.__data = data
+
+    def change_occupancy(self, occupancy):
+        self.__occupancy = occupancy
+
+    def change_room_info(self, room):
+        self.__room = room
+
     def set_header(self, header):
         if not isinstance(header, Iterable):
             raise TypeError("Headers must iterable")

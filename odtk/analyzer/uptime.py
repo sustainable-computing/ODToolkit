@@ -23,7 +23,7 @@ def uptime(dataset, frequency, gaps=None):
         for sensor in gaps[room].keys():
             for gap in gaps[room][sensor]:
                 result[room][sensor] = result[room].get(sensor, 0) + gap[2]
-            sensor_uptime = total_uptime - result[room][sensor]
+            sensor_uptime = total_uptime - result[room].get(sensor, 0)
             result[room][sensor] = (str(timedelta(0, sensor_uptime)), sensor_uptime, sensor_uptime / total_uptime)
 
     return result

@@ -6,7 +6,4 @@ from odtk.modifier.regulate import *
 from odtk.modifier.upsample import *
 from odtk.modifier.clean import *
 
-if __name__ == '__main__':
-    print("Testing modifiers")
-else:
-    print("odtk.modifier initialized")
+# Need to do regulate
