@@ -31,8 +31,7 @@ odtk.modifier
 8. odtk.modifier.regulate() # Not finish
 9. odtk.modifier.upsample(dataset, target_frequency, algorithm="linear")
 
-## odtk classes
----
+## odtk classes - odtk.data.dataset.Dataset
 ```python
 odtk.data.dataset.Dataset:
     Protected instance:
