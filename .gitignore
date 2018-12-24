@@ -105,3 +105,4 @@ venv.bak/
 
 # PyCharm
 .idea/
+odtk/data/sample_csv/lbl/LANGEVIN_DATA.txt

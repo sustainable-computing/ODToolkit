@@ -4,11 +4,11 @@ Occupancy Detection Toolkit
 
 Required package
 ---
-pandas (python -m pip install pandas)
+pandas (python3 -m pip install pandas)
 
-numpy (python -m pip install numpy)
+numpy (python3 -m pip install numpy)
 
-Levenshtein (python -m pip install python-levenshtein)
+Levenshtein (python3 -m pip install python-levenshtein)
 
 odtk.data
 ---
