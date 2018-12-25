@@ -1,0 +1,7 @@
+HomeH-meter2
+Usage [kW],Generation [kW],Grid [kW],Kitchen (39) [kW],1st Floor Bedroom (37) [kW],Oven (7+5) [kW],Dryer (36+34) [kW],Basement/Dehumidifier (31) [kW],Basement+Family Room (19) [kW],Elec Heat (Bed W+Bath N)(12+14) [kW]
+
+year:2016
+Duration:2016-06-09 14:15:00-2016-12-15 22:59:00
+Frequency:0 days 00:01:00
+

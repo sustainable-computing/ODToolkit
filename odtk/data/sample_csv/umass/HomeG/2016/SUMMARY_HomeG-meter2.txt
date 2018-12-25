@@ -1,0 +1,7 @@
+HomeG-meter2
+use [kW],gen [kW],Kitchen lights [kW],Wilo pump [kW],Dining + foyer lights [kW],Basement lights [kW],Dining lights [kW],HVAC circulator + hydronic valv [kW],Gallery track lights [kW],Guest room lights [kW],Refrigerator [kW],Office + sewing lights [kW],HVAC air handler [kW],PGR lights [kW]
+
+year:2016
+Duration:2016-01-01 00:00:00-2016-12-15 21:59:00
+Frequency:0 days 00:01:00
+

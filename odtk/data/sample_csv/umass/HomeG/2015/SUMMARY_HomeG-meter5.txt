@@ -1,0 +1,7 @@
+HomeG-meter5
+use [kW],gen [kW],DL bedroom outlets [kW],SPGR outlets [kW],BL bedroom outlets [kW],DL closets office lights [kW],BL closets office lights [kW],Bedpod dryer [kW],Bedpod washer [kW],Kitchenette outlets [kW],Kitchenette fridge + coffee [kW]
+
+year:2015
+Duration:2015-08-27 18:00:00-2015-12-31 23:59:00
+Frequency:0 days 01:00:00
+

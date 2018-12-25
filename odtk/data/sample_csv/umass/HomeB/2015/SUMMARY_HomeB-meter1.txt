@@ -1,0 +1,7 @@
+HomeB-meter1
+use [kW],gen [kW],Grid [kW],AC [kW],Furnace [kW],Cellar Lights [kW],Washer [kW],First Floor lights [kW],Utility Rm + Basement Bath [kW],Garage outlets [kW],MBed + KBed outlets [kW],Dryer + egauge [kW],Panel GFI (central vac) [kW],Home Office (R) [kW],Dining room (R) [kW],Microwave (R) [kW],Fridge (R) [kW]
+
+year:2015
+Duration:2015-01-01 00:00:00-2015-12-31 23:30:00
+Frequency:0 days 00:30:00
+

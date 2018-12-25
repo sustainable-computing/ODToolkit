@@ -1,0 +1,7 @@
+HomeB-meter2
+use [kW],gen [kW],old usage [kW],Home office [kW],Dining room [kW],Microwave [kW],First floor [kW],Tub Whirpool [kW],Kitchen counter [kW],Dishwasher [kW],Fridge [kW],Guest Bedroom / Media Room [kW],MBed KBed Lights &amp;  MasterBath  [kW],Living room &amp; Kitchen Lights [kW],Bath GFI (1st &amp; 2nd floor bath) [kW]
+
+year:2015
+Duration:2015-01-01 00:00:00-2015-12-31 23:59:00
+Frequency:0 days 00:30:00
+
