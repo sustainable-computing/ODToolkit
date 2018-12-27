@@ -21,10 +21,15 @@ def import_data(file_name, time_column=None, mode='csv', header=True):
                     continue
 
                 for i in range(len(line)):
-                    if not len(line[i]):
-                        line[i] = nan
-                    elif i == time_column:
+                    if i == time_column:
                         line[i] = parse(line[i]).timestamp()
+                    elif not len(line[i]):
+                        line[i] = nan
+                    else:
+                        try:
+                            line[i] = float(line[i])
+                        except ValueError:
+                            line[i] = nan
 
                 data.append(line)
             data = asarray(data, dtype=float)

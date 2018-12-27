@@ -14,7 +14,10 @@ def regulate(dataset):
                   "damper": ["damper", "damper position"],
                   "voc": ["voc", "volative organic compounds"],
                   "air": ["air", "air velocity", "wind"],
-                  "cloud": ["cloud", "cloud coverage", "cloud ratio"]}
+                  "cloud": ["cloud", "cloud coverage", "cloud ratio"],
+                  "radiator": ["radiator value", "radval"],
+                  "pressure": ["pressure", "air pressure", "idoor pressure", "pa"],
+                  "light": ["light", "sun light", "brightness"]}
 
     print(dictionary.keys())
 
