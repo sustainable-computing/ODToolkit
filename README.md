@@ -20,24 +20,33 @@ odtk.data
 
 odtk.analyzer
 ---
-1. odtk.analyzer.analyze(dataset, threshold, save_file, print_out=False)
-2. odtk.analyzer.dropout_rate(dataset, total=False)
-3. odtk.analyzer.frequency(dataset, total=True)
-4. odtk.analyzer.gap_detect(dataset, threshold, detail=False)
-5. odtk.analyzer.occupancy_evaluation(dataset, total=True)
-6. odtk.analyzer.uptime(dataset, frequency, gaps=None)
+1. analyze(dataset, threshold, save_file, print_out=False)
+2. dropout_rate(dataset, total=False)
+3. frequency(dataset, total=True)
+4. gap_detect(dataset, threshold, detail=False)
+5. occupancy_evaluation(dataset, total=True)
+6. uptime(dataset, frequency, gaps=None)
 
 odtk.modifier
 ---
-1. odtk.modifier.auto_clean(dataset, target_frequency)
-2. odtk.modifier.change_to_one_hot(dataset)
-3. odtk.modifier.change_to_label(dataset)
-4. odtk.modifier.change_to_binary(dataset)
-5. odtk.modifier.clean(dataset, auto_fill=True)
-6. odtk.modifier.downsample(dataset, target_frequency, algorithm="mean")
-7. odtk.modifier.fill(dataset)
-8. odtk.modifier.regulate(dataset or list)
-9. odtk.modifier.upsample(dataset, target_frequency, algorithm="linear")
+1. auto_clean(dataset, target_frequency)
+2. change_to_one_hot(dataset)
+3. change_to_label(dataset)
+4. change_to_binary(dataset)
+5. clean(dataset, auto_fill=True)
+6. downsample(dataset, target_frequency, algorithm="mean")
+7. fill(dataset)
+8. regulate(dataset or list)
+9. upsample(dataset, target_frequency, algorithm="linear")
+
+odtk.analyzer.evaluation (or in short odtk.analyzer)
+---
+1. f_score(truth, estimation, tolerance=0, mode="f1-score")
+2. rmse(truth, estimation)
+3. nrmse(truth, estimation)
+4. mape(truth, estimation)
+5. mase(truth, estimation)
+6. mae(truth, estimation)
 
 ## odtk classes - odtk.data.dataset.Dataset
 ```python
