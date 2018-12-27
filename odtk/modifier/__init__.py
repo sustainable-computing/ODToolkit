@@ -1,5 +1,5 @@
 from odtk.modifier.auto_clean import *
-from odtk.modifier.change_to_one_hot import *
+from odtk.modifier.change import *
 from odtk.modifier.downsample import *
 from odtk.modifier.fill import *
 from odtk.modifier.regulate import *
