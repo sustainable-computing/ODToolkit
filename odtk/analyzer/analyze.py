@@ -7,7 +7,16 @@ from odtk.analyzer.uptime import *
 from pprint import pprint
 
 
-def analyze(dataset, threshold, save_file, print_out=False):
+# The full analysis for the given dataset
+#
+# Parameters:
+#   dataset: odtk.data.dataset.Dataset()
+#   threshold: maximum different second between two consecutive value
+#   save_file: if None, then do not write analysis result to a file. Otherwise, write analysis result to save_file
+#   print_out: decide if analysis result print to stdout or not
+# Return:
+#   a dictionary contains all information
+def analyze(dataset, threshold, save_file=None, print_out=False):
     if not isinstance(dataset, Dataset):
         raise TypeError("Dataset has to be class odtk.data.dataset.Dataset")
 
@@ -71,7 +80,8 @@ def analyze(dataset, threshold, save_file, print_out=False):
 
     if print_out:
         pprint(result, width=140)
-    with open(save_file, 'w') as file:
-        pprint(result, stream=file, width=140)
+    if save_file is not None:
+        with open(save_file, 'w') as file:
+            pprint(result, stream=file, width=140)
 
     return result

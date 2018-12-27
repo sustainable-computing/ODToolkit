@@ -2,6 +2,13 @@ from odtk.data.dataset import Dataset
 from numpy import isnan
 
 
+# Compute the dropout rate for a given dataset. Dropout rate is the percent of rows that is invalid
+#
+# Parameters:
+#   dataset: odtk.data.dataset.Dataset()
+#   total: decide the result is separate for each room or combine the whole dataset together
+# Return:
+#   a dictionary contains the dropout rate
 def dropout_rate(dataset, total=False):
     if not isinstance(dataset, Dataset):
         raise TypeError("Dataset has to be class odtk.data.dataset.Dataset")

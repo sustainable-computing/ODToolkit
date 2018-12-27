@@ -3,7 +3,15 @@ from numpy import isnan, where
 from datetime import datetime
 
 
-# threshold in seconds
+# Compute the gaps in the given dataset
+# Gap is a time sequence that two sample row have timestamp difference greater than threshold
+#
+# Parameters:
+#   dataset: odtk.data.dataset.Dataset()
+#   threshold: maximum different second between two consecutive row
+#   detail: decide the result is separate for each sensor or combine the whole row together
+# Return:
+#   a dictionary contains all gaps for each room
 def gap_detect(dataset, threshold, detail=False):
     if not isinstance(dataset, Dataset):
         raise TypeError("Dataset has to be class odtk.data.dataset.Dataset")
