@@ -174,8 +174,7 @@ class Dataset:
             raise KeyError("This dataset do not contain room {}".format(room_name))
 
         a, b = self.__room[room_name]
-        pop_data = self.__data[a:b, :]
-        pop_occupancy = self.__occupancy[a:b, :]
+        pop_data, pop_occupancy = self[room_name]
 
         new_dataset = Dataset()
         new_dataset.add_room(pop_data, pop_occupancy, room_name=room_name, header=self.header)
@@ -210,6 +209,26 @@ class Dataset:
         back_dataset = Dataset()
 
         split_point = round(percentage * self.__data.shape[0])
+
+        for room in self.room:
+            room_data, room_occupancy = self[room]
+            if self.__room[room][1] <= split_point:
+                front_dataset.add_room(room_data, room_occupancy, room_name=room, header=self.header)
+            elif self.__room[room][0] > split_point:
+                back_dataset.add_room(room_data, room_occupancy, room_name=room, header=self.header)
+            else:
+                start_pos = self.__room[room][0]
+                mid_pos = split_point - start_pos
+                front_room_data = room_data[:mid_pos, :]
+                front_room_occupancy = room_occupancy[:mid_pos, :]
+                back_room_data = room_data[mid_pos:, :]
+                back_room_occupancy = room_occupancy[mid_pos:, :]
+                front_dataset.add_room(front_room_data, front_room_occupancy,
+                                       room_name="Partially " + str(room), header=self.header)
+                back_dataset.add_room(back_room_data, back_room_occupancy,
+                                      room_name="Partially " + str(room), header=self.header)
+
+        return front_dataset, back_dataset
 
     def __iter__(self):
         self.iter_helper = 0
