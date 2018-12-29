@@ -205,6 +205,12 @@ class Dataset:
 
         return new_dataset
 
+    def split(self, percentage, random_sequence=False):
+        front_dataset = Dataset()
+        back_dataset = Dataset()
+
+        split_point = round(percentage * self.__data.shape[0])
+
     def __iter__(self):
         self.iter_helper = 0
         return self
