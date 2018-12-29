@@ -169,11 +169,17 @@ class Dataset:
                 occupancy.shape += (1,)
             self.__occupancy = concatenate((self.__occupancy, occupancy), axis=0)
 
-    def remove_room(self, room_name):
+    def pop_room(self, room_name):
         if room_name not in self.__room.keys():
             raise KeyError("This dataset do not contain room {}".format(room_name))
 
         a, b = self.__room[room_name]
+        pop_data = self.__data[a:b, :]
+        pop_occupancy = self.__occupancy[a:b, :]
+
+        new_dataset = Dataset()
+        new_dataset.add_room(pop_data, pop_occupancy, room_name=room_name, header=self.header)
+
         self.__data = delete(self.__data, range(a, b), axis=0)
         self.__occupancy = delete(self.__occupancy, range(a, b), axis=0)
 
@@ -196,6 +202,8 @@ class Dataset:
 
         self.__room.pop(room_name)
         self.__room.pop(len(self) - 1)
+
+        return new_dataset
 
     def __iter__(self):
         self.iter_helper = 0
