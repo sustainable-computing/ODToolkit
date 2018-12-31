@@ -6,6 +6,7 @@ def random_forest(train,
                   test,
                   retrain=None,
                   estimators=200):
+
     if not isinstance(train, Dataset) or not isinstance(test, Dataset) or \
             retrain is not None and not isinstance(retrain, Dataset):
         raise ValueError("Given train and test is not class odtk.data.dataset.Dataset")
