@@ -48,6 +48,11 @@ odtk.analyzer.evaluation (or in short odtk.analyzer)
 5. mase(truth, estimation)
 6. mae(truth, estimation)
 
+odtk.model
+---
+1. support_vector_machine()
+2. random_forest()
+
 ## odtk classes - odtk.data.dataset.Dataset
 ```python
 odtk.data.dataset.Dataset:
