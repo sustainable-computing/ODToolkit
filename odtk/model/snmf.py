@@ -42,8 +42,8 @@ def nmf(train,
     
     #############################Prediction#############################
     X_ = []
-    for i in range(train_start, train_end, resolution):
-        X_.append(train.data[i:i+time_length, feature_col])
+    for i in range(test_start, test_end, resolution):
+        X_.append(test.data[i:i+time_length, feature_col])
         
     model_ = NMF(n_components=resolution , init='custom', random_state=0, alpha=alpha, l1_ratio=beta)
     
