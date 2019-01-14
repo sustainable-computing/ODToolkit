@@ -1,24 +1,46 @@
 from sklearn.ensemble import RandomForestClassifier
-from odtk.data.dataset import Dataset
 from odtk.model.superclass import *
 
 
-def random_forest(train,
-                  test,
-                  retrain=None,
-                  estimators=200):
+class RandomForest(NormalModel):
+    # For NormalModel, require two parameters: train and test
+    # For DomainAdaptiveModel, require three parameters: source, target_retrain and target_test
+    def __init__(self, train, test):
+        # all changeable parameters now store as an editable instance
+        self.train = train
+        self.test = test
+        self.estimator = 200
 
-    if not isinstance(train, Dataset) or not isinstance(test, Dataset) or \
-            retrain is not None and not isinstance(retrain, Dataset):
-        raise ValueError("Given train and test is not class odtk.data.dataset.Dataset")
+    # the model must have a method called run, and return the predicted result
+    def run(self):
+        classifier = RandomForestClassifier(n_estimators=self.estimator)
 
-    classifier = RandomForestClassifier(n_estimators=estimators)
+        classifier.fit(self.train.data, self.train.occupancy)
 
-    classifier.fit(train.data, train.occupancy)
+        predict_occupancy = classifier.predict(self.test.data)
 
-    if retrain is not None:
-        classifier.fit(retrain.data, retrain.occupancy)
+        return predict_occupancy
 
-    predict_occupancy = classifier.predict(test.data)
 
-    return predict_occupancy
+class RandomForestDA(DomainAdaptiveModel):
+    # For NormalModel, require two parameters: train and test
+    # For DomainAdaptiveModel, require three parameters: source, target_retrain and target_test
+    def __init__(self, source, target_retrain, target_test):
+        # all changeable parameters now store as an editable instance
+        self.source = source
+        self.target_retrain = target_retrain
+        self.target_test = target_test
+        self.estimator = 200
+
+    # the model must have a method called run, and return the predicted result
+    def run(self):
+        classifier = RandomForestClassifier(n_estimators=self.estimator)
+
+        classifier.fit(self.source.data, self.source.occupancy)
+
+        if self.target_retrain is not None:
+            classifier.fit(self.target_retrain.data, self.target_retrain.occupancy)
+
+        predict_occupancy = classifier.predict(self.target_test.data)
+
+        return predict_occupancy

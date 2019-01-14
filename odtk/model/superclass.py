@@ -1,7 +1,14 @@
+from odtk.data.dataset import Dataset
+
+
 class NormalModel:
     def __init__(self,
                  train,
                  test):
+
+        if not isinstance(train, Dataset) or not isinstance(test, Dataset):
+            raise ValueError("Given train and test is not class odtk.data.dataset.Dataset")
+
         self.train = train
         self.test = test
         self.models = {}
@@ -23,6 +30,10 @@ class DomainAdaptiveModel:
                  source,
                  target_retrain,
                  target_test):
+        if not isinstance(source, Dataset) or not isinstance(target_test, Dataset) or \
+                target_retrain is not None and not isinstance(target_retrain, Dataset):
+            raise ValueError("Given train and test is not class odtk.data.dataset.Dataset")
+
         self.source = source
         self.target_retrain = target_retrain
         self.target_test = target_test

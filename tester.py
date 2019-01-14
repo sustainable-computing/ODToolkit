@@ -8,5 +8,4 @@ import numpy as np
 # print(dataset.header)
 
 all = odtk.model.NormalModel(1, 2)
-all.models["Test3"].b = 7
 all.run_all_model()
