@@ -1,5 +1,6 @@
 from sklearn.ensemble import RandomForestClassifier
 from odtk.data.dataset import Dataset
+from odtk.model.superclass import *
 
 
 def random_forest(train,

@@ -7,11 +7,6 @@ import numpy as np
 # # print(dataset)
 # print(dataset.header)
 
-truth = np.array([1, 2, 3, 4, 5, 6, 0, 0, 9])
-truth.shape += (1,)
-estimation = np.array([1, 1, 1, 1, 5, 5, 0, 5, 10])
-estimation.shape += (1,)
-
-
-print(np.concatenate((truth, estimation), axis=1))
-print(odtk.analyzer.mae(truth, estimation))
+all = odtk.model.NormalModel(1, 2)
+all.models["Test3"].b = 7
+all.run_all_model()
