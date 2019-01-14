@@ -1,11 +1,10 @@
 import odtk
 import numpy as np
 
-# dataset = odtk.data.import_data("datatest.csv", time_column=1)
+
+dataset = odtk.data.load_sample("umons-datatest")
+
 # print(type(dataset))
 # odtk.modifier.regulate(dataset)
 # # print(dataset)
 # print(dataset.header)
-
-all = odtk.model.NormalModel(1, 2)
-all.run_all_model()
