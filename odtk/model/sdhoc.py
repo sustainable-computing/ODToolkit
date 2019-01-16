@@ -1,5 +1,5 @@
 from odtk.model.superclass import *
-from seasonal import fit_seasons, adjust_seasons
+# from seasonal import fit_seasons, adjust_seasons
 
 class SDHOC(NormalModel):
     def __init__(self, train, test):
