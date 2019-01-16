@@ -1,42 +1,129 @@
 from odtk.model import hmm_core
-from odtk.data.dataset import Dataset
+from odtk.model.superclass import *
+from odtk.modifier import change
 
 
-def particle_filtering(train,
-                       test,
+class PF(NormalModel):
 
-                       emission='gaussian',
-                       emission_params={},
-                       number_of_particles=100,
-                       q=None,
+    def __init__(self,
+                 train,
+                 test,
 
-                       train_start=0,
-                       train_end=-1,
+                 header=0,
+                 emission_model='gaussian',
+                 emission_params={},
 
-                       test_start=0,
-                       test_end=-1,
+                 number_of_particles=100,
+                 q=None):
 
-                       feature_col=0):
-    if not isinstance(train, Dataset) or not isinstance(test, Dataset):
-        raise ValueError("Given train and test is not class odtk.data.dataset.Dataset")
+        self.train = train
+        self.test = test
 
-    emission_type = ()
-    if emission == 'gaussian':
-        emission_type = (hmm_core.Gaussian, {})
-    if emission == 'gamma':
-        emission_type = (hmm_core.Gamma, {})
-    if emission == 'categorical':
-        emission_type = (hmm_core.Categorical, emission_params)
+        self.q = q
+        
+        self.number_of_particles = number_of_particles
 
-    hmm = hmm_core.HMM(number_of_hidd_states=2, emission_type=emission_type)
+        self.__emission_params = {}
+        if emission_model == 'gaussian':
+            self.__emission_model = hmm_core.Gaussian
+        if emission_model == 'gamma':
+            self.__emission_model = hmm_core.Gamma
+        if emission_model == 'categorical':
+            self.__emission_model = hmm_core.Categorical
+            self.__emission_params = {'K':2}
 
-    hmm.learn(emi_seqs=[train.data[train_start:train_end, feature_col]],
-              hidd_seqs=[train.occupancy[train_start:train_end]])
+        if isinstance(header, int):
+            self.feature_col = header
+        else if isinstance(header, str):
+            self.feature_col = train.header[header]
+        else:
+            raise ValueError("The type of header is not int or str")
 
-    if q is None:
-        q = hmm.A
+    def run(self):
+    
+        hmm = hmm_core.HMM_Core(number_of_hidden_states=2, emission_model=self.__emission_model, emission_params=self.__emission_params)
 
-    predict_occupancy = hmm.pf_predict(emi_seqs=[test.data[test_start:test_end, feature_col]], p=None, q=q,
-                                       number_of_particles=number_of_particles)[0]
+        change.to_binary(self.train)
 
-    return predict_occupancy
+        hmm.learn(hidden_seq=np.array(self.train.occupancy[:, 0], int), 
+                  emission_seq=self.train.data[:, self.feature_col])
+
+        change.to_binary(self.test)
+        
+        if self.q is None:
+            self.q = hmm.A
+
+        predict_occupancy = hmm.pf_predict(emission_seq=self.test.data[:, self.feature_col],
+                                           number_of_particles=self.number_of_particles,
+                                           q=self.q,
+                                           p=None)
+
+        return predict_occupancy
+        
+class PF_DA(DomainAdaptiveModel):
+
+    def __init__(self,
+                 source,
+                 target_retrain,
+                 target_test,
+
+                 header=0,
+                 emission_model='gaussian',
+                 emission_params={},
+
+                 number_of_particles=100,
+                 q=None):
+
+        self.source = source
+        self.target_retrain = target_retrain
+        self.target_test = target_test
+
+        self.q = q
+
+        self.number_of_particles = number_of_particles
+
+        self.__emission_params = {}
+        if emission_model == 'gaussian':
+            self.__emission_model = hmm_core.Gaussian
+        if emission_model == 'gamma':
+            self.__emission_model = hmm_core.Gamma
+        if emission_model == 'categorical':
+            self.__emission_model = hmm_core.Categorical
+            self.__emission_params = {'K':2}
+            
+        if isinstance(header, int):
+            self.feature_col = header
+        else if isinstance(header, str):
+            self.feature_col = train.header[header]
+        else:
+            raise ValueError("The type of header is not int or str")
+            
+    def run(self):
+
+        hmm_source = hmm_core.HMM_Core(number_of_hidden_states=2, emission_model=self.__emission_model, emission_params=self.__emission_params)
+
+        change.to_binary(self.source)
+
+        hmm_source.learn(hidden_seq=np.array(self.train.occupancy[:, 0], int), 
+                  emission_seq=self.train.data[:, self.feature_col])
+
+        hmm_target = hmm_core.HMM_Core(number_of_hidden_states=2, emission_model=self.__emission_model, emission_params=self.__emission_params)
+
+        hmm_target.prior(hmm_source)
+
+        change.to_binary(self.target_retrain)
+        
+        hmm_target.learn(hidden_seq=np.array(self.target_retrain.occupancy[:, 0], int), 
+                  emission_seq=self.target_retrain.data[:, self.feature_col])
+
+        change.to_binary(self.target_test)
+
+        if self.q is None:
+            self.q = hmm.A
+
+        predict_occupancy = hmm.pf_predict(emission_seq=self.target_test.data[:, self.feature_col],
+                                           number_of_particles=self.number_of_particles,
+                                           q=self.q,
+                                           p=None)
+
+        return predict_occupancy
