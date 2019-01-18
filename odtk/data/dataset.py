@@ -257,6 +257,8 @@ class Dataset:
         header = other.header
         for room in rooms:
             data, occupancy = other[room]
+            while room in self.__room.values():
+                room = str(int(room) + 1)
             self.add_room(data, occupancy=occupancy, room_name=room, header=header)
         return self
 

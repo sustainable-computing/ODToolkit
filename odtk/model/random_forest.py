@@ -20,6 +20,9 @@ class RandomForest(NormalModel):
 
         predict_occupancy = classifier.predict(self.test.data)
 
+        if len(predict_occupancy.shape) == 1:
+            predict_occupancy.shape += (1,)
+
         return predict_occupancy
 
 

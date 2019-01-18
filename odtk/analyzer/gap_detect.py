@@ -44,6 +44,7 @@ def gap_detect(dataset, threshold, detail=False):
             valid_data = data[(~isnan(data)).sum(axis=1) == data.shape[1], time_col]
             indices = where(valid_data[1:] - valid_data[:-1] >= threshold)[0]
             for period in indices:
+                print(valid_data[period])
                 result[room].append((str(datetime.fromtimestamp(valid_data[period])),
                                      str(datetime.fromtimestamp(valid_data[period + 1])),
                                      valid_data[period + 1] - valid_data[period]))
