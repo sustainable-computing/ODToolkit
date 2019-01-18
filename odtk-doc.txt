@@ -1,0 +1,43 @@
+dataset [package]
+|
+|-- analyzer [package]
+| |
+| |-- gap_detect(threshold, plot=False)
+| |       Find gaps over threshold time period. Return list of gap periods.
+| |-- dropout_rate()
+| |       # of valid entries divide by # of expected entries.
+| |-- uptime()
+| |       Total time and percent of time for a sensor reporting values.
+| |-- occupany_evaluation(plot=False)
+| |       Return number and percentage of each different occupancy_level
+| |-- frequency()
+| |       Analyze the time frequency for sensor to report result.
+| \-- analyze(save=False)
+|         Return a full analyze dictionary of the dataset.
+|
+|-- modifier [package]
+| |
+| |-- clean(auto_fill=True)
+| |       Change irregular data to None. Automatically call fill function optionally.
+| |-- fill()
+| |       Fill all None data in dataset.
+| |-- upsample(target_frequency, algorithm)
+| |       Upsample the dataset to target frequency by a choice of "simple repeat
+| |       data", "linear fill", "k-point regression", etc. Keep dataset unchange if
+| |       target_frequency is smaller than actual frequency.
+| |-- downsample(target_frequency, algorithm)
+| |       Downsample the dataset to target frequency by a choice of "mean", "median",
+| |       "mode", etc. Keep dataset unchange if target_frequency is greater than
+| |       actual frequency.
+| |-- regulate(header='auto')
+| |       Change the header line of the dataset to our dictionary.
+| |-- change_to_one_hot()/change_to_label()/change_to_binary()
+| \-- auto_clean(header='auto', target_frequency=False)
+|         Perform both clean(), fill(), up/downsample(), and regulate().
+|
+|-- import(dataset_name)
+|       Import our cleaned datasets
+|-- load(format='csv')
+|       Load their own datasets
+\-- save(format='binary')
+        Save datasets to local disk
