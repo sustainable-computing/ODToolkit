@@ -1,7 +1,0 @@
-HomeH-meter1
-Usage [kW],Generation [kW],Kitchen Outlet/Espresso (32) [kW],Hot Water Heater (22) [kW],Dining Room (15) [kW],Fridge+Ent Lights(west) (20) [kW],Clothes Washing Machine (10) [kW],Dishwasher (17) [kW],2nd Fl West Bedroom (21) [kW],Master+NE Bedroom + N Bath (27) [kW],Elec Heat (Bed NE+M) (16+18) [kW],Furnace (29) [kW],Laund+LivingR+Hall Lights (24) [kW]
-
-year:2016
-Duration:2016-06-09 14:15:00-2016-12-15 22:59:00
-Frequency:0 days 00:01:00
-

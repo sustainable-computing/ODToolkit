@@ -1,7 +1,0 @@
-HomeD-meter2
-use [kW],gen [kW],GuestHouseKitchen [kW],GuestHouseKitchen [kW],GroundSourceHeatPump [kW],Photovoltaics [kW],WellPump [kW],Range [kW],SecondFloorBathroom [kW],PanelReceptacles [kW],KitchenReceptacles [kW],KitchenReceptacles [kW],Microwave [kW],Refrigerator [kW]
-
-year:2015
-Duration:2015-06-09 12:00:00-2015-12-31 23:59:00
-Frequency:0 days 01:00:00
-

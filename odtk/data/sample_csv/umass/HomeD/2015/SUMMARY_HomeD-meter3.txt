@@ -1,7 +1,0 @@
-HomeD-meter3
-use [kW],gen [kW],GuestHouseLivingRoom [kW],MasterBedroom [kW],HeatCirculatorPumps [kW],DomesticHotWaterReserve [kW],MasterBathroom [kW],KitchenIsland [kW],RadiantHeatReserveTank [kW],BasementReceptacles [kW],Dryer [kW],KitchenLighting [kW],GuestHouseDiningRoomRecept [kW],Porch+VerandaLighting [kW]
-
-year:2015
-Duration:2015-02-09 12:30:00-2015-12-31 23:59:00
-Frequency:0 days 00:15:00
-

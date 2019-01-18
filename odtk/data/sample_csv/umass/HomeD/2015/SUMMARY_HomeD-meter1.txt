@@ -1,7 +1,0 @@
-HomeD-meter1
-use [kW],gen [kW],FreshAirVentilation [kW],HousePanel [kW],LivingRoomReceptacles [kW],SecondFloorBathroom [kW],WashingMachine [kW],Studies&amp;OutsideLighting [kW],DiningRoomReceptacles [kW],Basement&amp;HallLighting [kW],GuestHouseBathroom [kW],GuestHouseBedroom [kW],WorkshopReceptacleBathHeater [kW],GuestHouseKitchen [kW],GuestHouseKitchen [kW],GroundSourceHeatPump [kW],Photovoltaics [kW],WellPump [kW],Range [kW],SecondFloorBathroom [kW],PanelReceptacles [kW],KitchenReceptacles [kW],Microwave [kW],Refrigerator [kW],NetHousePowerUsage [kW],GarageReceptacles&amp;Lights [kW],GarageReceptacles [kW],ShedReceptacles [kW],ShedLights [kW],PanelReceptacles [kW],GaragePV [kW],GuestHouseLivingRoom [kW],MasterBedroom [kW],HeatCirculatorPumps [kW],DomesticHotWaterReserve [kW],MasterBathroom [kW],KitchenIsland [kW],RadiantHeatReserveTank [kW],BasementReceptacles [kW],Dryer [kW],KitchenLighting [kW],GuestHouseDiningRoomRecept [kW],Porch+VerandaLighting [kW]
-
-year:2015
-Duration:2015-07-21 13:00:00-2015-12-31 23:00:00
-Frequency:0 days 01:00:00
-

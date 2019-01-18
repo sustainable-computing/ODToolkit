@@ -1,7 +1,0 @@
-HomeG-meter1
-use [kW],gen [kW],Electronics closet [kW],Office outlets 2 [kW],Dishwasher &amp; disposal [kW],Hot tub [kW],HP #3 [kW],HP #2 [kW],HP #1 [kW],Wall oven [kW],ERV + humidifier + fountain [kW],Freezer + gallery lights [kW],Phoenix boiler [kW]
-
-year:2015
-Duration:2015-08-27 17:00:00-2015-12-31 23:59:00
-Frequency:0 days 01:00:00
-
