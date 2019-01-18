@@ -57,7 +57,7 @@ class Categorical(Emission_Model):
 class HMM_Core():
     def __init__(self, 
                 number_of_hidden_states=2, 
-                emission_model=Gaussian, 
+                emission_model="Gaussian",
                 emission_params={}):
 
         self.number_of_hidden_states = number_of_hidden_states

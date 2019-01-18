@@ -27,7 +27,7 @@ class HMM(NormalModel):
             
         if isinstance(header, int):
             self.feature_col = header
-        else if isinstance(header, str):
+        elif isinstance(header, str):
             self.feature_col = train.header[header]
         else:
             raise ValueError("The type of header is not int or str")
@@ -73,7 +73,7 @@ class HMM_DA(DomainAdaptiveModel):
             
         if isinstance(header, int):
             self.feature_col = header
-        else if isinstance(header, str):
+        elif isinstance(header, str):
             self.feature_col = train.header[header]
         else:
             raise ValueError("The type of header is not int or str")

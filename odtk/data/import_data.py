@@ -1,6 +1,4 @@
 from csv import reader
-# from os import path
-# from inspect import stack, getmodule
 from dateutil.parser import parse
 from numpy import nan, asarray
 from odtk.data.dataset import Dataset

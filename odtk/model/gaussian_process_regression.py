@@ -1,4 +1,5 @@
 import numpy as np
+from odtk.model.superclass import *
 from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.gaussian_process.kernels \
     import RBF, WhiteKernel, RationalQuadratic, ExpSineSquared
@@ -7,7 +8,8 @@ from sklearn.gaussian_process.kernels \
 
 class GPR(NormalModel):
 
-    def __init__(train,
+    def __init__(self,
+                 train,
                  test,
 
                  kernel=None,
@@ -25,7 +27,7 @@ class GPR(NormalModel):
         
         if isinstance(header, int):
             self.feature_col = header
-        else if isinstance(header, str):
+        elif isinstance(header, str):
             self.feature_col = train.header[header]
         else:
             raise ValueError("The type of header is not int or str")
