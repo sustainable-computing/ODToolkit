@@ -72,7 +72,7 @@ class Dataset:
 
     # Can remove one or more feature
     def remove_feature(self, features, error=True):
-        if not isinstance(features, Iterable):
+        if not isinstance(features, Iterable) or isinstance(features, str):
             features = [features]
 
         column = list(range(self.__data.shape[1]))
@@ -83,6 +83,25 @@ class Dataset:
                     raise KeyError("The feature {} does not exist in the dataset!".format(feature))
             else:
                 column.remove(self.__header[feature])
+
+        new_header = [self.__header[i] for i in column]
+
+        self.__data = self.__data[:, column]
+        self.set_header(new_header)
+
+    # Can select one or more feature
+    def select_feature(self, features, error=True):
+        if not isinstance(features, Iterable) or isinstance(features, str):
+            features = [features]
+
+        column = []
+
+        for feature in features:
+            if feature not in self.__header.keys():
+                if error:
+                    raise KeyError("The feature {} does not exist in the dataset!".format(feature))
+            else:
+                column.append(self.__header[feature])
 
         new_header = [self.__header[i] for i in column]
 

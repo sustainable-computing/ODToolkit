@@ -4,7 +4,7 @@ from numpy import nan, asarray
 from odtk.data.dataset import Dataset
 
 
-def import_data(file_name, time_column=None, mode='csv', header=True):
+def import_data(file_name, time_column=None, mode='csv', header=True, room_name=None):
     # relative_file = path.dirname(getmodule(stack()[1][0]).__file__) + '/' + file_name
     if mode == 'csv':
         with open(file_name, 'r') as input_file:
@@ -36,7 +36,7 @@ def import_data(file_name, time_column=None, mode='csv', header=True):
                 feature_name = list(range(data.shape[1]))
 
         dataset = Dataset()
-        dataset.add_room(data[:, :-1], occupancy=data[:, -1], header=False)
+        dataset.add_room(data[:, :-1], occupancy=data[:, -1], header=False, room_name=room_name)
         dataset.set_header(feature_name)
         dataset.time_column = time_column
         return dataset

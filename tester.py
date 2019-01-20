@@ -1,8 +1,13 @@
 import odtk
 import numpy as np
 
+# odtk.data.write(odtk.data.import_data("./odtk/data/sample_csv/aifb/data.csv", 0, room_name="data"), "data")
 
-for i in range(1):
+# odtk.data.write(odtk.data.load_sample("aifb") + odtk.data.load_sample("umons-datatest2") + odtk.data.load_sample("umons-datatraining"), "umons")
+
+# odtk.analyzer.analyze(odtk.data.load_sample("aifb"), 65, save_file="result.txt")
+
+for i in range(0):
     umons = odtk.data.load_sample("umons-all")
     train, test = umons.split(0.8)
     result = odtk.model.random_forest.RandomForest(train, test).run()
