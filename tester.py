@@ -7,12 +7,12 @@ from tqdm import tqdm
 #         odtk.data.import_data("./odtk/data/sample_csv/lbl/data" + str(i) + ".csv", 0, room_name="data_" + str(i)),
 #         "data" + str(i))
 
-all = odtk.data.load_sample("lbl-data1")
-for i in tqdm(range(2, 25)):
-    all += odtk.data.load_sample("lbl-data" + str(i))
-odtk.data.write(all, "all")
+# all = odtk.data.load_sample("lbl-data1")
+# for i in tqdm(range(2, 25)):
+#     all += odtk.data.load_sample("lbl-data" + str(i))
+# odtk.data.write(all, "all")
 
-# odtk.analyzer.analyze(odtk.data.load_sample("niom-all"), 65, save_file="result.txt")
+odtk.analyzer.analyze(odtk.data.load_sample("lbl-all"), 61*15, save_file="result.txt")
 
 for i in range(0):
     umons = odtk.data.load_sample("umons-all")
