@@ -102,7 +102,7 @@ class Precision(BinaryEvaluation):
         return tp / (tp + fp)
 
 
-class f1Score(BinaryEvaluation):
+class F1Score(BinaryEvaluation):
     def __init__(self, predict, truth):
         self.predict = predict
         self.truth = truth

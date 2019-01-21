@@ -1,4 +1,4 @@
-from numpy import ndarray, round
+from numpy import ndarray, round, zeros
 from collections import Iterable
 
 
@@ -128,3 +128,28 @@ class OccupancyEvaluation:
         for metric in self.metrics.keys():
             result[metric] = self.metrics[metric].run()
         return result
+
+
+class Result:
+    def __init__(self):
+        self.result = None
+        self.metrics = list()
+        self.models = list()
+        self.datasets = list()
+
+    def set_result(self, result):
+        self.datasets = list(result.keys())
+        self.models = list(result[self.datasets[0]].keys())
+        self.metrics = list(result[self.datasets[0]][self.models[0]].keys())
+
+        self.result = zeros((len(self.datasets), len(self.models), len(self.metrics)), dtype=float)
+
+        for i in range(len(self.datasets)):
+            for j in range(len(self.models)):
+                for k in range(len(self.metrics)):
+                    try:
+                        self.result[i][j][k] = result[self.datasets[i]][self.models[j]][self.metrics[k]]
+                    except KeyError:
+                        continue
+
+    def get_result
