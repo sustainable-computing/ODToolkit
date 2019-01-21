@@ -19,15 +19,17 @@ class NormalModel:
 
     def get_all_model(self):
         for model in NormalModel.__subclasses__():
-            self.models[model.__name__] = model(self.train, self.test)
+            self.models[model.__name__] = model(self.train.copy(), self.test.copy())
 
     def add_model(self, list_of_model):
         if not isinstance(list_of_model, Iterable) or isinstance(list_of_model, str):
             list_of_model = [list_of_model]
+        else:
+            list_of_model = list_of_model[:]
 
         for model in NormalModel.__subclasses__():
             if model.__name__ in list_of_model:
-                self.models[model.__name__] = model(self.train, self.test)
+                self.models[model.__name__] = model(self.train.copy(), self.test.copy())
                 list_of_model.remove(model.__name__)
 
         if len(list_of_model):
@@ -36,6 +38,8 @@ class NormalModel:
     def remove_model(self, list_of_model):
         if not isinstance(list_of_model, Iterable) or isinstance(list_of_model, str):
             list_of_model = [list_of_model]
+        else:
+            list_of_model = list_of_model[:]
 
         i = 0
         while i < len(list_of_model):
@@ -78,15 +82,18 @@ class DomainAdaptiveModel:
 
     def get_all_model(self):
         for model in DomainAdaptiveModel.__subclasses__():
-            self.models[model.__name__] = model(self.source, self.target_retrain, self.target_test)
+            self.models[model.__name__] = model(self.source.copy(), self.target_retrain.copy(), self.target_test.copy())
 
     def add_model(self, list_of_model):
         if not isinstance(list_of_model, Iterable) or isinstance(list_of_model, str):
             list_of_model = [list_of_model]
+        else:
+            list_of_model = list_of_model[:]
 
         for model in DomainAdaptiveModel.__subclasses__():
             if model.__name__ in list_of_model:
-                self.models[model.__name__] = model(self.train, self.test)
+                self.models[model.__name__] = model(self.source.copy(), self.target_retrain.copy(),
+                                                    self.target_test.copy())
                 list_of_model.remove(model.__name__)
 
         if len(list_of_model):
@@ -95,6 +102,8 @@ class DomainAdaptiveModel:
     def remove_model(self, list_of_model):
         if not isinstance(list_of_model, Iterable) or isinstance(list_of_model, str):
             list_of_model = [list_of_model]
+        else:
+            list_of_model = list_of_model[:]
 
         i = 0
         while i < len(list_of_model):

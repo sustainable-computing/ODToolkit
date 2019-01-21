@@ -32,6 +32,8 @@ class BinaryEvaluation:
     def add_metrics(self, list_of_metrics):
         if not isinstance(list_of_metrics, Iterable) or isinstance(list_of_metrics, str):
             list_of_metrics = [list_of_metrics]
+        else:
+            list_of_metrics = list_of_metrics[:]
 
         for metric in BinaryEvaluation.__subclasses__():
             if metric.__name__ in list_of_metrics:
@@ -44,6 +46,8 @@ class BinaryEvaluation:
     def remove_metrics(self, list_of_metrics):
         if not isinstance(list_of_metrics, Iterable) or isinstance(list_of_metrics, str):
             list_of_metrics = [list_of_metrics]
+        else:
+            list_of_metrics = list_of_metrics[:]
 
         i = 0
         while i < len(list_of_metrics):
@@ -92,6 +96,8 @@ class OccupancyEvaluation:
     def add_metrics(self, list_of_metrics):
         if not isinstance(list_of_metrics, Iterable) or isinstance(list_of_metrics, str):
             list_of_metrics = [list_of_metrics]
+        else:
+            list_of_metrics = list_of_metrics[:]
 
         for metric in OccupancyEvaluation.__subclasses__():
             if metric.__name__ in list_of_metrics:
@@ -104,6 +110,8 @@ class OccupancyEvaluation:
     def remove_metrics(self, list_of_metrics):
         if not isinstance(list_of_metrics, Iterable) or isinstance(list_of_metrics, str):
             list_of_metrics = [list_of_metrics]
+        else:
+            list_of_metrics = list_of_metrics[:]
 
         i = 0
         while i < len(list_of_metrics):

@@ -249,6 +249,20 @@ class Dataset:
 
         return front_dataset, back_dataset
 
+    def copy(self):
+        duplicate = Dataset()
+        duplicate.__data = self.__data.copy()
+        duplicate.__occupancy = self.__occupancy.copy()
+        # header: column, column: header
+        duplicate.__header = self.__header.copy()
+        # room: [start_row, end_row], room_counter: room
+        duplicate.__room = self.__header.copy()
+        duplicate.time_column = self.time_column
+        duplicate.binary = self.binary
+        duplicate.labelled = self.labelled
+        return duplicate
+
+
     def __iter__(self):
         self.iter_helper = 0
         return self
