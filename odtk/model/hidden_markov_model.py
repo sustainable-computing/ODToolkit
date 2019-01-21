@@ -36,12 +36,12 @@ class HMM(NormalModel):
     
         hmm = hmm_core.HMM_Core(number_of_hidden_states=2, emission_model=self.__emission_model, emission_params=self.__emission_params)
 
-        change.to_binary(self.train)
+        change.change_to_binary(self.train)
 
         hmm.learn(hidden_seq=np.array(self.train.occupancy[:, 0], int), 
                   emission_seq=self.train.data[:, self.feature_col])
 
-        change.to_binary(self.test)
+        change.change_to_binary(self.test)
 
         predict_occupancy = hmm.viterbi_predict(emission_seq=self.test.data[:, self.feature_col])
 
@@ -82,7 +82,7 @@ class HMM_DA(DomainAdaptiveModel):
 
         hmm_source = hmm_core.HMM_Core(number_of_hidden_states=2, emission_model=self.__emission_model, emission_params=self.__emission_params)
 
-        change.to_binary(self.source)
+        change.change_to_binary(self.source)
 
         hmm_source.learn(hidden_seq=np.array(self.train.occupancy[:, 0], int), 
                   emission_seq=self.train.data[:, self.feature_col])
@@ -91,12 +91,12 @@ class HMM_DA(DomainAdaptiveModel):
 
         hmm_target.prior(hmm_source)
 
-        change.to_binary(self.target_retrain)
+        change.change_to_binary(self.target_retrain)
         
         hmm_target.learn(hidden_seq=np.array(self.target_retrain.occupancy[:, 0], int), 
                   emission_seq=self.target_retrain.data[:, self.feature_col])
 
-        change.to_binary(self.target_test)
+        change.change_to_binary(self.target_test)
 
         predict_occupancy = hmm_target.viterbi_predict(emission_seq=self.target_test.data[:, self.feature_col])
 

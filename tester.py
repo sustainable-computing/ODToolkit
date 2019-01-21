@@ -16,8 +16,13 @@ from tqdm import tqdm
 
 data = odtk.data.load_sample("sdu-all")
 
+# models = odtk.model.NormalModel(data, data)
+# models.get_all_model()
+# print(models.models)
+
 all_metrics = odtk.evaluation.OccupancyEvaluation(data.occupancy, data.occupancy)
-print(all_metrics.run_all_metrics())
+all_metrics.get_all_metrics()
+print(all_metrics.metrics)
 
 for i in range(0):
     umons = odtk.data.load_sample("umons-all")

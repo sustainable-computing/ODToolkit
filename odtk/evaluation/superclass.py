@@ -1,4 +1,5 @@
 from numpy import ndarray, round
+from collections import Iterable
 
 
 class BinaryEvaluation:
@@ -24,11 +25,35 @@ class BinaryEvaluation:
         self.truth = truth
         self.metrics = {}
 
-        self.get_all_metrics()
-
     def get_all_metrics(self):
-        for model in BinaryEvaluation.__subclasses__():
-            self.metrics[model.__name__] = model(self.predict.copy(), self.truth.copy())
+        for metric in BinaryEvaluation.__subclasses__():
+            self.metrics[metric.__name__] = metric(self.predict.copy(), self.truth.copy())
+
+    def add_metrics(self, list_of_metrics):
+        if not isinstance(list_of_metrics, Iterable) or isinstance(list_of_metrics, str):
+            list_of_metrics = [list_of_metrics]
+
+        for metric in BinaryEvaluation.__subclasses__():
+            if metric.__name__ in list_of_metrics:
+                self.metrics[metric.__name__] = metric(self.predict, self.truth)
+                list_of_metrics.remove(metric.__name__)
+
+        if len(list_of_metrics):
+            raise NameError("Metrics {} is not defined in evaluation library".format(list_of_metrics))
+
+    def remove_metrics(self, list_of_metrics):
+        if not isinstance(list_of_metrics, Iterable) or isinstance(list_of_metrics, str):
+            list_of_metrics = [list_of_metrics]
+
+        i = 0
+        while i < len(list_of_metrics):
+            if self.metrics.pop(list_of_metrics[i], False):
+                list_of_metrics.remove(list_of_metrics[i])
+            else:
+                i += 1
+
+        if len(list_of_metrics):
+            raise NameError("Metrics {} is not selected".format(list_of_metrics))
 
     def run_all_metrics(self):
         result = dict()
@@ -60,11 +85,35 @@ class OccupancyEvaluation:
         self.truth = truth
         self.metrics = {}
 
-        self.get_all_metrics()
-
     def get_all_metrics(self):
         for model in OccupancyEvaluation.__subclasses__():
             self.metrics[model.__name__] = model(self.predict.copy(), self.truth.copy())
+
+    def add_metrics(self, list_of_metrics):
+        if not isinstance(list_of_metrics, Iterable) or isinstance(list_of_metrics, str):
+            list_of_metrics = [list_of_metrics]
+
+        for metric in OccupancyEvaluation.__subclasses__():
+            if metric.__name__ in list_of_metrics:
+                self.metrics[metric.__name__] = metric(self.predict, self.truth)
+                list_of_metrics.remove(metric.__name__)
+
+        if len(list_of_metrics):
+            raise NameError("Metrics {} is not defined in evaluation library".format(list_of_metrics))
+
+    def remove_metrics(self, list_of_metrics):
+        if not isinstance(list_of_metrics, Iterable) or isinstance(list_of_metrics, str):
+            list_of_metrics = [list_of_metrics]
+
+        i = 0
+        while i < len(list_of_metrics):
+            if self.metrics.pop(list_of_metrics[i], False):
+                list_of_metrics.remove(list_of_metrics[i])
+            else:
+                i += 1
+
+        if len(list_of_metrics):
+            raise NameError("Metrics {} is not selected".format(list_of_metrics))
 
     def run_all_metrics(self):
         result = dict()
