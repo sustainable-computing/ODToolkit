@@ -1,10 +1,10 @@
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.neural_network import MLPClassifier
 from numpy import reshape
 # Have to include this
 from odtk.model.superclass import *
 
 
-class RandomForest(NormalModel):
+class NNv2(NormalModel):
     # For NormalModel, require two parameters: train and test
     # For DomainAdaptiveModel, require three parameters: source, target_retrain and target_test
     def __init__(self, train, test):
@@ -13,13 +13,20 @@ class RandomForest(NormalModel):
         self.train.remove_feature(self.train.header_info[self.train.time_column])
         self.test = test
         self.test.remove_feature(self.test.header_info[self.train.time_column])
-        self.estimator = 200
+        self.solver = 'adam'
+        self.alpha = 0.0001
+        self.batch_size = 'auto'
+        self.activation = 'logistic'
         if len(self.train.occupancy.shape) == 2 and self.train.occupancy.shape[1] == 1:
             self.train.change_occupancy(reshape(self.train.occupancy, (self.train.occupancy.shape[0],)))
 
     # the model must have a method called run, and return the predicted result
     def run(self):
-        classifier = RandomForestClassifier(n_estimators=self.estimator)
+        classifier = MLPClassifier(solver=self.solver,
+                                   alpha=self.alpha,
+                                   hidden_layer_sizes=(75,),
+                                   batch_size=self.batch_size,
+                                   activation=self.activation)
 
         classifier.fit(self.train.data, self.train.occupancy)
 

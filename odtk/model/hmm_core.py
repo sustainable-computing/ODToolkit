@@ -15,7 +15,7 @@ class Emission_Model():
         """Get probability"""
         return 0.0
 
-class Guassian(Emission_Model):
+class Gaussian(Emission_Model):
 
     def __init__(self, meta={}):
         self.meta_params = meta

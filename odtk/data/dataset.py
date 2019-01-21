@@ -48,6 +48,9 @@ class Dataset:
     def change_room_info(self, room):
         self.__room = room
 
+    def change_whole_header(self, header):
+        self.__header = header
+
     def set_header(self, header):
         if not isinstance(header, Iterable):
             raise TypeError("Headers must iterable")
@@ -226,6 +229,13 @@ class Dataset:
     def split(self, percentage, random_sequence=False):
         front_dataset = Dataset()
         back_dataset = Dataset()
+        front_dataset.time_column = self.time_column
+        front_dataset.binary = self.binary
+        front_dataset.labelled = self.labelled
+        back_dataset.time_column = self.time_column
+        back_dataset.binary = self.binary
+        back_dataset.labelled = self.labelled
+
 
         split_point = round(percentage * self.__data.shape[0])
 
@@ -251,17 +261,16 @@ class Dataset:
 
     def copy(self):
         duplicate = Dataset()
-        duplicate.__data = self.__data.copy()
-        duplicate.__occupancy = self.__occupancy.copy()
+        duplicate.change_values(self.__data.copy())
+        duplicate.change_occupancy(self.__occupancy.copy())
         # header: column, column: header
-        duplicate.__header = self.__header.copy()
+        duplicate.change_whole_header(self.__header.copy())
         # room: [start_row, end_row], room_counter: room
-        duplicate.__room = self.__header.copy()
+        duplicate.change_room_info(self.__room.copy())
         duplicate.time_column = self.time_column
         duplicate.binary = self.binary
         duplicate.labelled = self.labelled
         return duplicate
-
 
     def __iter__(self):
         self.iter_helper = 0

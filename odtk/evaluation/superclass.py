@@ -1,4 +1,4 @@
-from numpy import ndarray, round, zeros
+from numpy import ndarray, round, zeros, isnan
 from collections import Iterable
 
 
@@ -148,8 +148,19 @@ class Result:
             for j in range(len(self.models)):
                 for k in range(len(self.metrics)):
                     try:
-                        self.result[i][j][k] = result[self.datasets[i]][self.models[j]][self.metrics[k]]
+                        if isnan(result[self.datasets[i]][self.models[j]][self.metrics[k]]):
+                            self.result[i][j][k] = 0
+                        else:
+                            self.result[i][j][k] = result[self.datasets[i]][self.models[j]][self.metrics[k]]
                     except KeyError:
                         continue
 
-    def get_result
+    def get_result(self, dataset=None, model=None, metric=None):
+        if dataset is not None and dataset in self.datasets:
+            return self.models[:], self.metrics[:], self.result[self.datasets.index(dataset), :, :].copy()
+        if model is not None and model in self.models:
+            return self.datasets[:], self.metrics[:], self.result[:, self.models.index(model), :].copy()
+        if metric is not None and metric in self.metrics:
+            return self.datasets[:], self.models[:], self.result[:, :, self.metrics.index(metric)].copy()
+
+        raise ValueError("Target request not found")

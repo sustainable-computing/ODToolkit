@@ -16,8 +16,6 @@ from pprint import pprint
 
 data = dict()
 data["datatest"] = odtk.data.load_sample("umons-datatest")
-data["datatest2"] = odtk.data.load_sample("umons-datatest2")
-data["datatraining"] = odtk.data.load_sample("umons-datatraining")
 # source, target = data.split(0.8)
 
 # models = odtk.model.NormalModel(data, data)
@@ -30,8 +28,12 @@ data["datatraining"] = odtk.data.load_sample("umons-datatraining")
 
 # print(odtk.easy_experiment(source, target, models=["RandomForest"], binary_evaluation=False))
 
+# a6hWPkq5032WDXxVGbEN
 
-result = odtk.easy_set_experiment(data, models=["RandomForest"])
+result = odtk.easy_set_experiment(data, models=["RNN", "NNv2"])
 pprint(result)
 
-odtk.evaluation.Result().set_result(result)
+a = odtk.evaluation.Result()
+a.set_result(result)
+
+odtk.plot.plot_one(a, dataset="datatest")
