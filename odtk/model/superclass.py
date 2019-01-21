@@ -57,6 +57,8 @@ class NormalModel:
         for key in result.keys():
             result[key] = result[key].get()
 
+        return result
+
 
 class DomainAdaptiveModel:
     def __init__(self,
@@ -113,3 +115,5 @@ class DomainAdaptiveModel:
         pool.join()
         for key in result.keys():
             result[key] = result[key].get()
+
+        return result
