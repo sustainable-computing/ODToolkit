@@ -12,7 +12,12 @@ from tqdm import tqdm
 #     all += odtk.data.load_sample("lbl-data" + str(i))
 # odtk.data.write(all, "all")
 
-odtk.analyzer.analyze(odtk.data.load_sample("lbl-all"), 61*15, save_file="result.txt")
+# odtk.analyzer.analyze(odtk.data.load_sample("lbl-all"), 61*15, save_file="result.txt")
+
+data = odtk.data.load_sample("sdu-all")
+
+all_metrics = odtk.evaluation.OccupancyEvaluation(data.occupancy, data.occupancy)
+print(all_metrics.run_all_metrics())
 
 for i in range(0):
     umons = odtk.data.load_sample("umons-all")
