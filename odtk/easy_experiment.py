@@ -1,6 +1,7 @@
 from odtk.model.superclass import *
 from odtk.evaluation.superclass import *
 
+
 def easy_experiment(source,
                     target_test,
                     target_retrain=None,
@@ -9,7 +10,6 @@ def easy_experiment(source,
                     binary_evaluation=True,
                     evaluation_metrics="all",
                     thread_num=4):
-
     if domain_adaptive and target_retrain is None:
         raise ValueError("Domain Adaptive model must have target_retrain dataset")
 
