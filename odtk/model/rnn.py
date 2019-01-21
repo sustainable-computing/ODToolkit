@@ -1,9 +1,4 @@
 from odtk.model.superclass import *
-from keras.models import Sequential
-from keras.layers import LSTM, TimeDistributed, Dense
-from keras.optimizers import Adam
-from tqdm import tqdm
-from numpy import zeros
 
 
 class RNN(NormalModel):
@@ -20,6 +15,11 @@ class RNN(NormalModel):
 
     def run(self):
 
+        from keras.models import Sequential
+        from keras.layers import LSTM, TimeDistributed, Dense
+        from keras.optimizers import Adam
+        from numpy import zeros
+
         model = Sequential()
         model.add(LSTM(batch_input_shape=(self.batch_size, 1, self.train.data.shape[1]),
                        units=self.cell,
@@ -30,7 +30,7 @@ class RNN(NormalModel):
         model.add(TimeDistributed(Dense(self.train.occupancy.shape[1])))
         model.compile(optimizer=Adam(self.learn_rate), loss='mse')
 
-        for epoch in tqdm(range(self.hm_epochs)):
+        for epoch in range(self.hm_epochs):
             epoch_loss = 0
             for i in range(int(self.train.data.shape[0] / self.batch_size)):
                 epoch_x = self.train.data[i * self.batch_size:

@@ -13,9 +13,9 @@ from pprint import pprint
 # odtk.data.write(all, "all")
 
 # odtk.analyzer.analyze(odtk.data.load_sample("lbl-all"), 61*15, save_file="result.txt")
-
-data = dict()
-data["datatest"] = odtk.data.load_sample("umons-datatest")
+#
+# data = dict()
+# data["datatest"] = odtk.data.load_sample("umons-datatest")
 # source, target = data.split(0.8)
 
 # models = odtk.model.NormalModel(data, data)
@@ -30,10 +30,14 @@ data["datatest"] = odtk.data.load_sample("umons-datatest")
 
 # a6hWPkq5032WDXxVGbEN
 
-result = odtk.easy_set_experiment(data, models=["RNN", "NNv2"])
-pprint(result)
+# result = odtk.easy_set_experiment(data, models=["RNN", "NNv2"])
+# pprint(result)
+#
+# a = odtk.evaluation.Result()
+# a.set_result(result)
+#
+# odtk.plot.plot_one(a, dataset="datatest")
 
-a = odtk.evaluation.Result()
-a.set_result(result)
-
-odtk.plot.plot_one(a, dataset="datatest")
+data = {"umons": odtk.data.load_sample("sdu-all")}
+odtk.plot.plot_occupancy(data)
+odtk.plot.plot_occupancy(data, total=False, binary=False)
