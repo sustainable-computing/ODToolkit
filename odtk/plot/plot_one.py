@@ -1,8 +1,6 @@
-import plotly as py
-import plotly.graph_objs as go
-
-
 def plot_one(result, threshold="<= 1", group_by=0, dataset=None, model=None, metric=None):
+    import plotly as py
+    import plotly.graph_objs as go
     result = list(result.get_result(dataset=dataset, model=model, metric=metric))
 
     if dataset is None and model is None and metric is None:
