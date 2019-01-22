@@ -79,5 +79,5 @@ def plot_feature(dataset, occupied_color="rgb(255, 0, 0, 1)", unoccupied_color="
     layout["yaxis" + str(len(header) + 1)]["anchor"] = "x1"
 
     fig = go.Figure(data=data, layout=go.Layout(layout))
-    # py.offline.plot(fig)
-    pio.write_image(fig, 'map.png', width=800, height=800)
+    # py.offline.plot(fig, image="png", image_filename="fig", image_width=800, image_height=800)
+    pio.write_image(fig, 'map1.png', width=800, height=800, validate=False)

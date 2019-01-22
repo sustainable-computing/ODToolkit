@@ -38,6 +38,14 @@ from pprint import pprint
 #
 # odtk.plot.plot_one(a, dataset="datatest")
 
-data = {"umons": odtk.data.load_sample("umons-datatest2")}
-odtk.plot.plot_feature(data["umons"])
+data = odtk.data.load_sample(["sdu-508"])
+result = odtk.easy_set_experiment(data, models=["SVM"])
+print(result)
+a = odtk.evaluation.Result()
+a.set_result(result)
+odtk.plot.plot_one(a, model="SVM")
+
+# umons = odtk.data.load_sample("umons-all")
+# odtk.plot.plot_feature(umons)
+# odtk.plot.plot_feature(data["umons"])
 # odtk.plot.plot_occupancy(data, total=False, binary=False)
