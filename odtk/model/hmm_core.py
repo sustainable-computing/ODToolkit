@@ -1,5 +1,5 @@
 import numpy as np
-from scipy.stats import multivariate_normal
+from scipy.stats import norm
 
 from odtk.model.superclass import *
 
@@ -21,11 +21,19 @@ class Gaussian(Emission_Model):
         self.meta_params = meta
         
     def learn(self, data):
-        self.mean = np.mean(data, axis=0)
-        self.cov = np.cov(data, rowvar=False)
+
+        self.n_cols = data.shape[1]
+        self.params = {}
+        
+        for i in range(self.n_cols):
+            mu, sigma = norm.fit(data[:, i])
+            self.params[i] = {'mu':mu, 'sigma':sigma}
 
     def get_prob(self, x):
-        return multivariate_normal.pdf(x=x, mean=self.mean, cov=self.cov)
+        p = 1.0
+        for i in range(self.n_cols):
+            p*=norm.pdf(x=x[i], loc=self.params[i]['mu'], scale=self.params[i]['sigma'])
+        return p
 
 class HMM_Core():
     def __init__(self, 
@@ -75,7 +83,7 @@ class HMM_Core():
                 for j in range(len(hidden_seq)):
                     if hidden_seq[j] == i:
                         data.append(emission_seq[j])
-                self.B[i].learn(data)
+                self.B[i].learn(np.array(data))
         #################################################
 
         ###############Learning PI#######################
@@ -86,8 +94,9 @@ class HMM_Core():
 
 
     def viterbi_predict(self, emission_seq):
-
-        len_emi = len(emission_seq)
+        
+        emission_seq = np.array(emission_seq)
+        len_emi = emission_seq.shape[0]
         T1 = np.zeros((self.number_of_hidden_states, len_emi))
         T2 = np.zeros((self.number_of_hidden_states, len_emi))
         
@@ -114,33 +123,22 @@ class HMM_Core():
 
     def pf_predict(self, 
                    emission_seq, 
-                   number_of_particles, 
-                   q, 
-                   p=None):
-
-        result = []
-        if p is None:
-            p = (self.A, self.B)
-        s = emission_seq
+                   number_of_particles=100):
 
         particles = np.random.choice(list(range(self.number_of_hidden_states)), size=number_of_particles)
-        l = len(s)
+        s = np.array(emission_seq)
+        n = s.shape[0]
         x = []
-        for i in range(l):
+        for i in range(n):
             w = []
             for j in range(number_of_particles):
-                prev = particles[j]
-                particles[j] = np.random.choice(list(range(self.number_of_hidden_states)), p=q[prev])
-                w_ = p[1][particles[j]].get_prob(s[i])*p[0][prev][particles[j]] / q[prev][particles[j]]
-                w.append(w_)
+                particles[j] = np.random.choice(list(range(self.number_of_hidden_states)), p=self.A[particles[j]])
+                w.append(self.B[particles[j]].get_prob(s[i]))
             w = w / np.sum(w)
             new_particles = np.random.choice(particles, size=number_of_particles, p=w)
             particles = new_particles
             
-            frequency = np.zeros(self.number_of_hidden_states, dtype=int)
-            for parti_ in particles:
-                frequency[parti_] += 1
-            x.append(np.argmax(frequency))
+            x.append(round(np.mean(particles)))
 
         return x
 
