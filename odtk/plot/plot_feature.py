@@ -48,25 +48,36 @@ def plot_feature(dataset, occupied_color="rgb(255, 0, 0, 1)", unoccupied_color="
     for x in range(len(header)):
         for y in range(len(header)):
             layout["xaxis" + str(x * len(header) + y + 1)] = dict(domain=[width[x], width[x + 1]],
+                                                                  tickmode="linear",
+                                                                  tick0=datas[:, x].min(),
+                                                                  dtick=(datas[:, x].max() - datas[:, x].min()) / 2,
+                                                                  tickformat=".2f",
                                                                   showgrid=False,
                                                                   mirror=True,
                                                                   showline=True,
                                                                   showticklabels=not bool(y),
-                                                                  anchor='y' + str(x * len(header) + y + 1),
-                                                                  nticks=3,
-                                                                  tickangle=45,
+                                                                  anchor='y' + str(x * len(header) + y + 1) if y != 1 else 'y1',
+                                                                  # nticks=3,
+                                                                  ticklen=20 if x % 2 and not y else 5 if y <= 1 else 0,
+                                                                  tickcolor="rgba(0, 0, 0, 0)" if not y else "black",
                                                                   zeroline=False,
-                                                                  title=header[x] if not bool(y) else None)
+                                                                  title="<b>" + header[x] + "</b>" if not bool(y) else None)
             layout["yaxis" + str(x * len(header) + y + 1)] = dict(domain=[width[y], width[y + 1]],
+                                                                  tickmode="linear",
+                                                                  tick0=datas[:, y].min(),
+                                                                  dtick=(datas[:, y].max() - datas[:, y].min()) / 2,
+                                                                  tickformat=".2f",
                                                                   showgrid=False,
                                                                   mirror=True,
                                                                   showline=True,
                                                                   showticklabels=not bool(x),
                                                                   anchor='x' + str(x * len(header) + y + 1),
-                                                                  nticks=3,
-                                                                  tickangle=45,
+                                                                  # nticks=3,
+                                                                  tickangle=-90,
+                                                                  ticklen=20 if y % 2 and not x else 5 if x <= 1 else 0,
+                                                                  tickcolor="rgba(0, 0, 0, 0)",
                                                                   zeroline=False,
-                                                                  title=header[y] if not bool(x) else None)
+                                                                  title="<b>" + header[y] + "</b>" if not bool(x) else None)
 
     for x in range(len(header)):
         minimum = datas[:, x].min()
@@ -79,5 +90,5 @@ def plot_feature(dataset, occupied_color="rgb(255, 0, 0, 1)", unoccupied_color="
     layout["yaxis" + str(len(header) + 1)]["anchor"] = "x1"
 
     fig = go.Figure(data=data, layout=go.Layout(layout))
-    # py.offline.plot(fig, image="png", image_filename="fig", image_width=800, image_height=800)
+    # py.offline.plot(fig, image_width=800, image_height=800)
     pio.write_image(fig, 'map1.png', width=800, height=800, validate=False)
