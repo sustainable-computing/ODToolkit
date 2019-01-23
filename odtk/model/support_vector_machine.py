@@ -8,13 +8,11 @@ class SVM(NormalModel):
     def __init__(self, train, test):
         # all changeable parameters now store as an editable instance
         self.train = train
-        self.train.remove_feature(self.train.header_info[self.train.time_column])
         self.test = test
-        self.test.remove_feature(self.test.header_info[self.train.time_column])
         self.gamma = 'auto'
         self.kernel = 'linear'
         self.penalty_error = 1
-        self.n_estimators = 1
+        self.n_estimators = 10
 
     # the model must have a method called run, and return the predicted result
     def run(self):
@@ -45,12 +43,8 @@ class SVMDA(DomainAdaptiveModel):
     def __init__(self, source, target_retrain, target_test):
         # all changeable parameters now store as an editable instance
         self.source = source
-        self.source.remove_feature(self.source.header_info[self.source.time_column])
         self.target_retrain = target_retrain
-        if self.target_retrain is not None:
-            self.target_retrain.remove_feature(self.target_retrain.header_info[self.target_retrain.time_column])
         self.target_test = target_test
-        self.target_test.remove_feature(self.target_test.header_info[self.target_test.time_column])
         self.gamma = 'auto'
         self.kernel = 'linear'
         self.penalty_error = 1

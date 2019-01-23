@@ -86,6 +86,8 @@ class Dataset:
                     raise KeyError("The feature {} does not exist in the dataset!".format(feature))
             else:
                 column.remove(self.__header[feature])
+                if self.__header[feature] == self.time_column:
+                    self.time_column = None
 
         new_header = [self.__header[i] for i in column]
 
@@ -107,6 +109,8 @@ class Dataset:
                 column.append(self.__header[feature])
 
         new_header = [self.__header[i] for i in column]
+        if self.time_column not in new_header:
+            self.time_column = None
 
         self.__data = self.__data[:, column]
         self.set_header(new_header)

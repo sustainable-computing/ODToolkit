@@ -1,4 +1,4 @@
-def plot_one(result, threshold="<= 1", group_by=0, dataset=None, model=None, metric=None):
+def plot_one(result, threshold="<= 1", group_by=0, dataset=None, model=None, metric=None, legend=None):
     import plotly as py
     import plotly.graph_objs as go
     result = list(result.get_result(dataset=dataset, model=model, metric=metric))
@@ -16,8 +16,12 @@ def plot_one(result, threshold="<= 1", group_by=0, dataset=None, model=None, met
         x_labels = result[0]
         legends = result[1]
 
-    valid = eval("result[2]" + threshold).sum(axis=0) == result[2].shape[0]
-    legends = [legends[i] for i in range(len(legends)) if valid[i]]
+    if legend is None:
+        valid = eval("result[2]" + threshold).sum(axis=0) == result[2].shape[0]
+        legends = [legends[i] for i in range(len(legends)) if valid[i]]
+    else:
+        valid = [legends[i] in legend for i in range(len(legends))]
+        legends = legend[:]
 
     result[2] = result[2][:, valid]
 

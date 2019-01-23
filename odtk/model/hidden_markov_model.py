@@ -1,7 +1,6 @@
 import numpy as np
 from odtk.model import hmm_core
 from odtk.model.superclass import *
-from odtk.modifier import change
 
 
 class HMM(NormalModel):

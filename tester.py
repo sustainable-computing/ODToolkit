@@ -2,6 +2,7 @@ import odtk
 import numpy as np
 from tqdm import tqdm
 from pprint import pprint
+
 # for i in tqdm(range(1, 25)):
 #     odtk.data.write(
 #         odtk.data.import_data("./odtk/data/sample_csv/lbl/data" + str(i) + ".csv", 0, room_name="data_" + str(i)),
@@ -38,14 +39,28 @@ from pprint import pprint
 #
 # odtk.plot.plot_one(a, dataset="datatest")
 
-# data = odtk.data.load_sample(["sdu-508"])
-# result = odtk.easy_set_experiment(data, models=["SVM"])
-# print(result)
+data = odtk.data.load_sample(["aifb-all"])
+pprint(odtk.analyzer.analyze(data["aifb-all"], 60))
+for name in data:
+    data[name].remove_feature([data[name].header_info[data[name].time_column]])
+odtk.plot.plot_feature(data["aifb-all"])
+# data["sdu-all"].remove_feature([data["sdu-all"].header_info[data["sdu-all"].time_column]])
+# data["sdu-binary"] = data["sdu-all"].copy()
+# odtk.modifier.change_to_binary(data["sdu-binary"])
+result = odtk.easy_set_experiment(data, models=["RandomForest"], split_percentage=0.8)
+pprint(result)
 # a = odtk.evaluation.Result()
 # a.set_result(result)
 # odtk.plot.plot_one(a, model="SVM")
 
-umons = odtk.data.load_sample("umons-all")
-odtk.plot.plot_feature(umons)
+# umons = odtk.data.load_sample("umons-all")
+# odtk.plot.plot_feature(umons)
 # odtk.plot.plot_feature(data["umons"])
 # odtk.plot.plot_occupancy(data, total=False, binary=False)
+
+a = odtk.evaluation.Result()
+a.set_result(result)
+odtk.plot.plot_one(a, model="RandomForest",
+                   # legend=["Missrate", "Fallout"],
+                   threshold=">0"
+                   )
