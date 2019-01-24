@@ -4,9 +4,7 @@ from odtk.model.superclass import *
 class RNN(NormalModel):
     def __init__(self, train, test):
         self.train = train
-        self.train.remove_feature(self.train.header_info[self.train.time_column])
         self.test = test
-        self.test.remove_feature(self.test.header_info[self.train.time_column])
 
         self.hm_epochs = 1000
         self.batch_size = 60

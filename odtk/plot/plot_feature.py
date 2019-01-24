@@ -1,94 +1,73 @@
-def plot_feature(dataset, occupied_color="rgb(255, 0, 0, 1)", unoccupied_color="rgba(0, 255, 0, 0.5)"):
-    import plotly as py
-    import plotly.graph_objs as go
-    import plotly.io as pio
+def plot_feature(dataset, occupied_color="#009292", unoccupied_color="#920000"):
+    import matplotlib.pyplot as plt
     from numpy import concatenate
 
     dataset = dataset.copy()
-    dataset.remove_feature([dataset.header_info[dataset.time_column], "id"])
 
     datas = concatenate((dataset.occupancy, dataset.data), axis=1)
     occupancy = dataset.occupancy.reshape((dataset.occupancy.shape[0],))
     occupied = datas[occupancy > 0, :]
     unoccupied = datas[occupancy < 0.5, :]
 
-    data = list()
     header = ["Occupancy"] + dataset.header
-    width = [i / len(header) for i in range(len(header) + 1)]
+
+    fig = plt.figure(figsize=(8, 8))  # Notice the equal aspect ratio
+    ax = [fig.add_subplot(len(header), len(header), i * len(header) + j + 1)
+          for i in range(len(header) - 1, -1, -1) for j in range(len(header))]
 
     for x in range(len(header)):
         for y in range(len(header)):
-            if x == y:
-                data.append(go.Histogram(x=datas[:, x],
-                                         histnorm="probability",
-                                         xaxis='x' + str(x * len(header) + y + 1),
-                                         yaxis='y' + str(x * len(header) + y + 1),
-                                         showlegend=False,
-                                         # nbinsx=10,
-                                         marker=dict(color="blue")))
+            current = ax[y * len(header) + x]
+            y_min = datas[:, y].min()
+            y_max = datas[:, y].max()
+
+            if x != y:
+                current.scatter(x=occupied[:, x],
+                                y=occupied[:, y],
+                                c=occupied_color,
+                                s=1)
+                current.scatter(x=unoccupied[:, x],
+                                y=unoccupied[:, y],
+                                c=unoccupied_color,
+                                s=1)
+
             else:
-                data.append(go.Scatter(x=occupied[:, x],
-                                       y=occupied[:, y],
-                                       mode="markers",
-                                       xaxis='x' + str(x * len(header) + y + 1),
-                                       yaxis='y' + str(x * len(header) + y + 1),
-                                       showlegend=False,
-                                       marker=dict(color=occupied_color,
-                                                   size=3)))
-                data.append(go.Scatter(x=unoccupied[:, x],
-                                       y=unoccupied[:, y],
-                                       mode="markers",
-                                       xaxis='x' + str(x * len(header) + y + 1),
-                                       yaxis='y' + str(x * len(header) + y + 1),
-                                       showlegend=False,
-                                       marker=dict(color=unoccupied_color,
-                                                   size=3)))
+                bin_value, _, _ = current.hist(datas[:, x], density=True, bins=40)
+                y_min = 0
+                y_max = max(bin_value)
 
-    layout = dict()
-    for x in range(len(header)):
-        for y in range(len(header)):
-            layout["xaxis" + str(x * len(header) + y + 1)] = dict(domain=[width[x], width[x + 1]],
-                                                                  tickmode="linear",
-                                                                  tick0=datas[:, x].min(),
-                                                                  dtick=(datas[:, x].max() - datas[:, x].min()) / 2,
-                                                                  tickformat=".2f",
-                                                                  showgrid=False,
-                                                                  mirror=True,
-                                                                  showline=True,
-                                                                  showticklabels=not bool(y),
-                                                                  anchor='y' + str(x * len(header) + y + 1) if y != 1 else 'y1',
-                                                                  # nticks=3,
-                                                                  ticklen=20 if x % 2 and not y else 5 if y <= 1 else 0,
-                                                                  tickcolor="rgba(0, 0, 0, 0)" if not y else "black",
-                                                                  zeroline=False,
-                                                                  title="<b>" + header[x] + "</b>" if not bool(y) else None)
-            layout["yaxis" + str(x * len(header) + y + 1)] = dict(domain=[width[y], width[y + 1]],
-                                                                  tickmode="linear",
-                                                                  tick0=datas[:, y].min(),
-                                                                  dtick=(datas[:, y].max() - datas[:, y].min()) / 2,
-                                                                  tickformat=".2f",
-                                                                  showgrid=False,
-                                                                  mirror=True,
-                                                                  showline=True,
-                                                                  showticklabels=not bool(x),
-                                                                  anchor='x' + str(x * len(header) + y + 1),
-                                                                  # nticks=3,
-                                                                  tickangle=-90,
-                                                                  ticklen=20 if y % 2 and not x else 5 if x <= 1 else 0,
-                                                                  tickcolor="rgba(0, 0, 0, 0)",
-                                                                  zeroline=False,
-                                                                  title="<b>" + header[y] + "</b>" if not bool(x) else None)
+            x_min = datas[:, x].min()
+            x_max = datas[:, x].max()
+            margin_ratio = 0.1
+            current.set_xlim(x_min - (x_max - x_min) * margin_ratio,
+                             x_max + (x_max - x_min) * margin_ratio)
+            current.set_ylim(y_min - (y_max - y_min) * margin_ratio,
+                             y_max + (y_max - y_min) * margin_ratio)
+            if x:
+                current.set_yticks([])
+                current.set_yticklabels([])
+            else:
+                current.set_yticks([y_min, y_max])
+                current.set_yticklabels(["%.1f" % datas[:, y].min(), "%.1f" % datas[:, y].max()],
+                                        rotation=90, rotation_mode="anchor", ha="center")
+                pad = 0
+                if y % 2:
+                    pad = 12
+                    current.tick_params(axis='y', pad=3 + pad)
+                current.set_ylabel(header[y], labelpad=20 - pad, weight="bold")
 
-    for x in range(len(header)):
-        minimum = datas[:, x].min()
-        maximum = datas[:, x].max()
-        range_a = minimum - (maximum - minimum) * 0.1
-        range_b = maximum + (maximum - minimum) * 0.1
-        layout["xaxis" + str(x * len(header) + x + 1)]["range"] = [range_a, range_b]
-    layout["yaxis1"]["showticklabels"] = False
-    layout["yaxis" + str(len(header) + 1)]["showticklabels"] = True
-    layout["yaxis" + str(len(header) + 1)]["anchor"] = "x1"
+            if y:
+                current.set_xticks([])
+                current.set_xticklabels([])
+            else:
+                current.set_xticks([x_min, x_max])
+                current.set_xticklabels(["%.1f" % x_min, "%.1f" % x_max])
+                current.set_xlabel(header[x], labelpad=20)
+                pad = 0
+                if x % 2:
+                    pad = 12
+                    current.tick_params(axis='x', pad=3 + pad)
+                current.set_xlabel(header[x], labelpad=20 - pad, weight="bold")
 
-    fig = go.Figure(data=data, layout=go.Layout(layout))
-    # py.offline.plot(fig, image_width=800, image_height=800)
-    pio.write_image(fig, 'map1.png', width=800, height=800, validate=False)
+    plt.subplots_adjust(wspace=0, hspace=0)
+    plt.show()
