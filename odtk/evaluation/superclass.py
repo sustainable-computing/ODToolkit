@@ -155,26 +155,33 @@ class Result:
                     except KeyError:
                         continue
 
-    def get_result(self, dataset=None, model=None, metric=None):
-        dimension = ["dataset", "model", "metric"]
-        fixed = None
-        for dim in dimension:
+    def get_result(self, dataset=None, model=None, metric=None, fixed="auto"):
+        from numpy import ix_
+        dimension = {"dataset": None, "model": None, "metric": None}
+
+        for dim in dimension.keys():
             if eval(dim) is None:
-                eval(dim + "= list(range(len(self." + dim + "s)))")
+                dimension[dim] = eval("list(range(len(self." + dim + "s)))")
             elif not isinstance(eval(dim), list):
-                fixed = dim
-                eval(dim + "= [self." + dim + "s.index(" + dim + ")]")
+                if fixed == "auto":
+                    fixed = dim
+                my_func = "[self." + dim + "s.index(" + dim + ")]"
+                dimension[dim] = eval(my_func)
             else:
+                my_func = "[self." + dim + "s.index(i) for i in " + dim + ']'
+                dimension[dim] = eval(my_func, {"self": self, dim: eval(dim)})
 
-
-
-
-
-        if dataset is not None and dataset in self.datasets:
-            return self.models[:], self.metrics[:], self.result[self.datasets.index(dataset), :, :].copy()
-        if model is not None and model in self.models:
-            return self.datasets[:], self.metrics[:], self.result[:, self.models.index(model), :].copy()
-        if metric is not None and metric in self.metrics:
-            return self.datasets[:], self.models[:], self.result[:, :, self.metrics.index(metric)].copy()
+        if fixed == "dataset":
+            return [self.models[i] for i in dimension["model"]], \
+                   [self.metrics[i] for i in dimension["metric"]], \
+                   self.result[dimension["dataset"], :, :][0][ix_(dimension["model"], dimension["metric"])]
+        elif fixed == "model":
+            return [self.datasets[i] for i in dimension["dataset"]], \
+                   [self.metrics[i] for i in dimension["metric"]], \
+                   self.result[:, dimension["model"], :][0][ix_(dimension["dataset"], dimension["metric"])]
+        elif fixed == "metric":
+            return [self.datasets[i] for i in dimension["dataset"]], \
+                   [self.models[i] for i in dimension["model"]], \
+                   self.result[:, :, dimension["metric"]][0][ix_(dimension["dataset"], dimension["model"])]
 
         raise ValueError("Target request not found")

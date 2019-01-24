@@ -39,16 +39,28 @@ from pprint import pprint
 #
 # odtk.plot.plot_one(a, dataset="datatest")
 
-data = odtk.data.load_sample(["aifb-all"])
-pprint(odtk.analyzer.analyze(data["aifb-all"], 60))
-for name in data:
-    data[name].remove_feature([data[name].header_info[data[name].time_column]])
-odtk.plot.plot_feature(data["aifb-all"])
-# data["sdu-all"].remove_feature([data["sdu-all"].header_info[data["sdu-all"].time_column]])
-# data["sdu-binary"] = data["sdu-all"].copy()
-# odtk.modifier.change_to_binary(data["sdu-binary"])
-result = odtk.easy_set_experiment(data, models=["RandomForest"], split_percentage=0.8)
-pprint(result)
+# data = odtk.data.load_sample(["umons-datatraining", "umons-datatest"])
+# for name in data:
+#     data[name].remove_feature([data[name].header_info[data[name].time_column], "id"])
+# # data["aifb-all"].remove_feature(["persons"])
+# # odtk.plot.plot_feature(data["aifb-all"])
+# # data["sdu-all"].remove_feature([data["sdu-all"].header_info[data["sdu-all"].time_column]])
+# # data["sdu-binary"] = data["sdu-all"].copy()
+# # odtk.modifier.change_to_binary(data["sdu-binary"])
+# source = dict()
+# retrain = dict()
+# test = dict()
+# source["umons"] = data["umons-datatraining"]
+# retrain["umons"], test["umons"] = data["umons-datatest"].split(0.1)
+#
+# result = odtk.easy_set_experiment(retrain,
+#                                   target_retrain=retrain,
+#                                   target_test_set=test,
+#                                   models=["PF", "LSTM"],
+#                                   domain_adaptive=False)
+# pprint(result)
+
+
 # a = odtk.evaluation.Result()
 # a.set_result(result)
 # odtk.plot.plot_one(a, model="SVM")
@@ -58,9 +70,67 @@ pprint(result)
 # odtk.plot.plot_feature(data["umons"])
 # odtk.plot.plot_occupancy(data, total=False, binary=False)
 
+result = {'umons': {'RandomForest': {'Accuracy': 0.9961089494163424,
+                                         'F1Score': 0.9863013698630136,
+                                         'Fallout': 0.0011350737797956867,
+                                         'FalseNegative': 12,
+                                         'FalsePositive': 4,
+                                         'Missrate': 0.02040816326530612,
+                                         'Precision': 0.993103448275862,
+                                         'Recall': 0.9795918367346939,
+                                         'Selectivity': 0.9988649262202043,
+                                         'TrueNegative': 3520,
+                                         'TruePositive': 576},
+                        'PF': {'Accuracy': 0.9973249027237354,
+                               'F1Score': 0.9906700593723494,
+                               'Fallout': 0.0019863791146424517,
+                               'FalseNegative': 4,
+                               'FalsePositive': 7,
+                               'Missrate': 0.006802721088435374,
+                               'Precision': 0.988155668358714,
+                               'Recall': 0.9931972789115646,
+                               'Selectivity': 0.9980136208853575,
+                               'TrueNegative': 3517,
+                               'TruePositive': 584},
+                        'NNv2': {'Accuracy': 0.9980544747081712,
+                                 'F1Score': 0.9932088285229203,
+                                 'Fallout': 0.0014188422247446084,
+                                 'FalseNegative': 3,
+                                 'FalsePositive': 5,
+                                 'Missrate': 0.00510204081632653,
+                                 'Precision': 0.9915254237288136,
+                                 'Recall': 0.9948979591836735,
+                                 'Selectivity': 0.9985811577752554,
+                                 'TrueNegative': 3519,
+                                 'TruePositive': 585},
+                        'RNN': {'Accuracy': 0.9980544747081712,
+                                'F1Score': 0.9932088285229203,
+                                'Fallout': 0.0014188422247446084,
+                                'FalseNegative': 3,
+                                'FalsePositive': 5,
+                                'Missrate': 0.00510204081632653,
+                                'Precision': 0.9915254237288136,
+                                'Recall': 0.9948979591836735,
+                                'Selectivity': 0.9985811577752554,
+                                'TrueNegative': 3519,
+                                'TruePositive': 585},
+                        'SVM': {'Accuracy': 0.9970817120622568,
+                                'F1Score': 0.9898819561551433,
+                                'Fallout': 0.0031214528944381384,
+                                'FalseNegative': 1,
+                                'FalsePositive': 11,
+                                'Missrate': 0.0017006802721088435,
+                                'Precision': 0.9816053511705686,
+                                'Recall': 0.9982993197278912,
+                                'Selectivity': 0.9968785471055619,
+                                'TrueNegative': 3513,
+                                'TruePositive': 587}}}
 a = odtk.evaluation.Result()
 a.set_result(result)
-odtk.plot.plot_one(a, model="RandomForest",
+print(a.get_result(metric=["F1Score", "Accuracy", "FalsePositive"], model="RNN", dataset="umons", fixed="auto"))
+
+odtk.plot.plot_one(a, dataset="umons",
+                   metric=["F1Score", "Accuracy", "Precision"],
                    # legend=["Missrate", "Fallout"],
-                   threshold=">0"
+                   threshold="<=1"
                    )
