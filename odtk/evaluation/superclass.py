@@ -156,6 +156,20 @@ class Result:
                         continue
 
     def get_result(self, dataset=None, model=None, metric=None):
+        dimension = ["dataset", "model", "metric"]
+        fixed = None
+        for dim in dimension:
+            if eval(dim) is None:
+                eval(dim + "= list(range(len(self." + dim + "s)))")
+            elif not isinstance(eval(dim), list):
+                fixed = dim
+                eval(dim + "= [self." + dim + "s.index(" + dim + ")]")
+            else:
+
+
+
+
+
         if dataset is not None and dataset in self.datasets:
             return self.models[:], self.metrics[:], self.result[self.datasets.index(dataset), :, :].copy()
         if model is not None and model in self.models:
