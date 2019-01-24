@@ -1,4 +1,4 @@
-def plot_one(result, threshold="None", group_by=0,
+def plot_one(result, threshold=None, group_by=0,
              dataset=None,
              model=None,
              metric=None,
@@ -10,6 +10,16 @@ def plot_one(result, threshold="None", group_by=0,
              **kwargs):
     import matplotlib.pyplot as plt
     from numpy import arange
+
+    def autolabel(rects):
+        """
+        Attach a text label above each bar displaying its height
+        """
+        for rect in rects:
+            height = rect.get_height()
+            ax.text(rect.get_x() + rect.get_width() / 2., 1.05 * height,
+                    '%.2f' % height,
+                    ha='center', va='bottom')
 
     if dataset is None and model is None and metric is None:
         raise ValueError("You have to set one value")
@@ -26,7 +36,10 @@ def plot_one(result, threshold="None", group_by=0,
         x_labels = result[0]
         legends = result[1]
 
-    valid = eval("result[2]" + threshold).sum(axis=0) == result[2].shape[0]
+    if threshold is None:
+        valid = [True] * len(legends)
+    else:
+        valid = eval("result[2]" + threshold).sum(axis=0) == result[2].shape[0]
     legends = [legends[i] for i in range(len(legends)) if valid[i]]
 
     result[2] = result[2][:, valid]
@@ -38,7 +51,9 @@ def plot_one(result, threshold="None", group_by=0,
     hatches = ['/', '\\', '', '-', '+', 'x', 'o', 'O', '.', '*']
 
     for i in range(len(legends)):
-        ax.bar(x, result[2][:, i], width=w, label=legends[i], hatch=hatches[i % len(hatches)], **kwargs)
+
+        bars = ax.bar(x, result[2][:, i], width=w, label=legends[i], hatch=hatches[i % len(hatches)], **kwargs)
+        autolabel(bars)
         if legends[i] in line:
             ax.plot(x, result[2][:, i])
         x += w
