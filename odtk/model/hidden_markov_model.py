@@ -13,7 +13,7 @@ class HMM(NormalModel):
         self.train = train
         self.test = test
         self.number_of_hidden_states = int(np.amax(train.occupancy)) + 1
-            
+
     def run(self):
     
         hmm = hmm_core.HMM_Core(number_of_hidden_states=self.number_of_hidden_states)
@@ -21,7 +21,7 @@ class HMM(NormalModel):
                   emission_seq=self.train.data)
 
         predict_occupancy = hmm.viterbi_predict(emission_seq=np.array(self.test.data))
-        #print(np.reshape(predict_occupancy, (-1,1)))
+
         return np.reshape(predict_occupancy, (-1,1))
         
 class HMM_DA(DomainAdaptiveModel):
