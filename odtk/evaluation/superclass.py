@@ -172,16 +172,22 @@ class Result:
                 dimension[dim] = eval(my_func, {"self": self, dim: eval(dim)})
 
         if fixed == "dataset":
+            result = self.result[dimension["dataset"], :, :]
+            result = result.reshape((result.shape[1], result.shape[2]))
             return [self.models[i] for i in dimension["model"]], \
                    [self.metrics[i] for i in dimension["metric"]], \
-                   self.result[dimension["dataset"], :, :][0][ix_(dimension["model"], dimension["metric"])]
+                   result[ix_(dimension["model"], dimension["metric"])]
         elif fixed == "model":
+            result = self.result[:, dimension["model"], :]
+            result = result.reshape((result.shape[0], result.shape[2]))
             return [self.datasets[i] for i in dimension["dataset"]], \
                    [self.metrics[i] for i in dimension["metric"]], \
-                   self.result[:, dimension["model"], :][0][ix_(dimension["dataset"], dimension["metric"])]
+                   result[ix_(dimension["dataset"], dimension["metric"])]
         elif fixed == "metric":
+            result = self.result[:, :, dimension["metric"]]
+            result = result.reshape((result.shape[0], result.shape[1]))
             return [self.datasets[i] for i in dimension["dataset"]], \
                    [self.models[i] for i in dimension["model"]], \
-                   self.result[:, :, dimension["metric"]][0][ix_(dimension["dataset"], dimension["model"])]
+                   result[ix_(dimension["dataset"], dimension["model"])]
 
         raise ValueError("Target request not found")

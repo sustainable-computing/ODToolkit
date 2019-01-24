@@ -1,4 +1,13 @@
-def plot_one(result, threshold="None", group_by=0, dataset=None, model=None, metric=None, fixed="auto"):
+def plot_one(result, threshold="None", group_by=0,
+             dataset=None,
+             model=None,
+             metric=None,
+             fixed="auto",
+             x_label="",
+             y_label="",
+             y_range=None,
+             line=[],
+             **kwargs):
     import matplotlib.pyplot as plt
     from numpy import arange
 
@@ -29,9 +38,15 @@ def plot_one(result, threshold="None", group_by=0, dataset=None, model=None, met
     hatches = ['/', '\\', '', '-', '+', 'x', 'o', 'O', '.', '*']
 
     for i in range(len(legends)):
-        ax.bar(x, result[2][:, i], width=w, label=legends[i], hatch=hatches[i % len(hatches)])
+        ax.bar(x, result[2][:, i], width=w, label=legends[i], hatch=hatches[i % len(hatches)], **kwargs)
+        if legends[i] in line:
+            ax.plot(x, result[2][:, i])
         x += w
 
+    plt.xlabel(x_label, fontweight='bold')
+    plt.ylabel(y_label, fontweight='bold')
+    if y_range is not None:
+        plt.ylim(y_range)
     plt.xticks(x - (len(legends) + 1) / 2 * w, x_labels)
     plt.legend()
     plt.show()
