@@ -36,6 +36,40 @@ class SVM(NormalModel):
 
         return predict_occupancy
 
+class SVR(NormalModel):
+    # For NormalModel, require two parameters: train and test
+    # For DomainAdaptiveModel, require three parameters: source, target_retrain and target_test
+    def __init__(self, train, test):
+        # all changeable parameters now store as an editable instance
+        self.train = train
+        self.test = test
+        self.gamma = 'auto'
+        self.kernel = 'linear'
+        self.penalty_error = 1
+        self.n_estimators = 10
+
+    # the model must have a method called run, and return the predicted result
+    def run(self):
+        from sklearn.svm import SVR
+        from sklearn.ensemble import BaggingRegressor
+        from sklearn.multiclass import OneVsRestClassifier
+        from numpy import reshape
+
+        if len(self.train.occupancy.shape) == 2 and self.train.occupancy.shape[1] == 1:
+            self.train.change_occupancy(reshape(self.train.occupancy, (self.train.occupancy.shape[0],)))
+
+        classifier = OneVsRestClassifier(BaggingRegressor(
+            SVR(kernel=self.kernel, C=self.penalty_error, gamma=self.gamma, verbose=True),
+            max_samples=1.0 / self.n_estimators, n_estimators=self.n_estimators, bootstrap=False))
+
+        classifier.fit(self.train.data, self.train.occupancy)
+
+        predict_occupancy = classifier.predict(self.test.data)
+
+        predict_occupancy.shape += (1,)
+
+        return predict_occupancy
+
 
 class SVMDA(DomainAdaptiveModel):
     # For NormalModel, require two parameters: train and test

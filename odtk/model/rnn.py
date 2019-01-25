@@ -6,10 +6,10 @@ class LSTM(NormalModel):
         self.train = train
         self.test = test
 
-        self.hm_epochs = 1000
+        self.hm_epochs = 10
         self.batch_size = 60
         self.cell = 75
-        self.learn_rate = 0.0001
+        self.learn_rate = 0.00001
 
     def run(self):
 
@@ -61,16 +61,16 @@ class LSTM(NormalModel):
         return final
 
 
-class DALSTM(NormalModel):
+class DALSTM(DomainAdaptiveModel):
     def __init__(self, source, target_retrain, target_test):
         self.source = source
         self.target_retrain = target_retrain
         self.target_test = target_test
 
-        self.hm_epochs = 1000
+        self.hm_epochs = 10
         self.batch_size = 60
         self.cell = 75
-        self.learn_rate = 0.0001
+        self.learn_rate = 0.00001
 
     def run(self):
 

@@ -8,9 +8,13 @@ def plot_one(result, threshold=None, group_by=0,
              y_range=None,
              line=[],
              add_label=True,
+             font_size=12,
+             file_name="output.png",
              **kwargs):
     import matplotlib.pyplot as plt
     from numpy import arange
+
+    plt.rcParams.update({'font.size': font_size})
 
     def autolabel(rects):
         """
@@ -18,7 +22,7 @@ def plot_one(result, threshold=None, group_by=0,
         """
         for rect in rects:
             height = rect.get_height()
-            ax.text(rect.get_x() + rect.get_width() / 2., 1.05 * height,
+            ax.text(rect.get_x() + rect.get_width() / 2., 1.01 * height,
                     '%.2f' % height,
                     ha='center', va='bottom')
 
@@ -48,7 +52,7 @@ def plot_one(result, threshold=None, group_by=0,
     w = 1 / (len(legends) + 2)
     x = arange(len(x_labels), dtype=float)
 
-    fig, ax = plt.subplots(figsize=(8, 6))
+    fig, ax = plt.subplots(figsize=(12, 8))
     hatches = ['/', '\\', '', '-', '+', 'x', 'o', 'O', '.', '*']
 
     for i in range(len(legends)):
@@ -66,4 +70,5 @@ def plot_one(result, threshold=None, group_by=0,
         plt.ylim(y_range)
     plt.xticks(x - (len(legends) + 1) / 2 * w, x_labels)
     plt.legend()
+    plt.savefig(file_name, transparent=True, pad_inches=0)
     plt.show()
