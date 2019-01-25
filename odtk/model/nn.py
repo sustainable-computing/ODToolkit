@@ -2,7 +2,7 @@ from odtk.model.superclass import *
 import tensorflow as tf
 
 
-class NN(NormalModel):
+class NN():
     def __init__(self, train, test):
         self.train = train
         self.train.remove_feature(self.train.header_info[self.train.time_column])

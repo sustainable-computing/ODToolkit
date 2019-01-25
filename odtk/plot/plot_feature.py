@@ -1,4 +1,4 @@
-def plot_feature(dataset, occupied_color="#009292", unoccupied_color="#920000"):
+def plot_feature(dataset, occupied_color="#009250", unoccupied_color="#920000", density_color="#00009250", unit={}):
     import matplotlib.pyplot as plt
     from numpy import concatenate
 
@@ -10,6 +10,9 @@ def plot_feature(dataset, occupied_color="#009292", unoccupied_color="#920000"):
     unoccupied = datas[occupancy < 0.5, :]
 
     header = ["Occupancy"] + dataset.header
+    all_unit = {"HumidityRatio": "(kg-w/kg-a)", "Humidity": "(%)", "CO2": "(ppm)", "Light": "(Lux)",
+                "Temperature": "(Celsius)"}
+    all_unit.update(unit)
 
     fig = plt.figure(figsize=(8, 8))  # Notice the equal aspect ratio
     ax = [fig.add_subplot(len(header), len(header), i * len(header) + j + 1)
@@ -32,7 +35,7 @@ def plot_feature(dataset, occupied_color="#009292", unoccupied_color="#920000"):
                                 s=1)
 
             else:
-                bin_value, _, _ = current.hist(datas[:, x], density=True, bins=40)
+                bin_value, _, _ = current.hist(datas[:, x], density=True, bins=40, color=density_color)
                 y_min = 0
                 y_max = max(bin_value)
 
@@ -54,7 +57,7 @@ def plot_feature(dataset, occupied_color="#009292", unoccupied_color="#920000"):
                 if y % 2:
                     pad = 12
                     current.tick_params(axis='y', pad=3 + pad)
-                current.set_ylabel(header[y], labelpad=20 - pad, weight="bold")
+                current.set_ylabel(header[y] + "\n" + all_unit.get(header[y], ""), labelpad=20 - pad, weight="bold")
 
             if y:
                 current.set_xticks([])
@@ -67,7 +70,7 @@ def plot_feature(dataset, occupied_color="#009292", unoccupied_color="#920000"):
                 if x % 2:
                     pad = 12
                     current.tick_params(axis='x', pad=3 + pad)
-                current.set_xlabel(header[x], labelpad=20 - pad, weight="bold")
+                current.set_xlabel(header[x] + "\n" + all_unit.get(header[x], ""), labelpad=20 - pad, weight="bold")
 
     plt.subplots_adjust(wspace=0, hspace=0)
     plt.show()
