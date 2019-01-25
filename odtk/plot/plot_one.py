@@ -7,6 +7,7 @@ def plot_one(result, threshold=None, group_by=0,
              y_label="",
              y_range=None,
              line=[],
+             add_label=True,
              **kwargs):
     import matplotlib.pyplot as plt
     from numpy import arange
@@ -53,7 +54,8 @@ def plot_one(result, threshold=None, group_by=0,
     for i in range(len(legends)):
 
         bars = ax.bar(x, result[2][:, i], width=w, label=legends[i], hatch=hatches[i % len(hatches)], **kwargs)
-        autolabel(bars)
+        if add_label:
+            autolabel(bars)
         if legends[i] in line:
             ax.plot(x, result[2][:, i])
         x += w
