@@ -44,8 +44,9 @@ from pprint import pprint
 #
 # odtk.plot.plot_one(a, dataset="datatest")
 
-data = odtk.data.load_sample(["aifb-all"])
-odtk.analyzer.analyze(data["aifb-all"], 11, save_file="result.txt")
+data = odtk.data.load_sample(["umons-all"])
+odtk.plot.plot_occupancy_perc(data, room_level=True, orientation="vertical")
+# odtk.analyzer.analyze(data["aifb-all"], 11, save_file="result.txt")
 
 # # data["sdu-binary"] = data["sdu-all"].copy()
 # # odtk.modifier.change_to_binary(data["sdu-binary"])
@@ -66,13 +67,17 @@ odtk.analyzer.analyze(data["aifb-all"], 11, save_file="result.txt")
 # source = dict()
 # retrain = dict()
 # test = dict()
-# source["sdu"] = data["sdu-508"]
-# retrain["sdu"], test["sdu"] = data["sdu-604"].split(0.1)
-#
+# odtk.modifier.change_to_binary(data["sdu-508"])
+# print(data["sdu-508"].header)
+# data["sdu-508"].select_feature(["co2"])
+# data["umons-datatest"].select_feature(["CO2"])
+# source["sdu"] = data["umons-datatest"]
+# retrain["sdu"], test["sdu"] = data["sdu-508"].split(0.2)
+# #
 # result = odtk.easy_set_experiment(retrain,
 #                                   target_retrain=retrain,
 #                                   target_test_set=test,
-#                                   models=["PF", "LSTM"],
+#                                   models=["LSTM"],
 #                                   domain_adaptive=False)
 # pprint(result)
 
