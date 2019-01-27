@@ -79,6 +79,7 @@ class Dataset:
             features = [features]
 
         column = list(range(self.__data.shape[1]))
+        time_name = self.__header[self.time_column]
 
         for feature in features:
             if feature not in self.__header.keys():
@@ -90,6 +91,8 @@ class Dataset:
                     self.time_column = None
 
         new_header = [self.__header[i] for i in column]
+        if time_name in new_header:
+            self.time_column = new_header.index(time_name)
 
         self.__data = self.__data[:, column]
         self.set_header(new_header)
@@ -100,6 +103,7 @@ class Dataset:
             features = [features]
 
         column = []
+        time_name = self.__header[self.time_column]
 
         for feature in features:
             if feature not in self.__header.keys():
@@ -111,6 +115,10 @@ class Dataset:
         new_header = [self.__header[i] for i in column]
         if self.time_column not in new_header:
             self.time_column = None
+
+        new_header = [self.__header[i] for i in column]
+        if time_name in new_header:
+            self.time_column = new_header.index(time_name)
 
         self.__data = self.__data[:, column]
         self.set_header(new_header)

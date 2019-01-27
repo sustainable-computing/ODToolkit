@@ -1,17 +1,16 @@
-def plot_occupancy_perc(datasets,
-                        time_range=(0, 24 * 60 * 60),
-                        weekly=False,
-                        bin_size=60 * 10,
-                        orientation="horizontal",
-                        room_level=False,
-                        file_name="output.png",
-                        evaluation=False,
-                        size=1.5,
-                        swarm=False):
+def plot_occupancy_swarm(datasets,
+                         time_range=(0, 24 * 60 * 60),
+                         weekly=False,
+                         bin_size=60 * 10,
+                         orientation="horizontal",
+                         room_level=False,
+                         file_name="output.png",
+                         evaluation=False,
+                         size=1.5):
     from time import mktime, gmtime
-    from numpy import ix_, arange, histogram, ndarray
+    from numpy import ix_, arange, histogram,  ndarray
     import matplotlib.pyplot as plt
-    from seaborn import swarmplot
+    import seaborn as sns
 
     if not isinstance(datasets, dict):
         raise TypeError("Datasets must be a dictionary!")
@@ -54,26 +53,9 @@ def plot_occupancy_perc(datasets,
 
         time_float = time_only[name] - mktime(gmtime(0))
         time_float %= (24 * 60 * 60 * ((weekly * 6) + 1))
-        # Wait to finish weekly
+        print(time_float)
 
-        # n, bins, _ = ax[i - 1].hist(time_float,
-        #                             arange(time_range[0], time_range[1] + 1, bin_size),
-        #                             orientation=orientation,
-        #                             density=True)
-
-        if swarm:
-            eval("swarmplot(" + xy[0] + "=time_float, ax=ax[i - 1], size=size)")
-        else:
-            n, bins = histogram(time_float,
-                                bins=arange(time_range[0], time_range[1] + 1, bin_size),
-                                density=True)
-            bins = bins[:-1]
-            if orientation == "vertical":
-                ax[i - 1].fill_between(bins, 0, n, alpha=0.5)
-                ax[i - 1].plot(bins, n)
-            else:
-                ax[i - 1].fill_betweenx(bins, 0, n, alpha=0.5)
-                ax[i - 1].plot(n, bins)
+        eval("sns.swarmplot(" + xy[0] + "=time_float, ax=ax[i - 1], size=size)")
 
         ax[i - 1].set_xticks([])
         ax[i - 1].set_xticklabels([])
@@ -87,16 +69,10 @@ def plot_occupancy_perc(datasets,
         if orientation == "vertical":
             ax[i - 1].set_ylabel(name, rotation="horizontal", ha="right", labelpad=10)
             ax[i - 1].set_xlim((0, 24 * 60 * 60))
-            if not swarm:
-                ax[i - 1].set_ylim((n.min() - (n.max() - n.min()) * 0.1,
-                                    n.max() + (n.max() - n.min()) * 0.1))
         else:
             ax[i - 1].set_xlabel(name)
             ax[i - 1].set_ylim((0, 24 * 60 * 60))
             ax[i - 1].invert_yaxis()
-            if not swarm:
-                ax[i - 1].set_xlim((n.min() - (n.max() - n.min()) * 0.1,
-                                    n.max() + (n.max() - n.min()) * 0.1))
 
         ax[i - 1].set_frame_on(False)
         i += 1

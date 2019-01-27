@@ -9,7 +9,7 @@ class LSTM(NormalModel):
         self.hm_epochs = 10
         self.batch_size = 60
         self.cell = 75
-        self.learn_rate = 0.00001
+        self.learn_rate = 0.0001
 
     def run(self):
 
