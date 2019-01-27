@@ -4,7 +4,7 @@ from numpy import nan, asarray
 from odtk.data.dataset import Dataset
 
 
-def import_data(file_name, time_column=None, mode='csv', header=True, room_name=None):
+def import_data(file_name, time_column=None, mode='csv', header=True, room_name=None, tz=0):
     # relative_file = path.dirname(getmodule(stack()[1][0]).__file__) + '/' + file_name
     if mode == 'csv':
         with open(file_name, 'r') as input_file:
@@ -20,7 +20,7 @@ def import_data(file_name, time_column=None, mode='csv', header=True, room_name=
 
                 for i in range(len(line)):
                     if i == time_column:
-                        line[i] = parse(line[i]).timestamp()
+                        line[i] = parse(line[i]).timestamp() + tz * 60 * 60
                     elif not len(line[i]):
                         line[i] = nan
                     else:

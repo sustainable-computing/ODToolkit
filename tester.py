@@ -10,8 +10,8 @@ from pprint import pprint
 
 
 # odtk.data.write(
-#     odtk.data.import_data("./data.csv", 0, room_name="data"),
-#     "data")
+#     odtk.data.import_data("./data.csv", 0, room_name="data", tz=-2),
+#     "all")
 
 # all = odtk.data.load_sample("data.csv")
 # for i in tqdm(range(2, 25)):
@@ -44,8 +44,16 @@ from pprint import pprint
 #
 # odtk.plot.plot_one(a, dataset="datatest")
 
-data = odtk.data.load_sample(["umons-all"])
-odtk.plot.plot_occupancy_perc(data, room_level=True, orientation="vertical")
+data = odtk.data.load_sample(["umons-all", "sdu-all", "niom-all", "aifb-all", "lbl-all"])
+odtk.modifier.upsample(data["lbl-all"], 60)
+current = list(data.keys())
+for i in range(len(current)):
+    data["Data Set " + chr(65 + i)] = data.pop(current[i])
+
+odtk.plot.plot_occupancy_perc(data,
+                              # room_level=True,
+                              orientation="vertical"
+                              )
 # odtk.analyzer.analyze(data["aifb-all"], 11, save_file="result.txt")
 
 # # data["sdu-binary"] = data["sdu-all"].copy()
