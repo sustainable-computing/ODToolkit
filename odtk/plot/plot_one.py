@@ -10,6 +10,7 @@ def plot_one(result, threshold=None, group_by=0,
              add_label=True,
              font_size=12,
              file_name="output.png",
+             bar_size=2,
              **kwargs):
     import matplotlib.pyplot as plt
     from numpy import arange
@@ -49,7 +50,7 @@ def plot_one(result, threshold=None, group_by=0,
 
     result[2] = result[2][:, valid]
 
-    w = 1 / (len(legends) + 2)
+    w = 1 / (len(legends) + bar_size)
     x = arange(len(x_labels), dtype=float)
 
     fig, ax = plt.subplots(figsize=(12, 8))
