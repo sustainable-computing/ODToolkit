@@ -7,6 +7,8 @@ def plot_occupancy_perc(datasets,
                         file_name="output.png",
                         evaluation=False,
                         size=1.5,
+                        x_label="",
+                        y_label="",
                         swarm=False):
     from time import mktime, gmtime
     from numpy import ix_, arange, histogram, ndarray
@@ -39,6 +41,9 @@ def plot_occupancy_perc(datasets,
         xy = "yx"
         fig, ax = plt.subplots(ncols=len(time_only))
 
+    if not isinstance(ax, ndarray):
+        ax = [ax]
+
     ax_all = fig.add_subplot(111, zorder=-1)
     time_label = ['12 am', '3 am', '6 am', '9 am', '12 pm', '3 pm', '6 pm', '9 pm', '12 am']
     eval("ax_all.set_" + xy[0] + "ticks(arange(0, 24 * 60 * 60 + 61, 60 * 60 * 3))")
@@ -46,9 +51,6 @@ def plot_occupancy_perc(datasets,
                        labelbottom=False, labelleft=False)
     eval("ax_all.get_shared_" + xy[0] + "_axes().join(ax_all, ax[0])")
     ax_all.grid(axis=xy[0], alpha=0.5)
-
-    if not isinstance(ax, ndarray):
-        ax = [ax]
 
     for name in time_only:
 
@@ -85,7 +87,7 @@ def plot_occupancy_perc(datasets,
             eval("ax[i - 1].set_" + xy[0] + "ticklabels(time_label)")
 
         if orientation == "vertical":
-            ax[i - 1].set_ylabel(name, rotation="horizontal", ha="right", labelpad=10)
+            ax[i - 1].set_ylabel(name, rotation="horizontal", ha="right", va="center", labelpad=10)
             ax[i - 1].set_xlim((0, 24 * 60 * 60))
             if not swarm:
                 ax[i - 1].set_ylim((n.min() - (n.max() - n.min()) * 0.1,
@@ -101,6 +103,8 @@ def plot_occupancy_perc(datasets,
         ax[i - 1].set_frame_on(False)
         i += 1
 
+    plt.xlabel(x_label, fontweight='bold')
+    plt.ylabel(y_label, fontweight='bold')
     plt.subplots_adjust(wspace=0, hspace=0)
     plt.savefig(file_name, transparent=True, pad_inches=0)
     plt.show()

@@ -40,18 +40,19 @@ def easy_experiment(source,
 
     if plot:
         plot_dict = dict()
-        # from pickle import dump
+        from pickle import dump
         for model in results:
-            plot_dict[model] = test_time[results[model].flatten() > 0]
+            print(results[model].shape, test_time.shape)
+            # plot_dict[model] = test_time[results[model].flatten() > 0]
             # with open(model, 'wb') as file:
-            #     dump(plot_dict[model], file)
+                # dump(plot_dict[model], file)
+                # dump(results[model], file)
         plot_dict["Truth"] = test_time[target_test.occupancy.flatten() > 0]
-        # with open("Truth", 'wb') as file:
-        #     dump(plot_dict["Truth"], file)
+        with open("Truth", 'wb') as file:
+            dump(plot_dict["Truth"], file)
 
-        plot_occupancy_perc(plot_dict, orientation="horizontal",
-                            evaluation=True, size=2, swarm=True)
-
+        # plot_occupancy_perc(plot_dict, orientation="horizontal",
+        #                     evaluation=True, size=2, swarm=True)
     total_result = dict()
 
     for model_result in results.keys():

@@ -3,9 +3,13 @@ from odtk.model.superclass import *
 
 class LSTM(NormalModel):
     def __init__(self, train, test):
+        from odtk.modifier.change import change_to_one_hot
         self.train = train
+        # if self.train.occupancy.shape[1] == 1:
+        #     change_to_one_hot(self.train)
         self.test = test
-
+        # if self.test.occupancy.shape[1] == 1:
+        #     change_to_one_hot(self.test)
         self.hm_epochs = 10
         self.batch_size = 60
         self.cell = 75
@@ -16,7 +20,7 @@ class LSTM(NormalModel):
         from keras.models import Sequential
         from keras.layers import LSTM, TimeDistributed, Dense
         from keras.optimizers import Adam
-        from numpy import zeros
+        from numpy import zeros, reshape
         from tqdm import tqdm
 
         model = Sequential()
@@ -41,14 +45,15 @@ class LSTM(NormalModel):
                 cost = model.train_on_batch(epoch_x, epoch_y)
                 epoch_loss += cost
 
-        final = zeros(self.test.occupancy.shape, dtype=float)
+        final = zeros((self.test.occupancy.shape[0],
+                       self.train.occupancy.shape[1]), dtype=float)
 
         for i in range(int(self.test.data.shape[0] / self.batch_size)):
             predict = model.predict(self.test.data[i * self.batch_size:
                                                    (i + 1) * self.batch_size].reshape(self.batch_size, 1,
                                                                                       self.test.data.shape[1]),
                                     self.test.data.shape[0])
-            predict = predict.reshape((predict.shape[0], self.train.occupancy.shape[1]))
+            predict = predict.reshape((-1, self.train.occupancy.shape[1]))
             final[i * self.batch_size:(i + 1) * self.batch_size, :] = predict
 
         if self.test.data.shape[0] % self.batch_size:
@@ -58,7 +63,7 @@ class LSTM(NormalModel):
             predict = predict.reshape((predict.shape[0], self.train.occupancy.shape[1]))
             final[-self.batch_size:, :] = predict
 
-        return final
+        return reshape(final.argmax(axis=1), (-1, 1))
 
 
 class DALSTM(DomainAdaptiveModel):

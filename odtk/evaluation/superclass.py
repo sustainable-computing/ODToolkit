@@ -75,6 +75,7 @@ class OccupancyEvaluation:
             return
 
         if truth.shape != predict.shape:
+            print(truth.shape, predict.shape)
             raise ValueError("Two array have different shape")
 
         if len(truth.shape) != 1 and truth.shape[1] != 1:

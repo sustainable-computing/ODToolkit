@@ -6,11 +6,11 @@ def plot_one(result, threshold=None, group_by=0,
              x_label="",
              y_label="",
              y_range=None,
-             line=[],
              add_label=True,
              font_size=12,
              file_name="output.png",
              bar_size=2,
+             line_chart=False,
              **kwargs):
     import matplotlib.pyplot as plt
     from numpy import arange
@@ -55,21 +55,31 @@ def plot_one(result, threshold=None, group_by=0,
 
     fig, ax = plt.subplots(figsize=(12, 8))
     hatches = ['/', '\\', '', '-', '+', 'x', 'o', 'O', '.', '*']
+    markers = ['o', 'D', '+', 'v', '^', '<', '>', '1', '2', '3', '4', '8', 's', 'p', 'P', '*', 'h', 'H', '.',
+               'X', 'x', ',', 'd', '|', '_']
 
     for i in range(len(legends)):
 
-        bars = ax.bar(x, result[2][:, i], width=w, label=legends[i], hatch=hatches[i % len(hatches)], **kwargs)
-        if add_label:
-            autolabel(bars)
-        if legends[i] in line:
-            ax.plot(x, result[2][:, i])
-        x += w
+        if line_chart:
+            line = ax.plot(result[2][:, i], label=legends[i],
+                           marker=markers[i% len(markers)],
+                           ms=15,
+                           markeredgecolor="#000000ff",
+                           markerfacecolor="#00000000")
+        else:
+            bars = ax.bar(x, result[2][:, i], width=w, label=legends[i], hatch=hatches[i % len(hatches)], **kwargs)
+            if add_label:
+                autolabel(bars)
+            x += w
 
     plt.xlabel(x_label, fontweight='bold')
     plt.ylabel(y_label, fontweight='bold')
     if y_range is not None:
         plt.ylim(y_range)
-    plt.xticks(x - (len(legends) + 1) / 2 * w, x_labels)
+    if line_chart:
+        plt.xticks(x, x_labels)
+    else:
+        plt.xticks(x - (len(legends) + 1) / 2 * w, x_labels)
     plt.legend()
     plt.savefig(file_name, transparent=True, pad_inches=0)
     plt.show()
