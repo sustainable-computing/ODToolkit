@@ -1,9 +1,15 @@
-from odtk.data.read import read
-from os.path import abspath, join, basename, isfile
-from os import listdir
+# Load a odtk.data.dataset.Dataset object from the sample folder
+#
+# Parameters:
+#     sample_name: Name of the sample. Use '-' represent folder relation.
+# Return:
+#     odtk.data.dataset.Dataset
 
 
 def load_sample(sample_name):
+    from .io import read
+    from os.path import abspath, join, basename, isfile
+    from os import listdir
 
     if isinstance(sample_name, str):
         sample_dir = join(abspath(__file__).rstrip(basename(__file__)), "sample_csv")

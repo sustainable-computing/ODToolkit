@@ -18,7 +18,7 @@ odtk.data
 *// This will return class odtk.data.dataset.Dataset*
 2. **odtk.data.load_sample() # Not finish**
 3. odtk.data.read(file_name)
-4. odtk.data.write(dataset, file_name)
+4. odtk.data.save_dataset(dataset, file_name)
 
 odtk.analyzer
 ---

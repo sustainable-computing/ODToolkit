@@ -1,11 +1,22 @@
-from csv import reader
-from dateutil.parser import parse
-from numpy import nan, asarray
-from odtk.data.dataset import Dataset
+# Load raw data from disk
+#
+# Parameters:
+#     file_name: The name of the raw data file
+#     time_column: The column index for the timestamp in given raw data file
+#     mode: The raw data format, support 'csv'
+#     header: Indicate whether the raw data include header at the first line
+#     room_name: The name of room for the raw data file
+#     tz: The time zone offset that need to fix for the raw data file
+# Return:
+#     odtk.data.dataset.Dataset object contains one room data
 
 
 def import_data(file_name, time_column=None, mode='csv', header=True, room_name=None, tz=0):
-    # relative_file = path.dirname(getmodule(stack()[1][0]).__file__) + '/' + file_name
+    from csv import reader
+    from dateutil.parser import parse
+    from numpy import nan, asarray
+    from .dataset import Dataset
+
     if mode == 'csv':
         with open(file_name, 'r') as input_file:
             csv_reader = reader(input_file, delimiter=',')

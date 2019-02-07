@@ -1,9 +1,22 @@
-from numpy import asarray, concatenate, nan, full, unique, delete, isnan
-from collections import Iterable
+# Core dataset format. The standard data structure for occupancy detection
+#
+# Accessible instances:
+#     self.time_column
+#     self.binary
+#     self.labelled
+#     self.data
+#     self.occupancy
+#     self.header_info
+#     self.header
+#     self.room_info
+#     self.room
+# Methods:
+#     odtk.data.dataset.Dataset object contains one room data
 
 
 class Dataset:
     def __init__(self):
+        from numpy import asarray
         self.__data = asarray([])
         self.__occupancy = asarray([])
         # header: column, column: header
@@ -52,6 +65,8 @@ class Dataset:
         self.__header = header
 
     def set_header(self, header):
+        from collections import Iterable
+
         if not isinstance(header, Iterable):
             raise TypeError("Headers must iterable")
         if len(header) != self.__data.shape[1]:
@@ -75,6 +90,8 @@ class Dataset:
 
     # Can remove one or more feature
     def remove_feature(self, features, error=True):
+        from collections import Iterable
+
         if not isinstance(features, Iterable) or isinstance(features, str):
             features = [features]
 
@@ -99,6 +116,8 @@ class Dataset:
 
     # Can select one or more feature
     def select_feature(self, features, error=True):
+        from collections import Iterable
+
         if not isinstance(features, Iterable) or isinstance(features, str):
             features = [features]
 
@@ -126,6 +145,8 @@ class Dataset:
     # data is a float matrix of data. All time value need to be changed to its timestamp (datetime.timestamp())
     # if no header line, assume all data have same order as before.
     def add_room(self, data, occupancy=None, room_name=None, header=True):
+        from numpy import asarray, unique, full, nan, concatenate
+
         if header:
             if isinstance(header, bool):
                 features = list(data[0])
@@ -204,6 +225,8 @@ class Dataset:
             self.__occupancy = concatenate((self.__occupancy, occupancy), axis=0)
 
     def pop_room(self, room_name):
+        from numpy import delete, unique, isnan
+
         if room_name not in self.__room.keys():
             raise KeyError("This dataset do not contain room {}".format(room_name))
 
