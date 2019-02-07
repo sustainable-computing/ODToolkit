@@ -1,16 +1,17 @@
-from odtk.stats.gap_detect import gap_detect
-from datetime import timedelta
-
-
 # Parameters:
-#   dataset: odtk.data.dataset.Dataset()
-#   frequency: maximum different second between two consecutive value
-#   gap: All gaps detected by odtk.stats.gap_detect
+#     dataset: odtk.data.dataset.Dataset()
+#     threshold: maximum different second between two consecutive value
+#     gaps: All gaps detected by odtk.stats.gap_detect
 # Return:
-#   {room_name: sensors} where sensors = {sensor_name: (uptime in string, uptime in seconds, uptime ratio)}
-def uptime(dataset, frequency, gaps=None):
+#     {room_name: sensors} where sensors = {sensor_name: (uptime in string, uptime in seconds, uptime ratio)}
+
+
+def uptime(dataset, threshold, gaps=None):
+    from .gap_detect import gap_detect
+    from datetime import timedelta
+
     if gaps is None:
-        gaps = gap_detect(dataset, frequency, detail=True)
+        gaps = gap_detect(dataset, threshold, sensor_level=True)
 
     result = {}
 

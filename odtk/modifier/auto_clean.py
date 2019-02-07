@@ -7,7 +7,7 @@ from odtk.stats.frequency import *
 
 def auto_clean(dataset, target_frequency):
     clean(dataset)
-    overall_frequency = frequency(dataset, total=True)
+    overall_frequency = frequency(dataset, dataset_level=True)
 
     if overall_frequency > target_frequency:
         upsample(dataset, target_frequency)

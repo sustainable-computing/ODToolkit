@@ -1,6 +1,3 @@
-from .__init__ import *
-
-
 # The full analysis for the given odtk.data.dataset.Dataset()
 #
 # Parameters:
@@ -11,8 +8,15 @@ from .__init__ import *
 #
 # Return:
 #     a dictionary contains all information
+
+
 def analysis(dataset, threshold, save_to=None, print_out=False):
     from odtk.data.dataset import Dataset
+    from .dropout_rate import dropout_rate
+    from .frequency import frequency
+    from .gap_detect import gap_detect
+    from .occupancy_evaluation import occupancy_distribution_evaluation
+    from .uptime import uptime
     from pprint import pprint
 
     if not isinstance(dataset, Dataset):
@@ -36,21 +40,21 @@ def analysis(dataset, threshold, save_to=None, print_out=False):
     result["Number of entries in each room"] = num_of_entries
     result["Total number of entries"] = sum(num_of_entries.values())
 
-    dropout = dropout_rate(dataset, total=False)
+    dropout = dropout_rate(dataset, dataset_level=False)
     for room in dropout.keys():
         dropout[room] = "{:.5f}%".format(dropout[room] * 100)
     result["Dropout rate for each room (%)"] = dropout
-    result["Total dropout rate (%)"] = "{:.5f}%".format(dropout_rate(dataset, total=True) * 100)
+    result["Total dropout rate (%)"] = "{:.5f}%".format(dropout_rate(dataset, dataset_level=True) * 100)
 
-    result["Average frequency for each toom (sec)"] = frequency(dataset, total=False)
-    result["Average frequency over dataset (sec)"] = frequency(dataset, total=True)
+    result["Average frequency for each toom (sec)"] = frequency(dataset, dataset_level=False)
+    result["Average frequency over dataset (sec)"] = frequency(dataset, dataset_level=True)
 
-    gaps = gap_detect(dataset, threshold, detail=False)
+    gaps = gap_detect(dataset, threshold, sensor_level=False)
     for room in gaps.keys():
         for i in range(len(gaps[room])):
             gaps[room][i] = "From {} to {}".format(gaps[room][i][0], gaps[room][i][1])
     result["Missing interval for each room"] = gaps
-    gaps = gap_detect(dataset, threshold, detail=True)
+    gaps = gap_detect(dataset, threshold, sensor_level=True)
     detail_uptime = uptime(dataset, result["Average frequency over dataset (sec)"], gaps=gaps)
     for room in gaps.keys():
         for sensor in gaps[room].keys():
@@ -58,7 +62,7 @@ def analysis(dataset, threshold, save_to=None, print_out=False):
                 gaps[room][sensor][i] = "From {} to {}".format(gaps[room][sensor][i][0], gaps[room][sensor][i][1])
     result["Missing interval for each sensor in each room"] = gaps
 
-    occupancy = occupancy_evaluation(dataset, total=False)
+    occupancy = occupancy_distribution_evaluation(dataset, dataset_level=False)
     summarize = {}
     for values in occupancy.values():
         for occ in values.keys():

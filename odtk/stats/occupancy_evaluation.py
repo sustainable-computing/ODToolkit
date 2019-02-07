@@ -1,15 +1,16 @@
-from odtk.data.dataset import Dataset
-from numpy import unique
-
-
 # Compute the distribution of the occupancy level
 #
 # Parameters:
-#   dataset: odtk.data.dataset.Dataset()
-#   total: decide the result is separate for each room or combine the whole dataset together
+#     dataset: odtk.data.dataset.Dataset()
+#     dataset_level: decide the result is separate for each room or combine the whole dataset together
 # Return:
-#   a dictionary map number of occupants to its distribution
-def occupancy_evaluation(dataset, total=True):
+#     a dictionary map number of occupants to its distribution
+
+
+def occupancy_distribution_evaluation(dataset, dataset_level=True):
+    from odtk.data.dataset import Dataset
+    from numpy import unique
+
     if not isinstance(dataset, Dataset):
         raise TypeError("Dataset has to be class odtk.data.dataset.Dataset")
 
@@ -35,7 +36,7 @@ def occupancy_evaluation(dataset, total=True):
 
         result[room]["occupied"] = (non_zero, non_zero / occupancy.shape[0])
 
-    if total:
+    if dataset_level:
         summarize = {}
         for values in result.values():
             for possible_occupancy in values.keys():
