@@ -1088,7 +1088,7 @@ result = \
                                            'Selectivity': 0.41645053723601333,
                                            'TrueNegative': 3372,
                                            'TruePositive': 8882}}}
-                                           ({'sdu-all': {'LSTM': {'AccuracyTolerance': 0.41461412151067323,
+({'sdu-all': {'LSTM': {'AccuracyTolerance': 0.41461412151067323,
                        'MAE': 2.277144909688013,
                        'MAPE': 0.8432240160445758,
                        'MASE': 25.678498742493748,

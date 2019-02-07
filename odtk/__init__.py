@@ -1,4 +1,4 @@
-import odtk.analyzer
+import odtk.stats
 import odtk.modifier
 import odtk.data
 import odtk.model

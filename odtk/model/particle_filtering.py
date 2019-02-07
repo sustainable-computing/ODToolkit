@@ -20,6 +20,8 @@ class PF(NormalModel):
 
         predict_occupancy = hmm.pf_predict(emission_seq=np.array(self.test.data))
 
+        print("PF done.")
+
         return np.reshape(predict_occupancy, (-1, 1))
 
 
@@ -49,4 +51,5 @@ class PF_DA(DomainAdaptiveModel):
 
         predict_occupancy = hmm_target.pf_predict(emission_seq=np.array(self.target_test.data))
 
+        print("DA-PF done.")
         return np.reshape(predict_occupancy, (-1, 1))

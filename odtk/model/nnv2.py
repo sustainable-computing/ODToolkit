@@ -33,4 +33,5 @@ class NNv2(NormalModel):
         if len(predict_occupancy.shape) == 1:
             predict_occupancy.shape += (1,)
 
+        print("NN done.")
         return predict_occupancy

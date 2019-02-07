@@ -30,7 +30,7 @@ import csv
 #     all += odtk.data.load_sample("lbl-data" + str(i))
 # odtk.data.write(all, "all")
 
-# odtk.analyzer.analyze(odtk.data.load_sample("lbl-all"), 61*15, save_file="result.txt")
+# odtk.stats.analysis(odtk.data.load_sample("lbl-all"), 61*15, print_out=True)
 #
 # data = dict()
 # data["datatest"] = odtk.data.load_sample("umons-datatest")
@@ -67,22 +67,22 @@ import csv
 #                                # orientation="vertical"
 #                                )
 
-# odtk.analyzer.analyze(data["aifb-all"], 11, save_file="result.txt")
+# odtk.stats.analyze(data["aifb-all"], 11, save_file="result.txt")
 
 # data["sdu-binary"] = data["sdu-all"].copy()
 # odtk.modifier.change_to_binary(data["sdu-binary"])
-# data = odtk.load_sample(["sdu-all"])
+# data = odtk.load_sample(["aifb-all"])
 # for name in data:
-#     odtk.modifier.change_to_binary(data["aifb-all"])
+#     odtk.modifier.change_to_binary(data[name])
 #     data[name].remove_feature([data[name].header_info[data[name].time_column]])
-# #     # odtk.plot.plot_feature(data[name])
-# #     datas = data[name].data
-# #     for i in range(datas.shape[1]):
-# #         if i == data[name].time_column:
-# #             continue
-# #         datas[:, i] += (np.random.normal(0, datas[:, i].std()/4, data[name].data.shape[0]))
-# #     data[name].change_values(datas)
-# odtk.plot.plot_feature(data["sdu-all"])
+#     odtk.plot.plot_feature(data[name])
+#     datas = data[name].data
+#     for i in range(datas.shape[1]):
+#         if i == data[name].time_column:
+#             continue
+#         datas[:, i] += (np.random.normal(0, datas[:, i].std(), data[name].data.shape[0]))
+#     data[name].change_values(datas)
+#     odtk.plot.plot_feature(data[name])
 
 # # # # #     data[name].select_feature(["HumidityRatio"])
 # source = {}
@@ -131,16 +131,25 @@ import csv
 # # odtk.plot.plot_feature(data["umons"])
 # # odtk.plot.plot_occupancy(data, total=False, binary=False)
 #
-# # data = odtk.data.load_sample(["umons-all"])
+# k = 3
+# data = odtk.data.load_sample(["sdu-all"])
+# # data["sdu-508"] += data.pop("sdu-604")
 # # for name in data:
 # #     odtk.modifier.change_to_binary(data[name])
-# #     odtk.modifier.downsample(data[name], 120)
+# #     # odtk.modifier.downsample(data[name], 120)
 # #     data[name].remove_feature([data[name].header_info[data[name].time_column]])
-# a, b = (odtk.easy_set_experiment(umons,
-#                                 models=["NNv2"],
-#                                 plot=True
-#                                 ))
-
+# #     odtk.plot.plot_feature(data[name])
+# source = dict()
+# source["sdu-all"], _ = data["sdu-all"].split(0.8)
+# a, b = (odtk.easy_set_experiment(source,
+#                                  target_test_set=data,
+#                                  models=["NNv2"],
+#                                  # split_percentage=0.7,
+#                                  binary_evaluation=False,
+#                                  remove_time=True,
+#                                  # plot=True
+#                                  ))
+# pprint(a)
 # names = {"NNv2": "NN",
 #          "LSTM": "LSTM",
 #          "HMM": "HMM",
@@ -166,15 +175,27 @@ import csv
 #
 # odtk.plot.plot_occupancy_perc(data, orientation="vertical", evaluation=True, swarm=True)
 
-data = odtk.data.load_sample(["umons-all", "sdu-all", "niom-all", "lbl-all", "aifb-all"])
-data["umons-all"].remove_feature(["id"])
-data["niom-all"].remove_feature(["id"])
-for name in data:
-    odtk.modifier.change_to_binary(data[name])
-    odtk.modifier.fill(data[name])
-    data[name].remove_feature([data[name].header_info[data[name].time_column]])
-    print(data[name].header)
-pprint(odtk.easy_set_experiment(data, models=["NNv2", "RandomForest"])[0])
+# data = odtk.data.load_sample(["umons-all"])
+# data["umons-all"].remove_feature(["id", data["umons-all"].header_info[data["umons-all"].time_column]])
+# for name in data:
+#     odtk.modifier.change_to_binary(data[name])
+#     datas = data[name].data
+#     for i in range(datas.shape[1]):
+#         noise = (np.random.normal(0, datas[:, i].std() / 4, data[name].data.shape[0]))
+#         datas[:, i] += noise
+#         print(data[name].header[i], noise.min(), noise.max(), noise.mean(), noise.std())
+#     data[name].change_values(datas)
+#     # odtk.plot.plot_feature(data[name])
+# print(datas.std(axis=0))
+
+# # data["umons-all"].remove_feature(["id"])
+# # data["niom-all"].remove_feature(["id"])
+# for name in data:
+#     odtk.modifier.change_to_binary(data[name])
+#     odtk.modifier.fill(data[name])
+#     data[name].remove_feature([data[name].header_info[data[name].time_column]])
+# #     # print(data[name].header)
+# pprint(odtk.easy_set_experiment(data, models=["LSTM"])[0])
 # data["A"] = data.pop("umons-all")
 # data["B"] = data.pop("sdu-all")
 # data["C"] = data.pop("niom-all")
@@ -208,7 +229,7 @@ pprint(odtk.easy_set_experiment(data, models=["NNv2", "RandomForest"])[0])
 # odtk.plot.plot_one(a,
 #                    dataset="umons",
 #                    # model="NNv2",
-#                    metric=["LSTM", "DA-LSTM", "PF", "DA-PF"],
+#                    metric=["Precision", "Accuracy"],
 #                    # dataset=["Without noise", "With noise"],
 #                    y_range=[0.4, 1.1],
 #                    threshold="<=1",
@@ -216,7 +237,23 @@ pprint(odtk.easy_set_experiment(data, models=["NNv2", "RandomForest"])[0])
 #                    # y_label="F1 Score",
 #                    add_label=False,
 #                    font_size=16,
-#                    line_chart=True
+#                    # line_chart=True
 #                    # group_by=1,
 #                    # bar_size=0.5
 #                    )
+
+
+# # ANOVA
+# import scipy.stats as stats
+# dataset = odtk.data.load_sample("umons-all")
+# dataset.remove_feature(["id", dataset.header_info[dataset.time_column]])
+# print(dataset.header)
+# for i in range(len(dataset.header)):
+#     print("ANOVA F-value for %15s: " % dataset.header_info[i], end='')
+#     values = dataset.data[:, i].flatten()
+#     occupancy_mask = dataset.occupancy.flatten()
+#     occupied = values[occupancy_mask > 0]
+#     unoccupied = values[occupancy_mask == 0]
+#     # values -= values.min()
+#     # values /= values.max()
+#     print(stats.f_oneway(occupied, unoccupied)[0])

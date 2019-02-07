@@ -26,6 +26,8 @@ class RandomForest(NormalModel):
         if len(predict_occupancy.shape) == 1:
             predict_occupancy.shape += (1,)
 
+        print("RF done.")
+
         return predict_occupancy
 
 
@@ -60,4 +62,5 @@ class RandomForestDA(DomainAdaptiveModel):
         if len(predict_occupancy.shape) == 1:
             predict_occupancy.shape += (1,)
 
+        print("DA-RF done.")
         return predict_occupancy

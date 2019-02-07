@@ -1,7 +1,7 @@
 def plot_occupancy(datasets, binary=True, total=True):
     import plotly as py
     import plotly.graph_objs as go
-    from odtk.analyzer.occupancy_evaluation import occupancy_evaluation
+    from odtk.stats.occupancy_evaluation import occupancy_evaluation
 
     if not isinstance(datasets, dict):
         raise TypeError("Datasets must be a dictionary")

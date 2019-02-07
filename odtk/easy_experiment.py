@@ -14,6 +14,7 @@ def easy_experiment(source,
                     thread_num=4,
                     remove_time=True,
                     plot=False):
+    from numpy import reshape
     if domain_adaptive and target_retrain is None:
         raise ValueError("Domain Adaptive model must have target_retrain dataset")
 

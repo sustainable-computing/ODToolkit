@@ -44,4 +44,6 @@ class NMF(NormalModel):
         predict_occupancy = array(Y)
         ####################################################################
 
+        print("SNMF done.")
+
         return reshape(predict_occupancy, (-1, 1))
