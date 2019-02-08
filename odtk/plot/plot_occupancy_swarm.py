@@ -22,7 +22,7 @@ def plot_occupancy_swarm(datasets,
         if not evaluation:
             if room_level:
                 dataset = datasets[dataset]
-                for room in dataset.room:
+                for room in dataset.room_list:
                     data, occupancy = dataset[room]
                     time_only[room] = data[ix_(occupancy.flatten() > 0, [dataset.time_column])].flatten()
             else:

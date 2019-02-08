@@ -2,7 +2,7 @@
 #
 # Parameters:
 #     dataset: odtk.data.dataset.Dataset()
-#     dataset_level: decide the result is separate for each room or combine the whole dataset together
+#     dataset_level: decide the result is separate for each room_list or combine the whole dataset together
 # Return:
 #     a dictionary contains the dropout rate
 
@@ -19,7 +19,7 @@ def dropout_rate(dataset, dataset_level=False):
         return drop_row / data.shape[0]
     else:
         result = {}
-        rooms = dataset.room
+        rooms = dataset.room_list
 
         for room in rooms:
             data = dataset[room][0]

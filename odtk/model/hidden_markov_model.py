@@ -1,7 +1,5 @@
 import numpy as np
-from odtk.model import hmm_core
 from odtk.model.superclass import *
-from odtk.modifier import change
 
 
 class HMM(NormalModel):
@@ -14,13 +12,14 @@ class HMM(NormalModel):
         self.number_of_hidden_states = int(np.amax(train.occupancy)) + 1
 
     def run(self):
+        from . import hmm_core
+
         hmm = hmm_core.HMM_Core(number_of_hidden_states=self.number_of_hidden_states)
         hmm.learn(hidden_seq=np.array(self.train.occupancy, int).flatten(),
                   emission_seq=self.train.data)
 
         predict_occupancy = hmm.viterbi_predict(emission_seq=np.array(self.test.data))
 
-        print("HMM done.")
         return np.reshape(predict_occupancy, (-1, 1))
 
 
@@ -36,6 +35,8 @@ class HMM_DA(DomainAdaptiveModel):
         self.number_of_hidden_states = int(np.amax(source.occupancy)) + 1
 
     def run(self):
+        from . import hmm_core
+
         hmm_source = hmm_core.HMM_Core(number_of_hidden_states=self.number_of_hidden_states)
 
         hmm_source.learn(hidden_seq=np.array(self.source.occupancy, int).flatten(),
@@ -50,5 +51,4 @@ class HMM_DA(DomainAdaptiveModel):
 
         predict_occupancy = hmm_target.viterbi_predict(emission_seq=self.target_test.data)
 
-        print("DA-HMM done.")
         return np.reshape(predict_occupancy, (-1, 1))

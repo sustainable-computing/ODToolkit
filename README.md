@@ -14,10 +14,10 @@ Levenshtein (python3 -m pip install python-levenshtein)
 
 odtk.data
 ---
-1. odtk.data.import_data(file_name, time_column=None, mode='csv', header=True)
+1. odtk.data.import_data(file_name, time_column=None, mode='csv', feature_list=True)
 *// This will return class odtk.data.dataset.Dataset*
 2. **odtk.data.load_sample() # Not finish**
-3. odtk.data.read(file_name)
+3. odtk.data.read_dataset(file_name)
 4. odtk.data.save_dataset(dataset, file_name)
 
 odtk.analyzer
@@ -35,10 +35,10 @@ odtk.modifier
 2. change_to_one_hot(dataset)
 3. change_to_label(dataset)
 4. change_to_binary(dataset)
-5. clean(dataset, auto_fill=True)
+5. remove_outlier(dataset, auto_fill=True)
 6. downsample(dataset, target_frequency, algorithm="mean")
 7. fill(dataset)
-8. regulate(dataset or list)
+8. ontology(dataset or list)
 9. upsample(dataset, target_frequency, algorithm="linear")
 
 odtk.analyzer.evaluation (or in short odtk.analyzer)
@@ -61,27 +61,27 @@ odtk.data.dataset.Dataset:
     Protected instance:
         __data      -> numpy.ndarray
         __occupancy -> numpy.ndarray
-        __header    -> dictionary -> header: column, column: header
-        __room      -> dictionary -> room: [start_row, end_row], room_counter: room
+        __header    -> dictionary -> feature_list: column, column: feature_list
+        __room      -> dictionary -> room_list: [start_row, end_row], room_counter: room_list
         time_column -> int
         binary      -> bool
         labelled    -> bool
     property:
         data
         occupancy
-        header
-        header_info
-        room
-        room_info
+        feature_list
+        feature_mapping
+        room_list
+        room_mapping
     methods:
         change_values(self, data)
         change_occupancy(self, occupancy)
-        change_room_info(self, room)
-        change_header(self, old, new)
-        add_room(self, data, occupancy=None, room_name=None, header=True)
+        change_room_mapping(self, room_list)
+        change_feature_name(self, old, new)
+        add_room(self, data, occupancy=None, room_name=None, feature_list=True)
         remove_feature(self, features, error=True)
         remove_room(self, room_name)
-        set_header(self, header)
+        set_feature_name(self, feature_list)
     rewrite methods:
         __add__(self, other)
         __sub__(self, other)

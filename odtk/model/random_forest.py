@@ -1,5 +1,3 @@
-from sklearn.ensemble import RandomForestClassifier
-from numpy import reshape
 # Have to include this
 from odtk.model.superclass import *
 
@@ -8,6 +6,8 @@ class RandomForest(NormalModel):
     # For NormalModel, require two parameters: train and test
     # For DomainAdaptiveModel, require three parameters: source, target_retrain and target_test
     def __init__(self, train, test):
+        from numpy import reshape
+
         # all changeable parameters now store as an editable instance
         self.train = train
         self.test = test
@@ -17,6 +17,8 @@ class RandomForest(NormalModel):
 
     # the model must have a method called run, and return the predicted result
     def run(self):
+        from sklearn.ensemble import RandomForestClassifier
+
         classifier = RandomForestClassifier(n_estimators=self.estimator)
 
         classifier.fit(self.train.data, self.train.occupancy)
@@ -26,8 +28,6 @@ class RandomForest(NormalModel):
         if len(predict_occupancy.shape) == 1:
             predict_occupancy.shape += (1,)
 
-        print("RF done.")
-
         return predict_occupancy
 
 
@@ -35,6 +35,8 @@ class RandomForestDA(DomainAdaptiveModel):
     # For NormalModel, require two parameters: train and test
     # For DomainAdaptiveModel, require three parameters: source, target_retrain and target_test
     def __init__(self, source, target_retrain, target_test):
+        from numpy import reshape
+
         # all changeable parameters now store as an editable instance
         self.source = source
         self.target_retrain = target_retrain
@@ -50,6 +52,8 @@ class RandomForestDA(DomainAdaptiveModel):
 
     # the model must have a method called run, and return the predicted result
     def run(self):
+        from sklearn.ensemble import RandomForestClassifier
+
         classifier = RandomForestClassifier(n_estimators=self.estimator)
 
         classifier.fit(self.source.data, self.source.occupancy)
@@ -62,5 +66,4 @@ class RandomForestDA(DomainAdaptiveModel):
         if len(predict_occupancy.shape) == 1:
             predict_occupancy.shape += (1,)
 
-        print("DA-RF done.")
         return predict_occupancy

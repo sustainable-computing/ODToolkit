@@ -5,7 +5,7 @@ def plot_feature(dataset, occupied_color="rgb(255, 0, 0, 1)", unoccupied_color="
     from numpy import concatenate
 
     dataset = dataset.copy()
-    dataset.remove_feature([dataset.header_info[dataset.time_column], "id"])
+    dataset.remove_feature([dataset.feature_mapping[dataset.time_column], "id"])
 
     datas = concatenate((dataset.occupancy, dataset.data), axis=1)
     occupancy = dataset.occupancy.reshape((dataset.occupancy.shape[0],))
@@ -13,7 +13,7 @@ def plot_feature(dataset, occupied_color="rgb(255, 0, 0, 1)", unoccupied_color="
     unoccupied = datas[occupancy < 0.5, :]
 
     data = list()
-    header = ["Occupancy"] + dataset.header
+    header = ["Occupancy"] + dataset.feature_list
     width = [i / len(header) for i in range(len(header) + 1)]
 
     for x in range(len(header)):

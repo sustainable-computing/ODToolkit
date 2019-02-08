@@ -15,7 +15,7 @@ def uptime(dataset, threshold, gaps=None):
 
     result = {}
 
-    time_col = dataset.time_column
+    time_col = dataset.time_column_index
     for room in gaps.keys():
         data = dataset[room][0][:, time_col]
         total_uptime = data[-1] - data[0]

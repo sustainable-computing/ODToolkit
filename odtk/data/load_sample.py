@@ -7,7 +7,7 @@
 
 
 def load_sample(sample_name):
-    from .io import read
+    from .io import read_dataset
     from os.path import abspath, join, basename, isfile
     from os import listdir
 
@@ -17,14 +17,14 @@ def load_sample(sample_name):
             all_data = dict()
             for name in listdir(sample_dir):
                 if isfile(join(sample_dir, name)):
-                    all_data[name] = read(join(sample_dir, name))
+                    all_data[name] = read_dataset(join(sample_dir, name))
                 else:
-                    all_data[name] = read(join(sample_dir, name, "all"))
+                    all_data[name] = read_dataset(join(sample_dir, name, "all"))
             return all_data
         sample_name = sample_name.split('-')
         directory = join(sample_dir, *sample_name)
         if isfile(directory):
-            return read(directory)
+            return read_dataset(directory)
         else:
             raise FileNotFoundError("Dataset not found in built-in library")
 

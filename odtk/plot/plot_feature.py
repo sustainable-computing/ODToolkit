@@ -14,7 +14,7 @@ def plot_feature(dataset,
     occupied = datas[occupancy > 0, :]
     unoccupied = datas[occupancy < 0.5, :]
 
-    header = ["Occupancy"] + dataset.header
+    header = ["Occupancy"] + dataset.feature_list
     all_unit = {"HumidityRatio": "(kg-w/kg-a)", "Humidity": "(%)", "CO2": "(ppm)", "Light": "(Lux)",
                 "Temperature": "(Celsius)"}
     all_unit.update(unit)

@@ -1,78 +1,35 @@
 from odtk.model.superclass import *
-import tensorflow as tf
 
 
-class NN():
+class NNv2(NormalModel):
+    # For NormalModel, require two parameters: train and test
+    # For DomainAdaptiveModel, require three parameters: source, target_retrain and target_test
     def __init__(self, train, test):
+        from numpy import reshape
+        # all changeable parameters now store as an editable instance
         self.train = train
-        self.train.remove_feature(self.train.header_info[self.train.time_column])
         self.test = test
-        self.test.remove_feature(self.test.header_info[self.train.time_column])
-        self.batch_size = 24
-        self.hm_epochs = 1000
-        self.layer_levels = 1
-        self.layer_nodes = [75] * self.layer_levels
+        self.solver = 'adam'
+        self.alpha = 0.0001
+        self.batch_size = 'auto'
+        self.activation = 'logistic'
+        if len(self.train.occupancy.shape) == 2 and self.train.occupancy.shape[1] == 1:
+            self.train.change_occupancy(reshape(self.train.occupancy, (self.train.occupancy.shape[0],)))
 
-        self.input_nodes = self.train.data.shape[1]
-
-        if self.train.occupancy.shape[1] == 1:
-            self.n_classes = int(self.train.occupancy.max())
-        else:
-            self.n_classes = int(self.train.occupancy.shape[1])
-
+    # the model must have a method called run, and return the predicted result
     def run(self):
+        from sklearn.neural_network import MLPClassifier
+        classifier = MLPClassifier(solver=self.solver,
+                                   alpha=self.alpha,
+                                   hidden_layer_sizes=(75,),
+                                   batch_size=self.batch_size,
+                                   activation=self.activation)
 
-        x = tf.placeholder('float', [None, self.input_nodes])
-        y = tf.placeholder('float')
+        classifier.fit(self.train.data, self.train.occupancy)
 
-        def neural_network_model(data):
-            hidden_layer = []
-            layer_result = []
-            self.layer_nodes.append(self.input_nodes)
+        predict_occupancy = classifier.predict(self.test.data)
 
-            for hidden_layer_idx in range(self.layer_levels):
-                hidden_layer.append({'weights': tf.Variable(
-                    tf.zeros([self.layer_nodes[hidden_layer_idx - 1], self.layer_nodes[hidden_layer_idx]])),
-                    'biases': tf.Variable(tf.random_normal([self.layer_nodes[hidden_layer_idx]]))})
+        if len(predict_occupancy.shape) == 1:
+            predict_occupancy.shape += (1,)
 
-            output_layer = {'weights': tf.Variable(tf.random_normal([self.layer_nodes[-2], self.n_classes])),
-                            'biases': tf.Variable(tf.random_normal([self.n_classes]))}
-
-            layer_result.append(tf.add(tf.matmul(data, hidden_layer[0]['weights']), hidden_layer[0]['biases']))
-
-            layer_result[0] = tf.nn.relu(layer_result[0])
-
-            for hidden_layer_idx in range(1, self.layer_levels):
-                layer_result.append(
-                    tf.add(tf.matmul(layer_result[hidden_layer_idx - 1], hidden_layer[hidden_layer_idx]['weights']),
-                           hidden_layer[hidden_layer_idx]['biases']))
-
-                layer_result[hidden_layer_idx] = tf.nn.relu(layer_result[hidden_layer_idx])
-
-            output = tf.matmul(layer_result[-1], output_layer['weights']) + output_layer['biases']
-
-            return output
-
-        def train_neural_network(x):
-            prediction = neural_network_model(x)
-            cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits_v2(logits=prediction, labels=y))
-            optimizer = tf.train.AdamOptimizer().minimize(cost)
-
-            with tf.Session() as sess:
-                sess.run(tf.global_variables_initializer())
-
-                for epoch in range(self.hm_epochs):
-                    epoch_loss = 0
-                    for i in range(int(self.train.data.shape[0] / self.batch_size)):
-                        epoch_x = self.train.data[i * self.batch_size:(i + 1) * self.batch_size]
-                        epoch_y = self.train.occupancy[i * self.batch_size:(i + 1) * self.batch_size]
-                        _, c = sess.run([optimizer, cost], feed_dict={x: epoch_x, y: epoch_y})
-                        epoch_loss += c
-
-                    # print('Epoch', epoch + 1, 'completed out of', hm_epochs, 'loss:', epoch_loss)
-
-                pred, truth = sess.run([prediction, y], feed_dict={x: self.test.data, y: self.test.occupancy})
-
-                return pred
-
-        return train_neural_network(x)
+        return predict_occupancy

@@ -34,9 +34,8 @@ class SVM(NormalModel):
 
         predict_occupancy.shape += (1,)
 
-        print("SVM done.")
-
         return predict_occupancy
+
 
 class SVR(NormalModel):
     # For NormalModel, require two parameters: train and test
@@ -69,8 +68,6 @@ class SVR(NormalModel):
         predict_occupancy = classifier.predict(self.test.data)
 
         predict_occupancy.shape += (1,)
-
-        print("SVR done.")
 
         return predict_occupancy
 

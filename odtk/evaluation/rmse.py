@@ -1,5 +1,4 @@
 from odtk.evaluation.superclass import *
-from numpy import sqrt
 
 
 class RMSE(OccupancyEvaluation):
@@ -8,4 +7,6 @@ class RMSE(OccupancyEvaluation):
         self.truth = truth
 
     def run(self):
+        from numpy import sqrt
+
         return sqrt(((self.truth - self.predict) ** 2).mean())

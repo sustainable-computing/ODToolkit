@@ -2,7 +2,7 @@
 #
 # Parameters:
 #     dataset: odtk.data.dataset.Dataset()
-#     dataset_level: decide the result is separate for each room or combine the whole dataset together
+#     dataset_level: decide the result is separate for each room_list or combine the whole dataset together
 # Return:
 #     a float number indicates the sample frequency in seconds
 
@@ -14,8 +14,8 @@ def frequency(dataset, dataset_level=True):
         raise TypeError("Dataset has to be class odtk.data.dataset.Dataset")
 
     result = {}
-    rooms = dataset.room
-    time_col = dataset.time_column
+    rooms = dataset.room_list
+    time_col = dataset.time_column_index
 
     for room in rooms:
         data = dataset[room][0][:, time_col]

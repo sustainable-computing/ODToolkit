@@ -1,5 +1,4 @@
 from odtk.evaluation.superclass import *
-from numpy import sqrt
 
 
 class MAE(OccupancyEvaluation):

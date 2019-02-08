@@ -1,11 +1,12 @@
-from numpy import ndarray, round, zeros, isnan
-from collections import Iterable
+# The odtk.evaluation.superclass.BinaryEvaluation evaluate result as binary occupancy
+# The odtk.evaluation.superclass.OccupancyEvaluation evaluate result as occupancy count
 
 
 class BinaryEvaluation:
     def __init__(self,
                  predict,
                  truth):
+        from numpy import ndarray, round
 
         if not isinstance(predict, ndarray) or not isinstance(truth, ndarray):
             return
@@ -31,6 +32,8 @@ class BinaryEvaluation:
             self.metrics[metric.__name__] = metric(self.predict.copy(), self.truth.copy())
 
     def add_metrics(self, list_of_metrics):
+        from collections import Iterable
+
         if not isinstance(list_of_metrics, Iterable) or isinstance(list_of_metrics, str):
             list_of_metrics = [list_of_metrics]
         else:
@@ -45,6 +48,8 @@ class BinaryEvaluation:
             raise NameError("Metrics {} is not defined in evaluation library".format(list_of_metrics))
 
     def remove_metrics(self, list_of_metrics):
+        from collections import Iterable
+
         if not isinstance(list_of_metrics, Iterable) or isinstance(list_of_metrics, str):
             list_of_metrics = [list_of_metrics]
         else:
@@ -71,6 +76,7 @@ class OccupancyEvaluation:
     def __init__(self,
                  predict,
                  truth):
+        from numpy import ndarray, round
 
         if not isinstance(predict, ndarray) or not isinstance(truth, ndarray):
             return
@@ -96,6 +102,8 @@ class OccupancyEvaluation:
             self.metrics[model.__name__] = model(self.predict.copy(), self.truth.copy())
 
     def add_metrics(self, list_of_metrics):
+        from collections import Iterable
+
         if not isinstance(list_of_metrics, Iterable) or isinstance(list_of_metrics, str):
             list_of_metrics = [list_of_metrics]
         else:
@@ -110,6 +118,8 @@ class OccupancyEvaluation:
             raise NameError("Metrics {} is not defined in evaluation library".format(list_of_metrics))
 
     def remove_metrics(self, list_of_metrics):
+        from collections import Iterable
+
         if not isinstance(list_of_metrics, Iterable) or isinstance(list_of_metrics, str):
             list_of_metrics = [list_of_metrics]
         else:
@@ -132,6 +142,9 @@ class OccupancyEvaluation:
         return result
 
 
+# odtk.evaluation.superclass.Result is for transform the evaluation result to a 3D array and select required data.
+
+
 class Result:
     def __init__(self):
         self.result = None
@@ -140,6 +153,8 @@ class Result:
         self.datasets = list()
 
     def set_result(self, result):
+        from numpy import zeros, isnan
+
         self.datasets = list(result.keys())
         self.models = list(result[self.datasets[0]].keys())
         self.metrics = list(result[self.datasets[0]][self.models[0]].keys())

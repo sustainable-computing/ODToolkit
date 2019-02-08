@@ -1,6 +1,4 @@
-from odtk.data.dataset import Dataset
-from multiprocessing.pool import ThreadPool
-from collections import Iterable
+from ..data.dataset import Dataset
 
 
 class NormalModel:
@@ -22,6 +20,8 @@ class NormalModel:
             self.models[model.__name__] = model(self.train.copy(), self.test.copy())
 
     def add_model(self, list_of_model):
+        from collections import Iterable
+
         if not isinstance(list_of_model, Iterable) or isinstance(list_of_model, str):
             list_of_model = [list_of_model]
         else:
@@ -36,6 +36,8 @@ class NormalModel:
             raise NameError("Model {} is not defined in model library".format(list_of_model))
 
     def remove_model(self, list_of_model):
+        from collections import Iterable
+
         if not isinstance(list_of_model, Iterable) or isinstance(list_of_model, str):
             list_of_model = [list_of_model]
         else:
@@ -52,6 +54,8 @@ class NormalModel:
             raise NameError("Model {} is not selected".format(list_of_model))
 
     def run_all_model(self):
+        from multiprocessing.pool import ThreadPool
+
         pool = ThreadPool(processes=self.thread_num)
         result = dict()
         for model in self.models.keys():
@@ -85,6 +89,8 @@ class DomainAdaptiveModel:
             self.models[model.__name__] = model(self.source.copy(), self.target_retrain.copy(), self.target_test.copy())
 
     def add_model(self, list_of_model):
+        from collections import Iterable
+
         if not isinstance(list_of_model, Iterable) or isinstance(list_of_model, str):
             list_of_model = [list_of_model]
         else:
@@ -100,6 +106,8 @@ class DomainAdaptiveModel:
             raise NameError("Model {} is not defined in model library".format(list_of_model))
 
     def remove_model(self, list_of_model):
+        from collections import Iterable
+
         if not isinstance(list_of_model, Iterable) or isinstance(list_of_model, str):
             list_of_model = [list_of_model]
         else:
@@ -116,6 +124,8 @@ class DomainAdaptiveModel:
             raise NameError("Model {} is not selected".format(list_of_model))
 
     def run_all_model(self):
+        from multiprocessing.pool import ThreadPool
+
         pool = ThreadPool(processes=self.thread_num)
         result = dict()
         for model in self.models.keys():

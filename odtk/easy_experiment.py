@@ -21,11 +21,11 @@ def easy_experiment(source,
     test_time = target_test.data[:, target_test.time_column].flatten()
     if remove_time:
         if source.time_column is not None:
-            source.remove_feature([source.header_info[source.time_column]])
+            source.remove_feature([source.feature_mapping[source.time_column]])
         if target_test.time_column is not None:
-            target_test.remove_feature([target_test.header_info[target_test.time_column]])
+            target_test.remove_feature([target_test.feature_mapping[target_test.time_column]])
         if target_retrain is not None and target_retrain.time_column is not None:
-            target_retrain.remove_feature([target_retrain.header_info[target_retrain.time_column]])
+            target_retrain.remove_feature([target_retrain.feature_mapping[target_retrain.time_column]])
 
     if domain_adaptive:
         model = DomainAdaptiveModel(source, target_retrain, target_test, thread_num=thread_num)

@@ -22,7 +22,7 @@ def save_dataset(dataset, file_name):
 #     odtk.data.dataset.Dataset
 
 
-def read(file_name):
+def read_dataset(file_name):
     from pickle import load
 
     with open(file_name, 'rb') as file:

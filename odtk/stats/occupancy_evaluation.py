@@ -2,7 +2,7 @@
 #
 # Parameters:
 #     dataset: odtk.data.dataset.Dataset()
-#     dataset_level: decide the result is separate for each room or combine the whole dataset together
+#     dataset_level: decide the result is separate for each room_list or combine the whole dataset together
 # Return:
 #     a dictionary map number of occupants to its distribution
 
@@ -15,7 +15,7 @@ def occupancy_distribution_evaluation(dataset, dataset_level=True):
         raise TypeError("Dataset has to be class odtk.data.dataset.Dataset")
 
     result = {}
-    rooms = dataset.room
+    rooms = dataset.room_list
     all_entries = 0
 
     if not dataset.labelled:

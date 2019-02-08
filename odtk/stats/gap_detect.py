@@ -6,7 +6,7 @@
 #   threshold: maximum different second between two consecutive row
 #   sensor_level: decide the result is separate for each sensor or combine the whole row together
 # Return:
-#   a dictionary contains all gaps for each room
+#   a dictionary contains all gaps for each room_list
 
 
 def gap_detect(dataset, threshold, sensor_level=False):
@@ -18,10 +18,10 @@ def gap_detect(dataset, threshold, sensor_level=False):
         raise TypeError("Dataset has to be class odtk.data.dataset.Dataset")
 
     result = {}
-    rooms = dataset.room
-    time_col = dataset.time_column
-    sensors = dataset.header
-    sensor_dict = dataset.header_info
+    rooms = dataset.room_list
+    time_col = dataset.time_column_index
+    sensors = dataset.feature_list
+    sensor_dict = dataset.feature_mapping
 
     for room in rooms:
         data = dataset[room][0]
