@@ -20,14 +20,6 @@ def save_dataset(dataset, file_name):
         dump(dataset, file)
 
 
-# Load a odtk.data.dataset.Dataset object from local disk
-#
-# Parameters:
-#     file_name: The name of target file
-# Return:
-#     odtk.data.dataset.Dataset
-
-
 def read_dataset(file_name):
     """
     Load a odtk.data.dataset.Dataset object from local disk binary file

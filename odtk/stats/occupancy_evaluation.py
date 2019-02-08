@@ -1,13 +1,21 @@
-# Compute the distribution of the occupancy level
-#
-# Parameters:
-#     dataset: odtk.data.dataset.Dataset()
-#     dataset_level: decide the result is separate for each room_list or combine the whole dataset together
-# Return:
-#     a dictionary map number of occupants to its distribution
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 
 def occupancy_distribution_evaluation(dataset, dataset_level=True):
+    """
+    Compute the distribution of the occupancy level on given Dataset
+
+    :parameter dataset: Dataset object that want to compute the occupancy distribution
+    :type dataset: odtk.data.dataset.Dataset
+
+    :parameter dataset_level: decide the result is separate for each room in room_list or
+                              combine for the whole dataset together
+    :type dataset_level: bool
+
+    :rtype: dict(int, str) or dict(str, dict(int, str))
+    :return: the room name with its each possible occupancy level corresponding to distribution
+    """
     from odtk.data.dataset import Dataset
     from numpy import unique
 

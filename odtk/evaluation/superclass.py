@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 class BinaryEvaluation:
     """
     Use all binary occupancy evaluation metrics to evaluate the differences between prediction and ground truth
@@ -49,8 +52,8 @@ class BinaryEvaluation:
         """
         Add one or multiple metrics into the evaluation queue
 
-        :parameter list_of_metrics: one or multiple metrics that additionally add to the evaluation queue
-        :type list_of_metrics: None or list(str)
+        :parameter list_of_metrics: one or multiple metrics that additionally add to the evaluation queue.
+        :type list_of_metrics: str or list(str)
 
         :return: None
         """
@@ -74,7 +77,7 @@ class BinaryEvaluation:
         Remove one or multiple metrics from the evaluation queue
 
         :parameter list_of_metrics: one or multiple metrics that want to remove from the evaluation queue
-        :type list_of_metrics: None or list(str)
+        :type list_of_metrics: str or list(str)
 
         :return: None
         """
@@ -162,7 +165,7 @@ class OccupancyEvaluation:
         Add one or multiple metrics into the evaluation queue
 
         :parameter list_of_metrics: one or multiple metrics that additionally add to the evaluation queue
-        :type list_of_metrics: None or list(str)
+        :type list_of_metrics: str or list(str)
 
         :return: None
         """
@@ -186,7 +189,7 @@ class OccupancyEvaluation:
         Remove one or multiple metrics from the evaluation queue
 
         :parameter list_of_metrics: one or multiple metrics that want to remove from the evaluation queue
-        :type list_of_metrics: None or list(str)
+        :type list_of_metrics: str or list(str)
 
         :return: None
         """

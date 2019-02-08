@@ -7,6 +7,23 @@
 
 
 def uptime(dataset, threshold, gaps=None):
+    """
+    Compute the uptime in the given dataset.
+    Uptime is the length of time a sensor reported value
+
+    :parameter dataset: Dataset object that want to compute the uptime
+    :type dataset: odtk.data.dataset.Dataset
+
+    :parameter threshold: the maximum time differences in seconds between two consecutive timestamp
+                          to not mark them as a gap
+    :type threshold: int
+
+    :parameter gaps: a dictionary result from the odtk.stats.gap_detect
+    :type gaps: dict(str, list(str)) or dict(str, dict(str, list(str)))
+
+    :rtype: dict(str, tuple(str)) or dict(str, dict(str, tuple(str)))
+    :return: the room name corresponds to the name of sensor with its corresponding uptime
+    """
     from .gap_detect import gap_detect
     from datetime import timedelta
 

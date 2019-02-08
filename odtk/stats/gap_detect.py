@@ -1,15 +1,26 @@
-# Compute the gaps in the given dataset
-# Gap is a time sequence that two sample row have timestamp difference greater than threshold
-#
-# Parameters:
-#   dataset: odtk.data.dataset.Dataset()
-#   threshold: maximum different second between two consecutive row
-#   sensor_level: decide the result is separate for each sensor or combine the whole row together
-# Return:
-#   a dictionary contains all gaps for each room_list
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 
 def gap_detect(dataset, threshold, sensor_level=False):
+    """
+    Compute the gaps in the given dataset.
+    Gap is a time sequence that two consecutive row have timestamp differences greater than threshold
+
+    :parameter dataset: Dataset object that want to find the gaps
+    :type dataset: odtk.data.dataset.Dataset
+
+    :parameter threshold: the maximum time differences in seconds between two consecutive timestamp
+                          to not mark them as a gap
+    :type threshold: int
+
+    :parameter sensor_level: decide the result is separate for each sensor in feature_list or
+                             combine for the whole dataset together
+    :type sensor_level: bool
+
+    :rtype: dict(str, list(str)) or dict(str, dict(str, list(str)))
+    :return: the room name corresponds to the name of sensor with its corresponding dropout rate
+    """
     from odtk.data.dataset import Dataset
     from numpy import isnan, where
     from datetime import datetime

@@ -1,7 +1,2 @@
-import odtk.stats
-import odtk.preprocessing
-import odtk.data
-import odtk.model
-import odtk.evaluation
-import odtk.plot
-from odtk.easy_experiment import *
+from .easy_experiment import easy_set_experiment, easy_experiment
+from . import stats, preprocessing, data, model, evaluation, plot

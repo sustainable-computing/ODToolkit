@@ -1,9 +1,37 @@
-from odtk.model.superclass import *
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+from .superclass import *
 
 
-class NNv2(NormalModel):
-    # For NormalModel, require two parameters: train and test
-    # For DomainAdaptiveModel, require three parameters: source, target_retrain and target_test
+class NN(NormalModel):
+    """
+    Using `Multi-layer Perception Classifier <https://scikit-learn.org/stable/modules/generated/
+    sklearn.neural_network.MLPClassifier.html>`_ model to predict the occupancy level
+
+    This is a normal supervised learning model.
+
+    :parameter train: the labelled ground truth Dataset for training the model
+    :type train: odtk.data.dataset.Dataset
+
+    :parameter test: the Dataset for testing by using sensor data only
+    :type test: odtk.data.dataset.Dataset
+
+    :parameter solver: the solver for weight optimization. Choice of ``'lbfgs'``, ``'sgd'``, or ``'adam'``
+    :type solver: str
+
+    :parameter alpha: l2 penalty (regularization term) parameter
+    :type alpha: float
+
+    :parameter batch_size: size of minibatches for stochastic optimizers
+    :type batch_size: int or ``'auto'``
+
+    :parameter activation: activation function for the hidden layer.
+                           Choice of ``'identity'``, ``'logistic'``, ``'tanh'``, or ``'relu'``
+    :type activation: str
+
+    :rtype: numpy.ndarray
+    :return: Predicted occupancy level corresponding to the test Dataset
+    """
     def __init__(self, train, test):
         from numpy import reshape
         # all changeable parameters now store as an editable instance

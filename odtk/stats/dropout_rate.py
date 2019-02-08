@@ -1,13 +1,23 @@
-# Compute the dropout rate for a given dataset. Dropout rate is the percent of rows that is invalid
-#
-# Parameters:
-#     dataset: odtk.data.dataset.Dataset()
-#     dataset_level: decide the result is separate for each room_list or combine the whole dataset together
-# Return:
-#     a dictionary contains the dropout rate
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 
 def dropout_rate(dataset, dataset_level=False):
+    """
+    Compute the dropout rate for a given dataset.
+    Dropout rate is the percent of rows that is invalid
+
+    :parameter dataset: Dataset object that want to compute the dropout rate.
+                        The dropout rate is the percentage of data points missing in Dataset
+    :type dataset: odtk.data.dataset.Dataset
+
+    :parameter dataset_level: decide the result is separate for each room in room_list or
+                              combine for the whole dataset together
+    :type dataset_level: bool
+
+    :rtype: str or dict(str, str)
+    :return: the room name with its corresponding dropout rate
+    """
     from odtk.data.dataset import Dataset
     from numpy import isnan
 

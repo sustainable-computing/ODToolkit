@@ -1,12 +1,17 @@
-# Update the name of features
-#
-# Parameters:
-#     dataset: odtk.data.dataset.Dataset() or feature_list list
-# Return:
-#     Edited feature_list list
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 
 def ontology(dataset):
+    """
+    Update the name of features to standard glossary
+
+    :parameter dataset: Dataset object or list of features' name that wants to map to standard glossary
+    :type dataset: odtk.data.dataset.Dataset or list(str)
+
+    :rtype: list(str)
+    :return: Edited feature_list list
+    """
     from ..data import Dataset
     from Levenshtein import jaro
 

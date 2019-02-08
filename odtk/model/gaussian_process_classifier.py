@@ -1,8 +1,24 @@
-from odtk.model.superclass import *
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+from .superclass import *
 
 
 class GPC(NormalModel):
+    """
+    Using `Gaussian Process Classifier <https://scikit-learn.org/stable/modules/generated/
+    sklearn.gaussian_process.GaussianProcessClassifier.html>`_ model to predict the occupancy level
 
+    This is a normal supervised learning model.
+
+    :parameter train: the labelled ground truth Dataset for training the model
+    :type train: odtk.data.dataset.Dataset
+
+    :parameter test: the Dataset for testing by using sensor data only
+    :type test: odtk.data.dataset.Dataset
+
+    :rtype: numpy.ndarray
+    :return: Predicted occupancy level corresponding to the test Dataset
+    """
     def __init__(self,
                  train,
                  test):

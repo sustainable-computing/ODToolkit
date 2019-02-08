@@ -1,12 +1,16 @@
-# Fill all nan value for given odtk.data.dataset.Dataset
-#
-# Parameters:
-#     dataset: odtk.data.dataset.Dataset()
-# Return:
-#     No return
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 
 def fill(dataset):
+    """
+    Fill all nan value in the sensor data for given odtk.data.dataset.Dataset
+
+    :parameter dataset: Dataset object that wants to fill in missing values
+    :type dataset: odtk.data.dataset.Dataset
+
+    :return: None
+    """
     from ..data import Dataset
     from numpy import isnan, where, arange, maximum, nonzero
 

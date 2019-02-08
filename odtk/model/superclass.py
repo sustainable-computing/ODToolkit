@@ -1,7 +1,23 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 from ..data.dataset import Dataset
 
 
 class NormalModel:
+    """
+    Use all normal supervised learning model to train and test the given Datasets
+
+    :parameter train: the labelled ground truth Dataset for training the model
+    :type train: odtk.data.dataset.Dataset
+
+    :parameter test: the Dataset for testing by using sensor data only
+    :type test: odtk.data.dataset.Dataset
+
+    :parameter thread_num: the maximum number of threads can use to speed up
+    :type thread_num: int
+
+    :rtype: odtk.model.superclass.NormalModel
+    """
     def __init__(self,
                  train,
                  test,
@@ -16,10 +32,25 @@ class NormalModel:
         self.thread_num = thread_num
 
     def get_all_model(self):
+        """
+        Get all subclasses
+
+        :parameter: None
+
+        :return: None
+        """
         for model in NormalModel.__subclasses__():
             self.models[model.__name__] = model(self.train.copy(), self.test.copy())
 
     def add_model(self, list_of_model):
+        """
+        Add one or multiple models into the modelling queue
+
+        :parameter list_of_model: one or multiple models that additionally add to the modelling queue
+        :type list_of_model: str or list(str)
+
+        :return: None
+        """
         from collections import Iterable
 
         if not isinstance(list_of_model, Iterable) or isinstance(list_of_model, str):
@@ -36,6 +67,14 @@ class NormalModel:
             raise NameError("Model {} is not defined in model library".format(list_of_model))
 
     def remove_model(self, list_of_model):
+        """
+        Remove one or multiple mdoels from the modelling queue
+
+        :parameter list_of_model: one or multiple models that want to remove from the modelling queue
+        :type list_of_model: str or list(str)
+
+        :return: None
+        """
         from collections import Iterable
 
         if not isinstance(list_of_model, Iterable) or isinstance(list_of_model, str):
@@ -54,6 +93,14 @@ class NormalModel:
             raise NameError("Model {} is not selected".format(list_of_model))
 
     def run_all_model(self):
+        """
+        Run all models that currently in the queue
+
+        :parameter: None
+
+        :rtype: dict(str, numpy.ndarray)
+        :return: the predicted occupancy level data
+        """
         from multiprocessing.pool import ThreadPool
 
         pool = ThreadPool(processes=self.thread_num)
@@ -69,6 +116,23 @@ class NormalModel:
 
 
 class DomainAdaptiveModel:
+    """
+    Use all domain-adaptive semi-supervised learning model to train and test the given Datasets
+
+    :parameter source: the source domain with full knowledge for training the model
+    :type source: odtk.data.dataset.Dataset
+
+    :parameter target_retrain: the labelled ground truth Dataset in the target domain for re-training the model
+    :type target_retrain: odtk.data.dataset.Dataset
+
+    :parameter target_test: the Dataset in the rest of the target domain for testing by using sensor data only
+    :type target_test: odtk.data.dataset.Dataset
+
+    :parameter thread_num: the maximum number of threads can use to speed up
+    :type thread_num: int
+
+    :rtype: odtk.evaluation.superclass.DomainAdaptiveModel
+    """
     def __init__(self,
                  source,
                  target_retrain,
@@ -85,10 +149,25 @@ class DomainAdaptiveModel:
         self.thread_num = thread_num
 
     def get_all_model(self):
+        """
+        Get all subclasses
+
+        :parameter: None
+
+        :return: None
+        """
         for model in DomainAdaptiveModel.__subclasses__():
             self.models[model.__name__] = model(self.source.copy(), self.target_retrain.copy(), self.target_test.copy())
 
     def add_model(self, list_of_model):
+        """
+        Add one or multiple models into the modelling queue
+
+        :parameter list_of_model: one or multiple models that additionally add to the modelling queue
+        :type list_of_model: str or list(str)
+
+        :return: None
+        """
         from collections import Iterable
 
         if not isinstance(list_of_model, Iterable) or isinstance(list_of_model, str):
@@ -106,6 +185,14 @@ class DomainAdaptiveModel:
             raise NameError("Model {} is not defined in model library".format(list_of_model))
 
     def remove_model(self, list_of_model):
+        """
+        Remove one or multiple mdoels from the modelling queue
+
+        :parameter list_of_model: one or multiple models that want to remove from the modelling queue
+        :type list_of_model: str or list(str)
+
+        :return: None
+        """
         from collections import Iterable
 
         if not isinstance(list_of_model, Iterable) or isinstance(list_of_model, str):
@@ -124,6 +211,14 @@ class DomainAdaptiveModel:
             raise NameError("Model {} is not selected".format(list_of_model))
 
     def run_all_model(self):
+        """
+        Run all models that currently in the queue
+
+        :parameter: None
+
+        :rtype: dict(str, numpy.ndarray)
+        :return: the predicted occupancy level data
+        """
         from multiprocessing.pool import ThreadPool
 
         pool = ThreadPool(processes=self.thread_num)

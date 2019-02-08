@@ -1,13 +1,22 @@
-# Compute the average sample frequency base on the given dataset
-#
-# Parameters:
-#     dataset: odtk.data.dataset.Dataset()
-#     dataset_level: decide the result is separate for each room_list or combine the whole dataset together
-# Return:
-#     a float number indicates the sample frequency in seconds
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 
 def frequency(dataset, dataset_level=True):
+    """
+    Compute the average sample frequency base on the given dataset
+
+    :parameter dataset: Dataset object that want to compute the average frequency.
+                        The average frequency is the average second of all consecutive timestamp
+    :type dataset: odtk.data.dataset.Dataset
+
+    :parameter dataset_level: decide the result is separate for each room in room_list or
+                              combine for the whole dataset together
+    :type dataset_level: bool
+
+    :rtype: str or dict(str, str)
+    :return: the room name with its corresponding average sampling frequency
+    """
     from odtk.data.dataset import Dataset
 
     if not isinstance(dataset, Dataset):

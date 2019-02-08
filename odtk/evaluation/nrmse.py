@@ -1,4 +1,6 @@
-from odtk.evaluation.superclass import *
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+from .superclass import *
 
 
 class NRMSE(OccupancyEvaluation):

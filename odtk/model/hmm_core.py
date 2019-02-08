@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+
 class EmissionModel():
 
     def __init__(self, meta=dict()):
@@ -124,7 +128,7 @@ class HMM_Core():
                 psi[s, t], viterbi[s, t] = max(enumerate(trans_p), key=itemgetter(1))
                 viterbi[s, t] = viterbi[s, t] * self.B[s].get_prob(emission_seq[t])
 
-            c[t] = 1.0 / np.sum(viterbi[:, t])  # scaling factor
+            c[t] = 1.0 / sum(viterbi[:, t])  # scaling factor
             viterbi[:, t] = c[t] * viterbi[:, t]
         ##################################################################################################
         ##############################Back-tracking######################################################

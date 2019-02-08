@@ -1,8 +1,27 @@
-from odtk.model.superclass import *
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+from .superclass import *
 
 
 class PF(NormalModel):
+    """
+    Using `Particle Filtering <https://en.wikipedia.org/wiki/Particle_filter>`_
+    model to predict the occupancy level
 
+    This is a normal supervised learning model.
+
+    :parameter train: the labelled ground truth Dataset for training the model
+    :type train: odtk.data.dataset.Dataset
+
+    :parameter test: the Dataset for testing by using sensor data only
+    :type test: odtk.data.dataset.Dataset
+
+    :parameter number_of_hidden_states: the number of maximum occupancy level
+    :type number_of_hidden_states: int
+
+    :rtype: numpy.ndarray
+    :return: Predicted occupancy level corresponding to the test Dataset
+    """
     def __init__(self,
                  train,
                  test):
@@ -26,7 +45,27 @@ class PF(NormalModel):
 
 
 class PF_DA(DomainAdaptiveModel):
+    """
+    Using `Particle Filtering <https://en.wikipedia.org/wiki/Particle_filter>`_
+    model to predict the occupancy level
 
+    This is a domain-adaptive semi-supervised learning model.
+
+    :parameter source: the source domain with full knowledge for training the model
+    :type source: odtk.data.dataset.Dataset
+
+    :parameter target_retrain: the labelled ground truth Dataset in the target domain for re-training the model
+    :type target_retrain: odtk.data.dataset.Dataset
+
+    :parameter target_test: the Dataset in the rest of the target domain for testing by using sensor data only
+    :type target_test: odtk.data.dataset.Dataset
+
+    :parameter number_of_hidden_states: the number of maximum occupancy level
+    :type number_of_hidden_states: int
+
+    :rtype: numpy.ndarray
+    :return: Predicted occupancy level corresponding to the test Dataset
+    """
     def __init__(self,
                  source,
                  target_retrain,

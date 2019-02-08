@@ -1,10 +1,37 @@
-# Have to include this
-from odtk.model.superclass import *
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+from .superclass import *
 
 
 class SVM(NormalModel):
-    # For NormalModel, require two parameters: train and test
-    # For DomainAdaptiveModel, require three parameters: source, target_retrain and target_test
+    """
+    Using `Support Vector Machine <https://scikit-learn.org/stable/modules/generated/
+    sklearn.svm.LinearSVC.html>`_ model to predict the occupancy level
+
+    This is a normal supervised learning model.
+
+    :parameter train: the labelled ground truth Dataset for training the model
+    :type train: odtk.data.dataset.Dataset
+
+    :parameter test: the Dataset for testing by using sensor data only
+    :type test: odtk.data.dataset.Dataset
+
+    :parameter gamma: kernel coefficient for ``'rbf'``, ``'poly'``, or ``'sigmoid'``
+    :type gamma: float or ``'auto'``
+
+    :parameter kernel: specifies the kernel type to be used in the algorithm.
+                       It must be one of ``'linear'``, ``'poly'``, ``'rbf'``, ``'sigmoid'``, ``'precomputed'``
+    :type kernel: str
+
+    :parameter penalty_error: penalty parameter C of the error term.
+    :type penalty_error: float
+
+    :parameter n_estimators: estimators used for predictions.
+    :type n_estimators: int
+
+    :rtype: numpy.ndarray
+    :return: Predicted occupancy level corresponding to the test Dataset
+    """
     def __init__(self, train, test):
         # all changeable parameters now store as an editable instance
         self.train = train
@@ -38,8 +65,34 @@ class SVM(NormalModel):
 
 
 class SVR(NormalModel):
-    # For NormalModel, require two parameters: train and test
-    # For DomainAdaptiveModel, require three parameters: source, target_retrain and target_test
+    """
+    Using `Support Vector Regression <https://scikit-learn.org/stable/modules/generated/
+    sklearn.svm.LinearSVR.html>`_ model to predict the occupancy level
+
+    This is a normal supervised learning model.
+
+    :parameter train: the labelled ground truth Dataset for training the model
+    :type train: odtk.data.dataset.Dataset
+
+    :parameter test: the Dataset for testing by using sensor data only
+    :type test: odtk.data.dataset.Dataset
+
+    :parameter gamma: kernel coefficient for ``'rbf'``, ``'poly'``, or ``'sigmoid'``
+    :type gamma: float or ``'auto'``
+
+    :parameter kernel: specifies the kernel type to be used in the algorithm.
+                       It must be one of ``'linear'``, ``'poly'``, ``'rbf'``, ``'sigmoid'``, ``'precomputed'``
+    :type kernel: str
+
+    :parameter penalty_error: penalty parameter C of the error term.
+    :type penalty_error: float
+
+    :parameter n_estimators: estimators used for predictions.
+    :type n_estimators: int
+
+    :rtype: numpy.ndarray
+    :return: Predicted occupancy level corresponding to the test Dataset
+    """
     def __init__(self, train, test):
         # all changeable parameters now store as an editable instance
         self.train = train
@@ -66,49 +119,6 @@ class SVR(NormalModel):
         classifier.fit(self.train.data, self.train.occupancy)
 
         predict_occupancy = classifier.predict(self.test.data)
-
-        predict_occupancy.shape += (1,)
-
-        return predict_occupancy
-
-
-class SVMDA(DomainAdaptiveModel):
-    # For NormalModel, require two parameters: train and test
-    # For DomainAdaptiveModel, require three parameters: source, target_retrain and target_test
-    def __init__(self, source, target_retrain, target_test):
-        # all changeable parameters now store as an editable instance
-        self.source = source
-        self.target_retrain = target_retrain
-        self.target_test = target_test
-        self.gamma = 'auto'
-        self.kernel = 'linear'
-        self.penalty_error = 1
-        self.n_estimators = 10
-
-    # the model must have a method called run, and return the predicted result
-    def run(self):
-        from sklearn.svm import SVC
-        from sklearn.ensemble import BaggingClassifier
-        from sklearn.multiclass import OneVsRestClassifier
-        from numpy import reshape
-
-        if len(self.source.occupancy.shape) == 2 and self.source.occupancy.shape[1] == 1:
-            self.source.change_occupancy(reshape(self.source.occupancy, (self.source.occupancy.shape[0],)))
-
-        if len(self.target_retrain.occupancy.shape) == 2 and self.target_retrain.occupancy.shape[1] == 1:
-            self.target_retrain.change_occupancy(
-                reshape(self.target_retrain.occupancy, (self.target_retrain.occupancy.shape[0],)))
-
-        classifier = OneVsRestClassifier(BaggingClassifier(
-            SVC(kernel=self.kernel, C=self.penalty_error, gamma=self.gamma),
-            max_samples=1.0 / self.n_estimators, n_estimators=self.n_estimators))
-
-        classifier.fit(self.source.data, self.source.occupancy)
-
-        if self.target_retrain is not None:
-            classifier.fit(self.target_retrain.data, self.target_retrain.occupancy)
-
-        predict_occupancy = classifier.predict(self.target_test.data)
 
         predict_occupancy.shape += (1,)
 

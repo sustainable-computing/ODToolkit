@@ -1,14 +1,22 @@
-# Change the sampling frequency of given odtk.data.dataset.Dataset
-#
-# Parameters:
-#     dataset: odtk.data.dataset.Dataset()
-#     target_frequency: sampling frequency after downsample
-#     algorithm: "mean"
-# Return:
-#     No return
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 
 def downsample(dataset, target_frequency, algorithm="mean"):
+    """
+    Downsampling the sampling frequency (decrease the number of rows) of given odtk.data.dataset.Dataset
+
+    :parameter dataset: Dataset object that wants to downsample
+    :type dataset: odtk.data.dataset.Dataset
+
+    :parameter target_frequency: sampling frequency in second that the dataset wants to become
+    :type target_frequency: int
+
+    :parameter algorithm: downsampling algorithm. Only ``'mean'`` is available for now
+    :type algorithm: str
+
+    :return: None
+    """
     from ..data import Dataset
     from numpy import array, concatenate, full, nan, isnan, interp
     from pandas import DataFrame

@@ -1,14 +1,22 @@
-# Change the sampling frequency of given odtk.data.dataset.Dataset
-#
-# Parameters:
-#     dataset: odtk.data.dataset.Dataset()
-#     target_frequency: sampling frequency after upsample
-#     algorithm: "linear"
-# Return:
-#     No return
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 
 def upsample(dataset, target_frequency, algorithm="linear"):
+    """
+    Upsampling the sampling frequency (increase the number of rows) of given odtk.data.dataset.Dataset
+
+    :parameter dataset: Dataset object that wants to upsample
+    :type dataset: odtk.data.dataset.Dataset
+
+    :parameter target_frequency: sampling frequency in second that the dataset wants to become
+    :type target_frequency: int
+
+    :parameter algorithm: upsampling algorithm. Only ``'linear'`` is available for now
+    :type algorithm: str
+
+    :return: None
+    """
     from odtk.data.dataset import Dataset
     from numpy import array, concatenate, full, nan, isnan, interp
 

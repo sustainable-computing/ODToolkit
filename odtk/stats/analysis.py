@@ -1,16 +1,29 @@
-# The full analysis for the given odtk.data.dataset.Dataset()
-#
-# Parameters:
-#     dataset: odtk.data.dataset.Dataset()
-#     threshold: maximum different second between two consecutive timestamp
-#     save_to: if None, then do not write analysis result to a file. Otherwise, write analysis result to save_file
-#     print_out: decide if analysis result print to stdout or not
-#
-# Return:
-#     a dictionary contains all information
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 
 def analysis(dataset, threshold, save_to=None, print_out=False):
+    """
+    The full analysis for the given odtk.data.dataset.Dataset
+
+    :parameter dataset: Dataset object that want to perform evaluation
+    :type dataset: odtk.data.dataset.Dataset
+
+    :parameter threshold: the maximum time differences in seconds between two consecutive timestamp
+                          to not mark them as a gap
+    :type threshold: int
+
+    :parameter save_to: the file name of function's output result.
+                        if None, then do not write analysis result to a file.
+                        Otherwise, write analysis result to save_file
+    :type save_to: str
+
+    :parameter print_out: decide if analysis result should print to stdout or not
+    :type print_out: bool
+
+    :rtype: dict(str, result)
+    :return: Analysis result in human readable format
+    """
     from odtk.data.dataset import Dataset
     from .dropout_rate import dropout_rate
     from .frequency import frequency

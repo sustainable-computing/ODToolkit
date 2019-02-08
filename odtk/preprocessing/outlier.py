@@ -1,14 +1,25 @@
-# Remove potential outliers using IQR
-#
-# Parameters:
-#   dataset: odtk.data.dataset.Dataset() or feature_list list
-#     auto_fill: Whether automatically fill the outliers or leave it nan
-#     ratio: IQR ratio in order to mark value as an outlier
-# Return:
-#     No return
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 
 def remove_outlier(dataset, auto_fill=True, ratio=1.5):
+    """
+    Remove potential outliers using IQR, and fill with numpy.nan. Outliers are the value that
+    less than value at the first quantile - ratio * IOR or
+    greater than value at the third quantile + ratio * IOR
+    in its corresponding column
+
+    :parameter dataset: Dataset object that wants to remove outliers
+    :type dataset: odtk.data.dataset.Dataset
+
+    :parameter auto_fill: whether automatically fill the outliers or leave it nan
+    :type auto_fill: bool
+
+    :parameter ratio: IQR ratio in order to mark value as an outlier
+    :type ratio: float
+
+    :return: None
+    """
     from ..data import Dataset
     from .fill import fill
     from numpy import percentile, isnan, nonzero, nan

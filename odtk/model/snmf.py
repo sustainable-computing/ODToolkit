@@ -1,8 +1,30 @@
-from odtk.model.superclass import *
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+from .superclass import *
 
 
 class NMF(NormalModel):
+    """
+    Using `Sparse Non-negative Matrix Factorization <http://membres-timc.imag.fr/Olivier.Francois/snmf/
+    index.htm>`_ model to predict the occupancy level
 
+    This is a normal supervised learning model.
+
+    :parameter train: the labelled ground truth Dataset for training the model
+    :type train: odtk.data.dataset.Dataset
+
+    :parameter test: the Dataset for testing by using sensor data only
+    :type test: odtk.data.dataset.Dataset
+
+    :parameter alpha: constant that multiplies the regularization terms
+    :type alpha: float
+
+    :parameter beta: constant that multiplies the regularization terms
+    :type beta: float
+
+    :rtype: numpy.ndarray
+    :return: Predicted occupancy level corresponding to the test Dataset
+    """
     def __init__(self,
                  train,
                  test):
@@ -11,9 +33,6 @@ class NMF(NormalModel):
 
         self.alpha = 0.9
         self.beta = 0.8
-
-        self.time_length = 60
-        self.resolution = 3
 
     def run(self):
         from numpy import array, reshape

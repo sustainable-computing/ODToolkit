@@ -1,12 +1,16 @@
-# Change the occupancy data in odtk.data.dataset.Dataset to one hot encoding
-#
-# Parameters:
-#     dataset: odtk.data.dataset.Dataset()
-# Return:
-#     No return
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 
 def change_to_one_hot(dataset):
+    """
+    Change the occupancy data in odtk.data.dataset.Dataset to one hot encoding
+
+    :parameter dataset: Dataset object that wants to change the occupancy encoding method
+    :type dataset: odtk.data.dataset.Dataset
+
+    :return: None
+    """
     from ..data import Dataset
     from numpy import zeros, isnan, arange
 
@@ -25,15 +29,15 @@ def change_to_one_hot(dataset):
     dataset.change_occupancy(new_occupancy)
 
 
-# Change the occupancy data in odtk.data.dataset.Dataset to label encoding
-#
-# Parameters:
-#     dataset: odtk.data.dataset.Dataset()
-# Return:
-#     No return
-
-
 def change_to_label(dataset):
+    """
+    Change the occupancy data in odtk.data.dataset.Dataset to label encoding
+
+    :parameter dataset: Dataset object that wants to change the occupancy encoding method
+    :type dataset: odtk.data.dataset.Dataset
+
+    :return: None
+    """
     from ..data import Dataset
 
     if not isinstance(dataset, Dataset):
@@ -51,15 +55,15 @@ def change_to_label(dataset):
     dataset.change_occupancy(new_occupancy)
 
 
-# Change the occupancy data in odtk.data.dataset.Dataset to binary
-#
-# Parameters:
-#     dataset: odtk.data.dataset.Dataset()
-# Return:
-#     No return
-
-
 def change_to_binary(dataset):
+    """
+    Change the occupancy data in odtk.data.dataset.Dataset to binary
+
+    :parameter dataset: Dataset object that wants to change the occupancy encoding method
+    :type dataset: odtk.data.dataset.Dataset
+
+    :return: None
+    """
     from ..data import Dataset
 
     if not isinstance(dataset, Dataset):

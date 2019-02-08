@@ -1,13 +1,19 @@
-# The full preprocessing for the given odtk.data.dataset.Dataset()
-#
-# Parameters:
-#     dataset: odtk.data.dataset.Dataset()
-#     target_frequency: sampling frequency that the dataset want to becomes
-# Return:
-#     No return
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 
 def auto_clean(dataset, target_frequency):
+    """
+    The full preprocessing for the given odtk.data.dataset.Dataset
+
+    :parameter dataset: Dataset object that wants to perform preprocessing
+    :type dataset: odtk.data.dataset.Dataset
+
+    :parameter target_frequency: sampling frequency in second that the dataset wants to become
+    :type target_frequency: int
+
+    :return: None
+    """
     from .downsample import downsample
     from .fill import fill
     from .ontology import ontology
