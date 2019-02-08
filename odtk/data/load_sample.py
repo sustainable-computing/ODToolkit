@@ -1,18 +1,25 @@
-# Load a odtk.data.dataset.Dataset object from the sample folder
-#
-# Parameters:
-#     sample_name: Name of the sample. Use '-' represent folder relation.
-# Return:
-#     odtk.data.dataset.Dataset
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 
 def load_sample(sample_name):
+    """
+    Load one or more odtk.data.dataset.Dataset object from the sample folder
+
+    :type sample_name: str or list(str)
+    :type sample_name: str or list(str)
+    :param sample_name: name(s) of the binary file in binary_dataset
+
+    :rtype: odtk.data.dataset.Dataset or dict(str, odtk.data.dataset.Dataset)
+    :return: Dataset object(s) that load from a binary file. If a list of name is provided, then a dictionary
+             with their name as key and corresponding Dataset is returned
+    """
     from .io import read_dataset
     from os.path import abspath, join, basename, isfile
     from os import listdir
 
     if isinstance(sample_name, str):
-        sample_dir = join(abspath(__file__).rstrip(basename(__file__)), "sample_csv")
+        sample_dir = join(abspath(__file__).rstrip(basename(__file__)), "binary_dataset")
         if sample_name == "all":
             all_data = dict()
             for name in listdir(sample_dir):

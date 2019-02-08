@@ -1,8 +1,15 @@
-# The odtk.evaluation.superclass.BinaryEvaluation evaluate result as binary occupancy
-# The odtk.evaluation.superclass.OccupancyEvaluation evaluate result as occupancy count
-
-
 class BinaryEvaluation:
+    """
+    Use all binary occupancy evaluation metrics to evaluate the differences between prediction and ground truth
+
+    :parameter predict: the predicted values from occupancy estimation models
+    :type predict: numpy.ndarray
+
+    :parameter truth: the ground truth value from the Dataset
+    :type truth: numpy.ndarray
+
+    :rtype: odtk.evaluation.superclass.BinaryEvaluation
+    """
     def __init__(self,
                  predict,
                  truth):
@@ -28,10 +35,25 @@ class BinaryEvaluation:
         self.metrics = {}
 
     def get_all_metrics(self):
+        """
+        Get all subclasses
+
+        :parameter: None
+
+        :return: None
+        """
         for metric in BinaryEvaluation.__subclasses__():
             self.metrics[metric.__name__] = metric(self.predict.copy(), self.truth.copy())
 
     def add_metrics(self, list_of_metrics):
+        """
+        Add one or multiple metrics into the evaluation queue
+
+        :parameter list_of_metrics: one or multiple metrics that additionally add to the evaluation queue
+        :type list_of_metrics: None or list(str)
+
+        :return: None
+        """
         from collections import Iterable
 
         if not isinstance(list_of_metrics, Iterable) or isinstance(list_of_metrics, str):
@@ -48,6 +70,14 @@ class BinaryEvaluation:
             raise NameError("Metrics {} is not defined in evaluation library".format(list_of_metrics))
 
     def remove_metrics(self, list_of_metrics):
+        """
+        Remove one or multiple metrics from the evaluation queue
+
+        :parameter list_of_metrics: one or multiple metrics that want to remove from the evaluation queue
+        :type list_of_metrics: None or list(str)
+
+        :return: None
+        """
         from collections import Iterable
 
         if not isinstance(list_of_metrics, Iterable) or isinstance(list_of_metrics, str):
@@ -66,6 +96,14 @@ class BinaryEvaluation:
             raise NameError("Metrics {} is not selected".format(list_of_metrics))
 
     def run_all_metrics(self):
+        """
+        Run all metrics that currently in the queue
+
+        :parameter: None
+
+        :rtype: dict(str, float or int)
+        :return: a dictionary map each metrics and their corresponding result
+        """
         result = dict()
         for metric in self.metrics.keys():
             result[metric] = self.metrics[metric].run()
@@ -73,6 +111,17 @@ class BinaryEvaluation:
 
 
 class OccupancyEvaluation:
+    """
+    Use all occupancy level estimation metrics to evaluate the differences between prediction and ground truth
+
+    :parameter predict: the predicted values from occupancy estimation models
+    :type predict: numpy.ndarray
+
+    :parameter truth: the ground truth value from the Dataset
+    :type truth: numpy.ndarray
+
+    :rtype: odtk.evaluation.superclass.OccupancyEvaluation
+    """
     def __init__(self,
                  predict,
                  truth):
@@ -98,10 +147,25 @@ class OccupancyEvaluation:
         self.metrics = {}
 
     def get_all_metrics(self):
+        """
+        Get all subclasses
+
+        :parameter: None
+
+        :return: None
+        """
         for model in OccupancyEvaluation.__subclasses__():
             self.metrics[model.__name__] = model(self.predict.copy(), self.truth.copy())
 
     def add_metrics(self, list_of_metrics):
+        """
+        Add one or multiple metrics into the evaluation queue
+
+        :parameter list_of_metrics: one or multiple metrics that additionally add to the evaluation queue
+        :type list_of_metrics: None or list(str)
+
+        :return: None
+        """
         from collections import Iterable
 
         if not isinstance(list_of_metrics, Iterable) or isinstance(list_of_metrics, str):
@@ -118,6 +182,14 @@ class OccupancyEvaluation:
             raise NameError("Metrics {} is not defined in evaluation library".format(list_of_metrics))
 
     def remove_metrics(self, list_of_metrics):
+        """
+        Remove one or multiple metrics from the evaluation queue
+
+        :parameter list_of_metrics: one or multiple metrics that want to remove from the evaluation queue
+        :type list_of_metrics: None or list(str)
+
+        :return: None
+        """
         from collections import Iterable
 
         if not isinstance(list_of_metrics, Iterable) or isinstance(list_of_metrics, str):
@@ -136,6 +208,14 @@ class OccupancyEvaluation:
             raise NameError("Metrics {} is not selected".format(list_of_metrics))
 
     def run_all_metrics(self):
+        """
+        Run all metrics that currently in the queue
+
+        :parameter: None
+
+        :rtype: dict(str, float or int)
+        :return: a dictionary map each metrics and their corresponding result
+        """
         result = dict()
         for metric in self.metrics.keys():
             result[metric] = self.metrics[metric].run()
@@ -146,6 +226,13 @@ class OccupancyEvaluation:
 
 
 class Result:
+    """
+    Create a 3D array to fast select and reshape result
+
+    :parameter: None
+
+    :return: odtk.evaluation.superclass.Result
+    """
     def __init__(self):
         self.result = None
         self.metrics = list()
@@ -153,6 +240,14 @@ class Result:
         self.datasets = list()
 
     def set_result(self, result):
+        """
+        Initialize the data in self
+
+        :parameter result: whole result from the experiment
+        :type result: dict(str, dict(str, dict(str, float or int)))
+
+        :return: None
+        """
         from numpy import zeros, isnan
 
         self.datasets = list(result.keys())
@@ -173,6 +268,29 @@ class Result:
                         continue
 
     def get_result(self, dataset=None, model=None, metric=None, fixed="auto"):
+        """
+        Shrink, select and reshape result by given require query
+
+        :parameter dataset: one or multiple datasets that user want as result. If ``None`` then all datasets will
+                            be selected
+        :type dataset: str or None or list(str)
+
+        :parameter model: one or multiple models that user want as result. If ``None`` then all models will
+                          be selected
+        :type model: str or None or list(str)
+
+        :parameter metric: one or multiple metrics that user want as result. If ``None`` then all metrics will
+                           be selected
+        :type metric: str or None or list(str)
+
+        :parameter fixed: find which asix only have one value in order to create 2D result. If ``auto`` then it will
+                          automatically find the dimension with only one value. Value must be ``auto``, ``dataset``,
+                          ``model``, or ``metric``
+        :type fixed: str
+
+        :rtype: numpy.ndarary
+        :return: a 2D array contains the data for plotting
+        """
         from numpy import ix_
         dimension = {"dataset": None, "model": None, "metric": None}
 

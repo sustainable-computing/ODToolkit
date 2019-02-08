@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 # Core dataset format. The standard data structure for occupancy detection
 #
 # Accessible instances:
@@ -34,6 +36,25 @@
 
 
 class Dataset:
+    """
+    Core dataset format. The standard data structure for occupancy detection
+
+    Notice all attributes is a copy of the original value, therefore the changes will only be seen
+    if use methods to update values in self
+
+    :var time_column_index: the timestamp column in self.data
+    :vartype time_column_index: int
+
+    :var binary: indicate the occupancy data in self is binary encoding or not
+    :vartype binary: bool
+
+    :var labelled: indicate the occupancy data in self is available or not
+    :vartype labelled: bool
+
+    :parameter: None
+
+    :rtype: odtk.data.dataset.Dataset
+    """
     def __init__(self):
         from numpy import asarray
         self.__data = asarray([])
@@ -49,41 +70,105 @@ class Dataset:
 
     @property
     def data(self):
+        """
+        :rtype: numpy.ndarray
+        :return: a copy of the sensor data in numpy.ndarray
+        """
         return self.__data.copy()
 
     @property
     def occupancy(self):
+        """
+        :rtype: numpy.ndarray
+        :return: a copy of the occupancy data in numpy.ndarray
+        """
         return self.__occupancy.copy()
 
     @property
     def feature_mapping(self):
+        """
+        :rtype: dict
+        :return: a bidirectional dictionary map feature names with corresponding column index
+        """
         return self.__feature_column_mapping.copy()
 
     @property
     def feature_list(self):
+        """
+        :rtype: list(str)
+        :return: a list contains all feature names
+        """
         return [self.__feature_column_mapping[i] for i in range(len(self.__feature_column_mapping) // 2)]
 
     @property
     def room_mapping(self):
+        """
+        :rtype: dict
+        :return: a bidirectional dictionary map room names with corresponding row index tuple (start, end)
+        """
         return self.__room_mapping.copy()
 
     @property
     def room_list(self):
+        """
+        :rtype: list(str)
+        :return: a list contains all room names
+        """
         return [self.__room_mapping[i] for i in range(len(self))]
 
     def change_values(self, data):
+        """
+        Replace the sensor data within self
+
+        :parameter data: new sensor data have same shape with original sensor data
+        :type data: numpy.ndarray
+
+        :return: None
+        """
         self.__data = data
 
     def change_occupancy(self, occupancy):
+        """
+        Replace the data within self
+
+        :parameter occupancy: new occupancy data have same number of rows with original occupancy data
+        :type occupancy: numpy.ndarray
+
+        :return: None
+        """
         self.__occupancy = occupancy
 
     def change_room_mapping(self, room):
+        """
+        Replace the room mapping within self
+
+        :parameter room: new room mapping rule with bidirectional dict
+        :type room: dict
+
+        :return: None
+        """
         self.__room_mapping = room
 
     def change_feature_mapping(self, feature_mapping):
+        """
+        Replace the feature mapping within self
+
+        :parameter feature_mapping: new feature mapping rule with bidirectional dict
+        :type feature_mapping: dict
+
+        :return: None
+        """
         self.__feature_column_mapping = feature_mapping
 
     def set_feature_name(self, feature_list):
+        """
+        Replace all features' name in given order
+
+        :parameter feature_list: new feature name list have length same as number of columns of self.data
+        :type feature_list: list
+
+        :return: None
+        """
         from collections import Iterable
 
         if not isinstance(feature_list, Iterable):
@@ -98,6 +183,17 @@ class Dataset:
             self.__feature_column_mapping[feature_list[i]] = i
 
     def change_feature_name(self, old, new):
+        """
+        Replace one feature's name
+
+        :parameter old: original name for the feature in self
+        :type old: str
+
+        :parameter new: new name name for the feature in self
+        :type new: str
+
+        :return: None
+        """
         if old not in self.__feature_column_mapping.keys():
             raise KeyError("The feature {} does not exist in the dataset!".format(old))
         if new in self.__feature_column_mapping.keys():
@@ -109,6 +205,17 @@ class Dataset:
 
     # Can remove one or more feature
     def remove_feature(self, features, error=True):
+        """
+        Remove one or multiple features from the self.data
+
+        :parameter features: one or multiple features that need to be removed
+        :type features: str or list(str)
+
+        :parameter error: whether throw an error if a name of feature is not available in self
+        :type error: bool
+
+        :return: None
+        """
         from collections import Iterable
 
         if not isinstance(features, Iterable) or isinstance(features, str):
@@ -135,6 +242,17 @@ class Dataset:
 
     # Can select one or more feature
     def select_feature(self, features, error=True):
+        """
+        Select one or multiple features from the self.data, remove rest features
+
+        :parameter features: one or multiple features that need to be selected
+        :type features: str or list(str)
+
+        :parameter error: whether throw an error if any one of the name in parameter is not available in self
+        :type error: bool
+
+        :return: None
+        """
         from collections import Iterable
 
         if not isinstance(features, Iterable) or isinstance(features, str):
@@ -164,6 +282,23 @@ class Dataset:
     # data is a float matrix of data. All time value need to be changed to its timestamp (datetime.timestamp())
     # if no feature_list line, assume all data have same order as before.
     def add_room(self, data, occupancy=None, room_name=None, header=True):
+        """
+        Add a new room into self. The dimension of self.data can automatically expand
+
+        :parameter data: sensor data from the new room
+        :type data: numpy.ndarray
+
+        :parameter occupancy: occupancy data from the new room. If ``None`` then fill with ``numpy.nan``
+        :type occupancy: None or numpy.ndarray
+
+        :parameter room_name: the name of the new room. If ``None`` then assign a unique index
+        :type room_name: None or str
+
+        :parameter header: Indicate whether the new room have a header on the first row
+        :type header: bool
+
+        :return: None
+        """
         from numpy import asarray, unique, full, nan, concatenate
 
         if header:
@@ -244,6 +379,15 @@ class Dataset:
             self.__occupancy = concatenate((self.__occupancy, occupancy), axis=0)
 
     def pop_room(self, room_name):
+        """
+        Remove a room from self
+
+        :parameter room_name: name of the room need to be removed
+        :type room_name: str
+
+        :rtype: odtk.data.dataset.Dataset
+        :return: removed Dataset
+        """
         from numpy import delete, unique, isnan
 
         if room_name not in self.__room_mapping.keys():
@@ -281,6 +425,14 @@ class Dataset:
         return new_dataset
 
     def split(self, percentage):
+        """
+        Separate the Dataset into two smaller Dataset by given split point
+
+        :parameter percentage: percentage of the row in the first part
+        :type percentage: float
+
+        :return: None
+        """
         front_dataset = Dataset()
         back_dataset = Dataset()
         front_dataset.time_column_index = self.time_column_index
@@ -314,6 +466,14 @@ class Dataset:
         return front_dataset, back_dataset
 
     def copy(self):
+        """
+        Make a copy of self
+
+        :parameter: None
+
+        :rtype: odtk.data.dataset.Dataset
+        :return: A same copy of self, with different address of all values
+        """
         duplicate = Dataset()
         duplicate.change_values(self.__data.copy())
         duplicate.change_occupancy(self.__occupancy.copy())

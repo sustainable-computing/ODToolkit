@@ -1,17 +1,33 @@
-# Load raw data from disk
-#
-# Parameters:
-#     file_name: The name of the raw data file
-#     time_column_index: The column index for the timestamp in given raw data file
-#     mode: The raw data format, support 'csv'
-#     feature_list: Indicate whether the raw data include feature_list at the first line
-#     room_name: The name of room_list for the raw data file
-#     tz: The time zone offset that need to fix for the raw data file
-# Return:
-#     odtk.data.dataset.Dataset object contains one room_list data
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 
 
 def import_data(file_name, time_column_index=None, mode='csv', header=True, room_name=None, tz=0):
+    """
+    Load raw data from the disk.
+
+    :type file_name: str
+    :param file_name: the name of the raw data file
+
+    :type time_column_index: int
+    :param time_column_index: the column index for the timestamp in given raw data file
+
+    :type mode: str
+    :param mode: the format for raw data. Currently only support ``csv``
+
+    :type header: bool
+    :param header: indicate whether the raw data contains a header on the first row. If ``False``, then assign unique
+                   index for each column
+
+    :type room_name: str or None
+    :param room_name: the name of the room. If ``None``, then assign unique number for the room
+
+    :type tz: int
+    :param tz: the time zone offset that need to fix in the raw data file
+
+    :rtype: odtk.data.dataset.Dataset
+    :return: The structured data set with one raw input data
+    """
     from csv import reader
     from dateutil.parser import parse
     from numpy import nan, asarray
