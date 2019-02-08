@@ -1,4 +1,4 @@
-# Under construction!
+Please go to https://odtoolkit.github.io for documentation
 
 # ODTK: Occupancy Detection Toolkit
 
