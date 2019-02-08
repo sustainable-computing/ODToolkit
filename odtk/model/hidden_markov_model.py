@@ -55,7 +55,7 @@ class HMM_DA(DomainAdaptiveModel):
     :type source: odtk.data.dataset.Dataset
 
     :parameter target_retrain: the labelled ground truth Dataset in the target domain for re-training the model
-    :type target_retrain: odtk.data.dataset.Dataset
+    :type target_retrain: ``None`` or odtk.data.dataset.Dataset
 
     :parameter target_test: the Dataset in the rest of the target domain for testing by using sensor data only
     :type target_test: odtk.data.dataset.Dataset

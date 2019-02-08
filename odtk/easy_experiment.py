@@ -1,7 +1,8 @@
-from odtk.model.superclass import *
-from odtk.evaluation.superclass import *
-from odtk.data.load_sample import load_sample
-from odtk.plot.plot_occupancy_perc import *
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+from .model.superclass import *
+from .evaluation.superclass import *
+from .data.load_sample import load_sample
 
 
 def easy_experiment(source,
@@ -13,12 +14,50 @@ def easy_experiment(source,
                     evaluation_metrics="all",
                     thread_num=4,
                     remove_time=True,
-                    plot=False):
-    from numpy import reshape
+                    # plot=False
+                    ):
+    """
+    A function for researcher to fast test all models on one dataset and evaluate by all metrics
+
+    :parameter source: the source domain with full knowledge for training the model
+    :type source: odtk.data.dataset.Dataset
+
+    :parameter target_retrain: the labelled ground truth Dataset in the target domain for re-training the model
+    :type target_retrain: ``None`` or odtk.data.dataset.Dataset
+
+    :parameter target_test: the Dataset in the rest of the target domain for testing by using sensor data only
+    :type target_test: odtk.data.dataset.Dataset
+
+    :parameter domain_adaptive: indicate whether use normal supervised learning model
+                                or domain-adaptive semi-supervised learning model
+    :type domain_adaptive: bool
+
+    :parameter binary_evaluation: indicate whether use binary evaluation metrics
+                                  or occupancy count metrics
+    :type binary_evaluation: bool
+
+    :parameter models: choose the models want to use in this experiment. If ``'all'`` then all model with
+                       selected superclass will add to the experiment.
+    :type models: str, list(str)
+
+    :parameter evaluation_metrics: choose the evaluation metrics want to use in this experiment. If ``'all'`` then
+                                   all metrics with selected superclass will add to the experiment.
+    :type evaluation_metrics: str, list(str)
+
+    :parameter thread_num: the maximum number of threads can use to speed up
+    :type thread_num: int
+
+    :parameter remove_time: decide whether remove the time column when predicting occupancy level
+    :type remove_time: bool
+
+    :rtype: list(dict(str, dict(str, score)), dict(str, numpy.ndarray))
+    :return: first is the final score of the metrics by all models, and
+             second is the prediction result
+    """
     if domain_adaptive and target_retrain is None:
         raise ValueError("Domain Adaptive model must have target_retrain dataset")
 
-    test_time = target_test.data[:, target_test.time_column].flatten()
+    # test_time = target_test.data[:, target_test.time_column].flatten()
     if remove_time:
         if source.time_column is not None:
             source.remove_feature([source.feature_mapping[source.time_column]])
@@ -39,21 +78,21 @@ def easy_experiment(source,
 
     results = model.run_all_model()
 
-    if plot:
-        plot_dict = dict()
-        from pickle import dump
-        for model in results:
-            print(results[model].shape, test_time.shape)
-            # plot_dict[model] = test_time[results[model].flatten() > 0]
-            # with open(model, 'wb') as file:
-                # dump(plot_dict[model], file)
-                # dump(results[model], file)
-        plot_dict["Truth"] = test_time[target_test.occupancy.flatten() > 0]
-        with open("Truth", 'wb') as file:
-            dump(plot_dict["Truth"], file)
-
-        # plot_occupancy_distribution(plot_dict, orientation="horizontal",
-        #                     evaluation=True, size=2, swarm=True)
+    # if plot:
+    #     plot_dict = dict()
+    #     from pickle import dump
+    #     for model in results:
+    #         print(results[model].shape, test_time.shape)
+    #         # plot_dict[model] = test_time[results[model].flatten() > 0]
+    #         # with open(model, 'wb') as file:
+    #             # dump(plot_dict[model], file)
+    #             # dump(results[model], file)
+    #     plot_dict["Truth"] = test_time[target_test.occupancy.flatten() > 0]
+    #     with open("Truth", 'wb') as file:
+    #         dump(plot_dict["Truth"], file)
+    #
+    #     # plot_occupancy_distribution(plot_dict, orientation="horizontal",
+    #     #                     evaluation=True, size=2, swarm=True)
     total_result = dict()
 
     for model_result in results.keys():
@@ -85,6 +124,53 @@ def easy_set_experiment(source_set,
                         thread_num=4,
                         remove_time=True,
                         plot=False):
+    """
+    A function for researcher to fast test all models on all dataset and evaluate by all metrics.
+    Please make sure all keys in *source_set*, *target_test_set*, and *target_retrain* are the same
+
+    :parameter source_set: the set of source domain with full knowledge for training the model
+    :type source_set: dict(str, odtk.data.dataset.Dataset)
+
+    :parameter target_retrain: the labelled ground truth Dataset in the target domain for re-training the model
+    :type target_retrain: ``None`` or dict(str, odtk.data.dataset.Dataset)
+
+    :parameter target_test_set: the set of Datasets in the rest of the target domain for
+                                testing by using sensor data only. If ``None`` then split source domain to get
+                                new source domain and target domain
+    :type target_test_set: dict(str, odtk.data.dataset.Dataset)
+
+    :parameter split_percentage: percentage of the row in the first part
+    :type split_percentage: float
+
+    :parameter domain_adaptive: indicate whether use normal supervised learning model
+                                or domain-adaptive semi-supervised learning model
+    :type domain_adaptive: bool
+
+    :parameter binary_evaluation: indicate whether use binary evaluation metrics
+                                  or occupancy count metrics
+    :type binary_evaluation: bool
+
+    :parameter models: choose the models want to use in this experiment. If ``'all'`` then all model with
+                       selected superclass will add to the experiment.
+    :type models: str, list(str)
+
+    :parameter evaluation_metrics: choose the evaluation metrics want to use in this experiment. If ``'all'`` then
+                                   all metrics with selected superclass will add to the experiment.
+    :type evaluation_metrics: str, list(str)
+
+    :parameter thread_num: the maximum number of threads can use to speed up
+    :type thread_num: int
+
+    :parameter remove_time: decide whether remove the time column when predicting occupancy level
+    :type remove_time: bool
+
+    :parameter plot: unused
+    :type plot: bool
+
+    :rtype: list(dict(str, dict(str, dict(str, score))), dict(str, dict(str, numpy.ndarray)))
+    :return: first is the final score of the metrics by all Datasets, all models, and
+             second is the prediction result
+    """
     if source_set == "all":
         source_set = load_sample(source_set)
     elif not isinstance(source_set, dict):

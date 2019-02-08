@@ -14,7 +14,7 @@ class NRMSE(OccupancyEvaluation):
     :parameter truth: the ground truth value from the Dataset
     :type truth: numpy.ndarray
 
-    :parameter mode: the mode of nRMSE. Can select ``minmax`` or ``mean``
+    :parameter mode: the mode of nRMSE. Can select ``'minmax'`` or ``'mean'``
     :type mode: str
 
     :rtype: float

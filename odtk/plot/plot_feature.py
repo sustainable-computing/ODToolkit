@@ -17,13 +17,13 @@ def plot_feature_correlation(dataset,
     :type dataset: odtk.data.dataset.Dataset
 
     :parameter occupied_color: the color for more than zero occupancy data
-    :type occupied_color: #rgba
+    :type occupied_color: \#rgba
 
     :parameter unoccupied_color: the color for zero occupancy data
-    :type unoccupied_color: #rgba
+    :type unoccupied_color: \#rgba
 
     :parameter density_color: the color for density distribution plot
-    :type density_color: #rgba
+    :type density_color: \#rgba
 
     :parameter unit: a dictionary that have feature name correspond to user-defined unit
     :type unit: dict(str, str)

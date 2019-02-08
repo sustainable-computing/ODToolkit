@@ -71,7 +71,7 @@ def plot_result(result,
                           Otherwise, write figure to file_name
     :type file_name: str
 
-    :parameter **kwarg: other arguments for the matplotlib.pyplot.bar
+    :parameter \*\*kwarg: other arguments for the matplotlib.pyplot.bar
 
     :return: None
     """
