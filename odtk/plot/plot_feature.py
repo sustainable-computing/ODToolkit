@@ -1,9 +1,9 @@
-def plot_feature(dataset,
-                 occupied_color="#009250",
-                 unoccupied_color="#920000",
-                 density_color="#00009250",
-                 unit={},
-                 file_name="output.png"):
+def plot_feature_correlation(dataset,
+                             occupied_color="#009250",
+                             unoccupied_color="#920000",
+                             density_color="#00009250",
+                             unit=dict(),
+                             file_name=None):
     import matplotlib.pyplot as plt
     from numpy import concatenate
 
@@ -78,5 +78,6 @@ def plot_feature(dataset,
                 current.set_xlabel(header[x] + "\n" + all_unit.get(header[x], ""), labelpad=20 - pad, weight="bold")
 
     plt.subplots_adjust(wspace=0, hspace=0)
-    plt.savefig(file_name, transparent=True, pad_inches=0)
+    if file_name is not None:
+        plt.savefig(file_name, transparent=True, pad_inches=0)
     plt.show()

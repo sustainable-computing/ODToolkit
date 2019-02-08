@@ -1,4 +1,4 @@
-from odtk.plot.plot_one import *
+from odtk.plot.plot_result import *
 from odtk.plot.plot_occupancy import *
 from odtk.plot.plot_feature import *
 from odtk.plot.plot_occupancy_perc import *

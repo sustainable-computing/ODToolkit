@@ -1,12 +1,12 @@
-def plot_start_end(start,
-                   end,
-                   bin_size=60 * 10,
-                   orientation="horizontal",
-                   file_name="output.png",
-                   size=1.5,
-                   x_label="",
-                   y_label="",
-                   swarm=False):
+def plot_start_end_distribution(start,
+                                end,
+                                bin_size=60 * 10,
+                                orientation="horizontal",
+                                file_name="output.png",
+                                size=1.5,
+                                # x_label="",
+                                # y_label="",
+                                swarm=False):
     from numpy import ix_, arange, histogram, ndarray
     import matplotlib.pyplot as plt
     from seaborn import swarmplot

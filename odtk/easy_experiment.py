@@ -52,7 +52,7 @@ def easy_experiment(source,
         with open("Truth", 'wb') as file:
             dump(plot_dict["Truth"], file)
 
-        # plot_occupancy_perc(plot_dict, orientation="horizontal",
+        # plot_occupancy_distribution(plot_dict, orientation="horizontal",
         #                     evaluation=True, size=2, swarm=True)
     total_result = dict()
 

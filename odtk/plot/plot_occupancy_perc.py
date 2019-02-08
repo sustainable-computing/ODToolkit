@@ -1,15 +1,15 @@
-def plot_occupancy_perc(datasets,
-                        time_range=(0, 24 * 60 * 60),
-                        weekly=False,
-                        bin_size=60 * 10,
-                        orientation="horizontal",
-                        room_level=False,
-                        file_name="output.png",
-                        evaluation=False,
-                        size=1.5,
-                        x_label="",
-                        y_label="",
-                        swarm=False):
+def plot_occupancy_distribution(datasets,
+                                time_range=(0, 24 * 60 * 60),
+                                weekly=False,
+                                bin_size=60 * 10,
+                                orientation="horizontal",
+                                room_level=False,
+                                file_name=None,
+                                skip_calculation=False,
+                                size=1.5,
+                                x_label="",
+                                y_label="",
+                                swarm=False):
     from time import mktime, gmtime
     from numpy import ix_, arange, histogram, ndarray
     import matplotlib.pyplot as plt
@@ -22,7 +22,7 @@ def plot_occupancy_perc(datasets,
     i = 1
 
     for dataset in datasets:
-        if not evaluation:
+        if not skip_calculation:
             if room_level:
                 dataset = datasets[dataset]
                 for room in dataset.room_list:
@@ -106,5 +106,6 @@ def plot_occupancy_perc(datasets,
     plt.xlabel(x_label, fontweight='bold')
     plt.ylabel(y_label, fontweight='bold')
     plt.subplots_adjust(wspace=0, hspace=0)
-    plt.savefig(file_name, transparent=True, pad_inches=0)
+    if file_name is not None:
+        plt.savefig(file_name, transparent=True, pad_inches=0)
     plt.show()

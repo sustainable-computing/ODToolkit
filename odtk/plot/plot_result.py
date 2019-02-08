@@ -1,17 +1,17 @@
-def plot_one(result, threshold=None, group_by=0,
-             dataset=None,
-             model=None,
-             metric=None,
-             fixed="auto",
-             x_label="",
-             y_label="",
-             y_range=None,
-             add_label=True,
-             font_size=12,
-             file_name="output.png",
-             bar_size=2,
-             line_chart=False,
-             **kwargs):
+def plot_result(result, threshold=None, group_by=0,
+                dataset=None,
+                model=None,
+                metric=None,
+                fixed_category="auto",
+                x_label="",
+                y_label="",
+                y_range=None,
+                add_label=True,
+                font_size=12,
+                file_name=None,
+                bar_size=2,
+                add_line=False,
+                **kwargs):
     import matplotlib.pyplot as plt
     from numpy import arange
 
@@ -32,7 +32,7 @@ def plot_one(result, threshold=None, group_by=0,
     if group_by not in (0, 1):
         raise ValueError("group_by can only be 0 or 1")
 
-    result = list(result.get_result(dataset=dataset, model=model, metric=metric, fixed=fixed))
+    result = list(result.get_result(dataset=dataset, model=model, metric=metric, fixed=fixed_category))
 
     if group_by:
         x_labels = result[1]
@@ -60,7 +60,7 @@ def plot_one(result, threshold=None, group_by=0,
 
     for i in range(len(legends)):
 
-        if line_chart:
+        if add_line:
             line = ax.plot(result[2][:, i], label=legends[i],
                            marker=markers[i% len(markers)],
                            ms=15,
@@ -76,10 +76,11 @@ def plot_one(result, threshold=None, group_by=0,
     plt.ylabel(y_label, fontweight='bold')
     if y_range is not None:
         plt.ylim(y_range)
-    if line_chart:
+    if add_line:
         plt.xticks(x, x_labels)
     else:
         plt.xticks(x - (len(legends) + 1) / 2 * w, x_labels)
     plt.legend()
-    plt.savefig(file_name, transparent=True, pad_inches=0)
+    if file_name is not None:
+        plt.savefig(file_name, transparent=True, pad_inches=0)
     plt.show()
