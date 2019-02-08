@@ -1,9 +1,40 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+
 def plot_feature_correlation(dataset,
                              occupied_color="#009250",
                              unoccupied_color="#920000",
                              density_color="#00009250",
                              unit=dict(),
                              file_name=None):
+    """
+    Plot the correlation figure for each features in dataset across all rooms.
+    The plot will only identify two clusters, one for zero occupancy, and one for
+    more than zero occupancy
+
+    :parameter dataset: Dataset object that wants to show correlations
+    :type dataset: odtk.data.dataset.Dataset
+
+    :parameter occupied_color: the color for more than zero occupancy data
+    :type occupied_color: #rgba
+
+    :parameter unoccupied_color: the color for zero occupancy data
+    :type unoccupied_color: #rgba
+
+    :parameter density_color: the color for density distribution plot
+    :type density_color: #rgba
+
+    :parameter unit: a dictionary that have feature name correspond to user-defined unit
+    :type unit: dict(str, str)
+
+    :parameter file_name: the file name of function's figure.
+                          if None, then do not write figure to a file.
+                          Otherwise, write figure to file_name
+    :type file_name: str
+
+    :return: None
+    """
     import matplotlib.pyplot as plt
     from numpy import concatenate
 

@@ -1,12 +1,50 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+
 def plot_start_end_distribution(start,
                                 end,
                                 bin_size=60 * 10,
                                 orientation="horizontal",
                                 file_name="output.png",
                                 size=1.5,
-                                # x_label="",
-                                # y_label="",
+                                x_label="",
+                                y_label="",
                                 swarm=False):
+    """
+    Plot the distribution of when the room becomes occupied at the first time over a day (averaged)
+    and the distribution of when the room starts unoccupied at the last time over a day (averaged)
+    using histogram or swarmplot. Each Dataset in datasets have one distribution plot,
+    and are shown in the same figure
+
+    :parameter start: a set of list contains only the time of first occupied in seconds
+    :type start: list(int)
+
+    :parameter end: a set of list contains only the time of last unoccupied in seconds
+    :type end: list(int)
+
+    :parameter orientation: the direction or the plot. Selection of ``'vertical'`` or ``'horizontal'``
+    :type orientation: str
+
+    :parameter size: the size of the dot in swarmplot
+    :type size: float
+
+    :parameter x_label: text label on x_axis
+    :type x_label: str
+
+    :parameter y_label: text label on y_axis
+    :type y_label: str
+
+    :parameter swarm: decide whether use histogram or swarmplot
+    :type swarm: bool
+
+    :parameter file_name: the file name of function's figure.
+                          if None, then do not write figure to a file.
+                          Otherwise, write figure to file_name
+    :type file_name: str
+
+    :return: None
+    """
     from numpy import ix_, arange, histogram, ndarray
     import matplotlib.pyplot as plt
     from seaborn import swarmplot

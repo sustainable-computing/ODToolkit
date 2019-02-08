@@ -1,4 +1,10 @@
-def plot_result(result, threshold=None, group_by=0,
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+
+def plot_result(result,
+                threshold=None,
+                group_by=0,
                 dataset=None,
                 model=None,
                 metric=None,
@@ -12,6 +18,63 @@ def plot_result(result, threshold=None, group_by=0,
                 bar_size=2,
                 add_line=False,
                 **kwargs):
+    """
+    Plot the 2D result bar plot for the experimental result. The dimension with only one selected name
+    is the dimension to flat
+
+    :parameter result: the 3D result from the experiments
+    :type result: odtk.evaluation.superclass.Result
+
+    :parameter threshold: maximum score show in this figure
+    :type threshold: float
+
+    :parameter group_by: indicate using which dimension as the x-axis. Selection of ``0`` and ``1``
+    :type group_by: int
+
+    :parameter dataset: select the name of datasets want to present in this figure
+    :type dataset: str or list(str)
+
+    :parameter model: select the name of models want to present in this figure
+    :type model: str or list(str)
+
+    :parameter metric: select the name of metrics want to present in this figure
+    :type metric: str or list(str)
+
+    :parameter fixed_category: find which asix only have one value in order to create 2D result. If ``'auto'`` then
+                               it will automatically find the dimension with only one value. Value must be ``'auto'``,
+                               ``'dataset'``, ``'model'``, or ``'metric'``
+    :type fixed_category: str
+
+    :parameter y_range: the range of the y-axis. If ``None``, then use best fit range
+    :type y_range: ``None`` or list(float)
+
+    :parameter x_label: text label on x_axis
+    :type x_label: str
+
+    :parameter y_label: text label on y_axis
+    :type y_label: str
+
+    :parameter add_label: decide whether add labels to the x-axis
+    :type add_label: bool
+
+    :parameter font_size: the font size for all elements in the figure
+    :type add_label: float
+
+    :parameter bar_size: the width of the bar
+    :type bar_size: float
+
+    :parameter add_line: decide whether add trend line on histogram
+    :type add_line: bool
+
+    :parameter file_name: the file name of function's figure.
+                          if None, then do not write figure to a file.
+                          Otherwise, write figure to file_name
+    :type file_name: str
+
+    :parameter **kwarg: other arguments for the matplotlib.pyplot.bar
+
+    :return: None
+    """
     import matplotlib.pyplot as plt
     from numpy import arange
 

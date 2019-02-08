@@ -1,6 +1,8 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+
 def plot_occupancy_distribution(datasets,
-                                time_range=(0, 24 * 60 * 60),
-                                weekly=False,
                                 bin_size=60 * 10,
                                 orientation="horizontal",
                                 room_level=False,
@@ -10,6 +12,46 @@ def plot_occupancy_distribution(datasets,
                                 x_label="",
                                 y_label="",
                                 swarm=False):
+    """
+    Plot the distribution of when the room is occupied over a day (averaged) using histogram or swarmplot.
+    Each Dataset in datasets have one distribution plot, and are shown in the same figure
+
+    :parameter datasets: a set of Dataset corresponds to its name
+    :type datasets: dict(str, odtk.data.dataset.Dataset)
+
+    :parameter bin_size: number of seconds for each bin
+    :type bin_size: int
+
+    :parameter orientation: the direction or the plot. Selection of ``'vertical'`` or ``'horizontal'``
+    :type orientation: str
+
+    :parameter room_level: decide the result is separate for each room in each Dataset or
+                           combine each dataset together
+    :type room_level: bool
+
+    :parameter skip_calculation: if datasets is a set of list contains only times,
+                                 then function can skip calculation
+    :type skip_calculation: bool
+
+    :parameter size: the size of the dot in swarmplot
+    :type size: float
+
+    :parameter x_label: text label on x_axis
+    :type x_label: str
+
+    :parameter y_label: text label on y_axis
+    :type y_label: str
+
+    :parameter swarm: decide whether use histogram or swarmplot
+    :type swarm: bool
+
+    :parameter file_name: the file name of function's figure.
+                          if None, then do not write figure to a file.
+                          Otherwise, write figure to file_name
+    :type file_name: str
+
+    :return: None
+    """
     from time import mktime, gmtime
     from numpy import ix_, arange, histogram, ndarray
     import matplotlib.pyplot as plt
@@ -51,11 +93,12 @@ def plot_occupancy_distribution(datasets,
                        labelbottom=False, labelleft=False)
     eval("ax_all.get_shared_" + xy[0] + "_axes().join(ax_all, ax[0])")
     ax_all.grid(axis=xy[0], alpha=0.5)
+    time_range = (0, 24 * 60 * 60)
 
     for name in time_only:
 
         time_float = time_only[name] - mktime(gmtime(0))
-        time_float %= (24 * 60 * 60 * ((weekly * 6) + 1))
+        time_float %= time_range[1]
         # Wait to finish weekly
 
         # n, bins, _ = ax[i - 1].hist(time_float,

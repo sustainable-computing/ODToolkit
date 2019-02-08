@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+
 class BinaryEvaluation:
     """
     Use all binary occupancy evaluation metrics to evaluate the differences between prediction and ground truth
@@ -286,9 +287,9 @@ class Result:
                            be selected
         :type metric: str or None or list(str)
 
-        :parameter fixed: find which asix only have one value in order to create 2D result. If ``auto`` then it will
-                          automatically find the dimension with only one value. Value must be ``auto``, ``dataset``,
-                          ``model``, or ``metric``
+        :parameter fixed: find which asix only have one value in order to create 2D result. If ``'auto'`` then it will
+                          automatically find the dimension with only one value. Value must be ``'auto'``, ``'dataset'``,
+                          ``'model'``, or ``'metric'``
         :type fixed: str
 
         :rtype: numpy.ndarary
