@@ -14,7 +14,7 @@ def easy_experiment(source,
                     evaluation_metrics="all",
                     thread_num=4,
                     remove_time=True,
-                    # plot=False
+                    plot=False
                     ):
     """
     A function for researcher to fast test all models on one dataset and evaluate by all metrics
@@ -59,12 +59,12 @@ def easy_experiment(source,
 
     # test_time = target_test.data[:, target_test.time_column].flatten()
     if remove_time:
-        if source.time_column is not None:
-            source.remove_feature([source.feature_mapping[source.time_column]])
-        if target_test.time_column is not None:
-            target_test.remove_feature([target_test.feature_mapping[target_test.time_column]])
-        if target_retrain is not None and target_retrain.time_column is not None:
-            target_retrain.remove_feature([target_retrain.feature_mapping[target_retrain.time_column]])
+        if source.time_column_index is not None:
+            source.remove_feature([source.feature_mapping[source.time_column_index]])
+        if target_test.time_column_index is not None:
+            target_test.remove_feature([target_test.feature_mapping[target_test.time_column_index]])
+        if target_retrain is not None and target_retrain.time_column_index is not None:
+            target_retrain.remove_feature([target_retrain.feature_mapping[target_retrain.time_column_index]])
 
     if domain_adaptive:
         model = DomainAdaptiveModel(source, target_retrain, target_test, thread_num=thread_num)
