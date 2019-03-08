@@ -37,18 +37,19 @@
 
 class Dataset:
     """
-    Core dataset format. The standard data structure for occupancy detection
+    Core data set format. The standard data structure for occupancy and sensor data.
 
-    Notice all attributes is a copy of the original value, therefore the changes will only be seen
-    if use methods to update values in self
+    .. note::
+        All attributes are copies of the original values, therefore the changes will only be seen
+        if user use methods to update values of ``self``.
 
-    :var time_column_index: the timestamp column in self.data
+    :var time_column_index: the timestamp column in ``self.data``
     :vartype time_column_index: int
 
-    :var binary: indicate the occupancy data in self is binary encoding or not
+    :var binary: indicate the occupancy data in ``self`` has binary encoding or not
     :vartype binary: bool
 
-    :var labelled: indicate the occupancy data in self is available or not
+    :var labelled: indicate whether the occupancy data in ``self`` is available or not
     :vartype labelled: bool
 
     :parameter: None
@@ -118,7 +119,7 @@ class Dataset:
 
     def change_values(self, data):
         """
-        Replace the sensor data within self
+        Replace the sensor data of ``self.data``.
 
         :parameter data: new sensor data have same shape with original sensor data
         :type data: numpy.ndarray
@@ -129,7 +130,7 @@ class Dataset:
 
     def change_occupancy(self, occupancy):
         """
-        Replace the data within self
+        Replace the data of ``self.occupancy``.
 
         :parameter occupancy: new occupancy data have same number of rows with original occupancy data
         :type occupancy: numpy.ndarray
@@ -140,7 +141,7 @@ class Dataset:
 
     def change_room_mapping(self, room):
         """
-        Replace the room mapping within self
+        Replace the *room_mapping* within ``self``.
 
         :parameter room: new room mapping rule with bidirectional dict
         :type room: dict
@@ -151,7 +152,7 @@ class Dataset:
 
     def change_feature_mapping(self, feature_mapping):
         """
-        Replace the feature mapping within self
+        Replace the *feature_mapping* within ``self``.
 
         :parameter feature_mapping: new feature mapping rule with bidirectional dict
         :type feature_mapping: dict
@@ -162,9 +163,9 @@ class Dataset:
 
     def set_feature_name(self, feature_list):
         """
-        Replace all features' name in given order
+        Replace all features' name in given order.
 
-        :parameter feature_list: new feature name list have length same as number of columns of self.data
+        :parameter feature_list: new feature name list have length same as number of columns of ``self.data``
         :type feature_list: list
 
         :return: None
@@ -184,12 +185,12 @@ class Dataset:
 
     def change_feature_name(self, old, new):
         """
-        Replace one feature's name
+        Replace one feature's name.
 
-        :parameter old: original name for the feature in self
+        :parameter old: original name for the feature in ``self``
         :type old: str
 
-        :parameter new: new name name for the feature in self
+        :parameter new: new name name for the feature in ``self``
         :type new: str
 
         :return: None
@@ -206,12 +207,12 @@ class Dataset:
     # Can remove one or more feature
     def remove_feature(self, features, error=True):
         """
-        Remove one or multiple features from the self.data
+        Remove one or multiple features from the ``self.data``.
 
         :parameter features: one or multiple features that need to be removed
         :type features: str or list(str)
 
-        :parameter error: whether throw an error if a name of feature is not available in self
+        :parameter error: whether throw an error if a name of feature is not available in ``self``
         :type error: bool
 
         :return: None
@@ -243,12 +244,12 @@ class Dataset:
     # Can select one or more feature
     def select_feature(self, features, error=True):
         """
-        Select one or multiple features from the self.data, remove rest features
+        Select one or multiple features from the ``self.data``, remove rest features.
 
         :parameter features: one or multiple features that need to be selected
         :type features: str or list(str)
 
-        :parameter error: whether throw an error if any one of the name in parameter is not available in self
+        :parameter error: whether throw an error if any one of the name in parameter is not available in ``self``
         :type error: bool
 
         :return: None
@@ -283,7 +284,7 @@ class Dataset:
     # if no feature_list line, assume all data have same order as before.
     def add_room(self, data, occupancy=None, room_name=None, header=True):
         """
-        Add a new room into self. The dimension of self.data can automatically expand
+        Add a new room to ``self``. ``self.data`` can automatically expand.
 
         :parameter data: sensor data from the new room
         :type data: numpy.ndarray
@@ -380,7 +381,7 @@ class Dataset:
 
     def pop_room(self, room_name):
         """
-        Remove a room from self
+        Remove a room from ``self``.
 
         :parameter room_name: name of the room need to be removed
         :type room_name: str
@@ -426,7 +427,7 @@ class Dataset:
 
     def split(self, percentage):
         """
-        Separate the Dataset into two smaller Dataset by given split point
+        Separate ``self`` into two smaller ``odtk.data.dataset.Dataset`` objects by given split point.
 
         :parameter percentage: percentage of the row in the first part
         :type percentage: float
@@ -441,7 +442,6 @@ class Dataset:
         back_dataset.time_column_index = self.time_column_index
         back_dataset.binary = self.binary
         back_dataset.labelled = self.labelled
-
 
         split_point = round(percentage * self.__data.shape[0])
 
@@ -467,12 +467,12 @@ class Dataset:
 
     def copy(self):
         """
-        Make a copy of self
+        Make a copy of ``self``.
 
         :parameter: None
 
         :rtype: odtk.data.dataset.Dataset
-        :return: A same copy of self, with different address of all values
+        :return: A same copy of ``self``, with different addresses for all values
         """
         duplicate = Dataset()
         duplicate.change_values(self.__data.copy())
