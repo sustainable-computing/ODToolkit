@@ -1,10 +1,10 @@
-# ODToolkit: Occupancy Detection Toolkit
-An Extensible Toolkit for Occupancy Detection in Buildings. ODToolkit is capable of importing and converting sensor data from various buildings into a common data format. It provides implementation of a broad suite of supervised and semi-supervised occupancy detection models, and offers standard metrics for evaluation.
+# ODToolkit: An Extensible Toolkit for Occupancy Detection in Buildings
+ODToolkit is capable of importing and converting sensor data from various buildings into a common data format. It provides implementation of a broad suite of data-driven (supervised and semi-supervised domain-adaptive) occupancy detection models, and offers standard metrics for evaluation.
 
-ODToolkit is licensed under [MIT](https://github.com/sustainable-computing/ODToolkit/blob/master/LICENSE). Code written by Tianyu Zhang (@skyu0221) and Abdullah Al Zishan.
+ODToolkit is open source, licensed under [MIT](https://github.com/sustainable-computing/ODToolkit/blob/master/LICENSE). Code written by Tianyu Zhang and Abdullah Al Zishan.
 
 ## Contributing
-We welcome contributions to ODToolkit in many forms, such as bug reports, pull requests, etc., and encourage the community to improve and extend this toolkit by adding their occupancy estimation models and/or data sets. For major changes, open an issue first to discuss what you would like to do.
+We welcome contributions in many forms, such as bug reports, pull requests, etc., and encourage the community to use, improve and extend this toolkit by adding their occupancy estimation models and/or data sets. For major changes, open an issue first to discuss what you would like to do.
 
 ## Documentation
 Documentation is available at https://odtoolkit.github.io
