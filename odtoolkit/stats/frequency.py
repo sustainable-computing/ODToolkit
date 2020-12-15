@@ -8,7 +8,7 @@ def frequency(dataset, dataset_level=True):
 
     :parameter dataset: Dataset object that want to compute the average frequency.
                         The average frequency is the average second of all consecutive timestamp
-    :type dataset: odtk.data.dataset.Dataset
+    :type dataset: odtoolkit.data.dataset.Dataset
 
     :parameter dataset_level: decide the result is separate for each room in room_list or
                               combine for the whole dataset together

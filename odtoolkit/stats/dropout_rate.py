@@ -9,7 +9,7 @@ def dropout_rate(dataset, dataset_level=False):
 
     :parameter dataset: Dataset object that want to compute the dropout rate.
                         The dropout rate is the percentage of data points missing in Dataset
-    :type dataset: odtk.data.dataset.Dataset
+    :type dataset: odtoolkit.data.dataset.Dataset
 
     :parameter dataset_level: decide the result is separate for each room in room_list or
                               combine for the whole dataset together

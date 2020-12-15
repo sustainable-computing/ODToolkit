@@ -7,7 +7,7 @@ def occupancy_distribution_evaluation(dataset, dataset_level=True):
     Compute the distribution of the occupancy level on given Dataset
 
     :parameter dataset: Dataset object that want to compute the occupancy distribution
-    :type dataset: odtk.data.dataset.Dataset
+    :type dataset: odtoolkit.data.dataset.Dataset
 
     :parameter dataset_level: decide the result is separate for each room in room_list or
                               combine for the whole dataset together

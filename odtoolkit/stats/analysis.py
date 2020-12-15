@@ -7,7 +7,7 @@ def analysis(dataset, threshold, save_to=None, print_out=False):
     The full analysis for the given odtoolkit.data.dataset.Dataset
 
     :parameter dataset: Dataset object that want to perform evaluation
-    :type dataset: odtk.data.dataset.Dataset
+    :type dataset: odtoolkit.data.dataset.Dataset
 
     :parameter threshold: the maximum time differences in seconds between two consecutive timestamp
                           to not mark them as a gap

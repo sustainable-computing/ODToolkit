@@ -8,7 +8,7 @@ def gap_detect(dataset, threshold, sensor_level=False):
     Gap is a time sequence that two consecutive row have timestamp differences greater than threshold
 
     :parameter dataset: Dataset object that want to find the gaps
-    :type dataset: odtk.data.dataset.Dataset
+    :type dataset: odtoolkit.data.dataset.Dataset
 
     :parameter threshold: the maximum time differences in seconds between two consecutive timestamp
                           to not mark them as a gap

@@ -12,7 +12,7 @@ def uptime(dataset, threshold, gaps=None):
     Uptime is the length of time a sensor reported value
 
     :parameter dataset: Dataset object that want to compute the uptime
-    :type dataset: odtk.data.dataset.Dataset
+    :type dataset: odtoolkit.data.dataset.Dataset
 
     :parameter threshold: the maximum time differences in seconds between two consecutive timestamp
                           to not mark them as a gap
