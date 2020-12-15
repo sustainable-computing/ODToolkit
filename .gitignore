@@ -105,7 +105,7 @@ venv.bak/
 
 # PyCharm
 .idea/
-odtk-doc.txt
+odtoolkit-doc.txt
 output.png
 result.txt
 test.py
