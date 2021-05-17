@@ -3,6 +3,7 @@ ODToolkit is capable of importing and converting sensor data from various buildi
 
 ODToolkit is open source, licensed under [MIT](https://github.com/sustainable-computing/ODToolkit/blob/master/LICENSE). Code written by Tianyu Zhang and Abdullah Al Zishan.
 
+Disclaimer: ODToolkit has no affiliation with, nor is it sponsored by, Analytical Graphics, Inc., an Ansys Company.
 ## Contributing
 We welcome contributions in many forms, such as bug reports, pull requests, etc., and encourage the community to use, improve and extend this toolkit by adding their occupancy estimation models and/or data sets. For major changes, open an issue first to discuss what you would like to do.
 
